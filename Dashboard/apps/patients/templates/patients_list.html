@@ -1,0 +1,84 @@
+{% extends 'master.html' %}
+{% load static %}
+{% block title %}
+      قائمة المرضى
+{% endblock  %}
+{% block specialCssFiles %}
+<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
+{% endblock  %}
+
+{% block content %}
+<!-- Content -->
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h4 class="py-3 mb-4">إدارة المرضى / <span class="text-muted fw-light">قائمة المرضى</span></h4>
+  <!-- patients List Table -->
+  <div class="card">
+    <div class="card-header border-bottom">
+      <h5 class="card-title mb-3">فلتر البحث</h5>
+      <div class="d-flex justify-content-between align-items-center row pb-2 gap-3 gap-md-0">
+        <div class="col-md-4 patient_status">
+          <select id="SubsStatus" class="form-select text-capitalize">
+            <option value="">اختر الحالة</option>
+            <option value="مشترك">مشترك</option>
+            <option value="غير مشترك">غير مشترك</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="card-datatable table-responsive">
+      <table class="datatables-patients table">
+        <thead class="border-top">
+          <tr>
+            <th></th>
+            <th>المريض</th>
+            <th>عدد الاشتراكات</th>
+            <th>حالة الاشتراك</th>
+            <th></th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <!-- Offcanvas to add new patient -->
+    <div
+      class="offcanvas offcanvas-end"
+      tabindex="-1"
+      id="offcanvasAddpatient"
+      aria-labelledby="offcanvasAddpatientLabel">
+      <div class="offcanvas-header">
+        <h5 id="offcanvasAddpatientLabel" class="offcanvas-title">اضافة مريض</h5>
+        <button
+          type="button"
+          class="btn-close text-reset"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body mx-0 flex-grow-0 pt-0 h-100">
+        <form class="add-new-patient pt-0" id="addNewpatientForm" onsubmit="return false">
+          <div class="mb-3">
+            <label class="form-label" for="user">اختيار الحساب</label>
+            <select id="select-user-id" class="select2 form-select">
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">اضافة</button>
+          <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">الغاء</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- / Content -->
+
+{% endblock  %}
+{% block specialJsFiles %}
+<!-- Vendors JS -->
+<script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+<!-- Page JS -->
+<script>
+</script>
+<script type="module" src="{% static 'js/app-patients-list.js' %}"></script>
+{% endblock  %}
+

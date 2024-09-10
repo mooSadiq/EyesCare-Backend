@@ -1,0 +1,51 @@
+
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+export function getToken(key) {
+  return localStorage.getItem(key);
+}
+
+
+export function isTokenExpired(token) {
+  if (!token) return true;
+
+  const parts = token.split('.');
+  if (parts.length !== 3) {
+    throw new Error('Invalid token format');
+  }
+  const payload = JSON.parse(atob(parts[1]));
+  const now = Math.floor(Date.now() / 1000); 
+  return payload.exp < now;
+}
+
+
+
+export async function refreshToken() {
+  const refreshToken = getToken('refresh_token');
+  const response = await fetch('/auth/token/refresh/', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ refresh: refreshToken }),
+  });
+  
+  if (response.ok) {
+      const data = await response.json();
+      const newAccessToken = data.access;
+      localStorage.setItem('access_token', newAccessToken);
+      return newAccessToken;
+  } else {
+      await fetch('/auth/logout/', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${refreshToken}`,
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify({}),
+      });
+      window.location.href = '/auth/login/'; 
+      throw new Error('Failed to refresh token and logged out');
+  }
+}

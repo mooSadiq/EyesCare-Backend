@@ -1,0 +1,60 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "full_name": "سارة احمد",
+      "email": "gslixby0@abc.net.au",
+      "avatar": "2.png",
+      "diagnosis_image": "images-9.jpeg",
+      "result": "gslixby",
+      "date": "12/2/2024",
+      "status": 0,
+      "disease_id": 3
+    },
+    {
+      "id": 2,
+      "full_name": "احمد علي",
+      "email": "gslixby0@abc.net.au",
+      "avatar": "1.png",
+      "diagnosis_image": "images-29.jpeg",
+      "result": "gslixby",
+      "date": "12/2/2024",
+      "status": 1,
+      "disease_id": 3
+    },
+    {
+      "id": 3,
+      "full_name": "ياسر حسين",
+      "email": "gslixby0@abc.net.au",
+      "avatar": "3.png",
+      "diagnosis_image": "image-20.jpeg",
+      "result": "gslixby",
+      "date": "12/2/2024",
+      "status": 0,
+      "disease_id": 3
+    },
+    {
+      "id": 4,
+      "full_name": "زينب علي",
+      "email": "gslixby0@abc.net.au",
+      "avatar": "4.png",
+      "diagnosis_image": "images-9.jpeg",
+      "result": "gslixby",
+      "date": "12/2/2024",
+      "status": 1,
+      "disease_id": 3
+    },
+    {
+      "id": 5,
+      "full_name": "سامي محمد",
+      "email": "gslixby0@abc.net.au",
+      "avatar": "1.png",
+      "diagnosis_image": "images-29.jpeg",
+      "result": "gslixby",
+      "date": "12/2/2024",
+      "status": 0,
+      "disease_id": 3
+    }
+    
+  ]
+}

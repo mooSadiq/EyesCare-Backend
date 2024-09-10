@@ -1,0 +1,12 @@
+.disease-images img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+    border-radius: 10%;
+    
+  }
+  
+  .disease-images .col-md-4 {
+    margin-bottom: 15px;
+  }
+  

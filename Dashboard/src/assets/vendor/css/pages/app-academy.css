@@ -1,0 +1,31 @@
+.app-post .app-post-img-height {
+  height: 130px;
+}
+
+@media (min-width: 768px) {
+  .app-post .app-post-md-25 {
+    width: 25%;
+  }
+  .app-post .app-post-md-50 {
+    width: 50%;
+  }
+  .app-post .app-post-md-80 {
+    width: 80%;
+  }
+}
+@media (min-width: 576px) {
+  .app-post .app-post-sm-40 {
+    width: 40% !important;
+  }
+  .app-post .app-post-sm-60 {
+    width: 60% !important;
+  }
+}
+@media (min-width: 1200px) {
+  .app-post .app-post-xl-100 {
+    width: 100% !important;
+  }
+  .app-post .app-post-xl-100 {
+    width: 100% !important;
+  }
+}

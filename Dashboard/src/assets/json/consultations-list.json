@@ -1,0 +1,67 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "full_name": "احمد علي",
+      "username": "gslixby0",
+      "email": "gslixby0@abc.net.au",
+      "date": "12/2/2024",
+      "status": "0",
+      "avatar": "1.png"
+    },
+    {
+      "id": 2,
+      "full_name": "محمد سعيد",
+      "username": "hbjones1",
+      "email": "hbjones1@gmail.com",
+      "date": "12/2/2024",
+      "status": "1",
+      "avatar": "2.png"
+    },
+    {
+      "id": 3,
+      "full_name": "سارة احمد",
+      "username": "jbrown2",
+      "email": "jbrown2@yahoo.com",
+      "date": "12/2/2024",
+      "status": "0",
+      "avatar": "3.png"
+    },
+    {
+      "id": 4,
+      "full_name": "علي خالد",
+      "username": "kmartin3",
+      "email": "kmartin3@outlook.com",
+      "date": "12/2/2024",
+      "status": "1",
+      "avatar": "4.png"
+    },
+    {
+      "id": 5,
+      "full_name": "فاطمة محمد",
+      "username": "rtaylor4",
+      "email": "rtaylor4@hotmail.com",
+      "date": "12/2/2024",
+      "status": "1",
+      "avatar": "5.png"
+    },
+    {
+      "id": 6,
+      "full_name": "ياسر حسين",
+      "username": "dthomas5",
+      "email": "dthomas5@gmail.com",
+      "date": "12/2/2024",
+      "status": "0",
+      "avatar": "6.png"
+    },
+    {
+      "id": 7,
+      "full_name": "زينب علي",
+      "username": "swilliams6",
+      "email": "swilliams6@yahoo.com",
+      "date": "12/2/2024",
+      "status": "1",
+      "avatar": "7.png"
+    }
+  ]
+}

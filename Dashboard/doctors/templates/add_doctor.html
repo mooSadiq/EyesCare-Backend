@@ -1,0 +1,14 @@
+{% extends 'master.html' %}
+{% load static %}
+{% block content %}
+  <main class="doc-main">
+    <div class="doctor-container">
+      <form id="add-doctor-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }} 
+        <button type="submit" class="btn btn-primary">إضافة</button>
+        <button type="button" class="btn btn-secondary">إلغاء</button>
+      </form>
+    </div>
+  </main>
+{% endblock %}

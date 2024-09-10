@@ -1,0 +1,174 @@
+{% extends 'master.html' %}
+{% load static %}
+{% block title %}
+      قائمة المنشورات
+{% endblock  %}
+{% block specialCssFiles %}
+<link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-select/bootstrap-select.css' %}" />
+{% endblock  %}
+
+{% block content %}
+<!-- Content -->
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h4 class="py-3 mb-4">إدارة المنشورات / <span class="text-muted fw-light">قائمة المنشورات</span></h4>
+  <!-- Users List Table -->
+  <div class="app-post">
+    <div class="card p-0 mb-4">
+      <div class="card-body d-flex flex-column flex-md-row justify-content-between p-0 pt-4">
+        <div class="app-post-md-25 card-body py-0">
+          <img
+            src="{% static 'img/illustrations/bulb-light.png' %}"
+            class="post app-post-img-height scaleX-n1-rtl"
+            alt="Bulb in hand"
+            data-app-light-img="illustrations/bulb-light.png"
+            data-app-dark-img="illustrations/bulb-dark.png"
+            height="90" />
+        </div>
+        <div class="app-post-md-50 card-body d-flex align-items-md-center flex-column text-md-center">
+          <p class="mb-5">
+            البحث عن منشور معين هنا.
+            يتم البحث عن منشور حسب نص المنشور أو حسب اسم الحساب الذي قام بالنشر.
+            أدخل الكلمات المفتاحية للبحث عن منشور.
+          </p>
+          <div class="d-flex align-items-center justify-content-between app-post-md-80">
+            <input type="search" id="searchInput" placeholder="البحث" class="form-control me-2" />
+            <button type="submit" id="searchButton" class="btn btn-primary btn-icon"><i class="ti ti-search"></i></button>
+          </div>
+        </div>
+        <div class="app-post-md-25 d-flex align-items-end justify-content-end">
+          <img
+            src="{% static 'img/illustrations/pencil-rocket.png' %}"
+            alt="pencil rocket"
+            height="188"
+            class="scaleX-n1-rtl" />
+        </div>
+      </div>
+    </div>
+    <div class="card mb-4">
+      <div class="card-header">
+        <div class="card-title mb-1 me-1  d-flex justify-content-between align-items-center flex-wrap">
+          <h5 class="mb-0">قائمة المنشورات</h5>
+          <p class="text-muted mb-0">إجمالي المنشورات التي تم نشرها في المنصة <span id="posts-count"></span></p>
+          <button class="add-new btn btn-primary waves-effect waves-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddPost">
+            <span class="d-none d-sm-inline-block ms-3"> منشور جديد</span>
+            <i class="ti ti-plus  ti-xs"></i>
+          </button>
+        </div>
+        <div class="filter">
+          <p class="text-muted mt-3">فلترة المنشورات حسب</p>
+          <div class="d-flex justify-content-between align-items-center row pb-2 gap-3 gap-md-0">
+              <div class="col-md-4 mb-1">
+                  <select id="yearFilter" class="selectpicker w-100" data-style="btn-default">
+                      <option value="">اختر السنة</option>
+                      <option value="2024">2024</option>
+                      <option value="2025">2025</option>
+                  </select>
+              </div>
+              <div class="col-md-4 mb-1">
+                  <select id="monthFilter" class="selectpicker w-100" data-style="btn-default">
+                      <option value="">اختر الشهر</option>
+                      <option value="01">يناير</option>
+                      <option value="02">فبراير</option>
+                      <option value="03">مارس</option>
+                      <option value="04">ابريل</option>
+                      <option value="05">مايو</option>
+                      <option value="06">يونيو</option>
+                      <option value="07">يوليو</option>
+                      <option value="08">اغسطس</option>
+                      <option value="09">سبتمبر</option>
+                      <option value="10">اكتوبر</option>
+                      <option value="11">نوفمبر</option>
+                      <option value="12">ديسمبر</option>
+                      <!-- بقية الشهور -->
+                  </select>
+              </div>
+              <div class="col-md-4 mb-1">
+                  <select id="imageFilter" class="selectpicker w-100" data-style="btn-default">
+                      <option value="">الكل</option>
+                      <option value="with-image">يحتوي على صورة</option>
+                      <option value="without-image">بدون صورة</option>
+                  </select>
+              </div>
+          </div>
+      </div>
+      <div class="filter">
+          <p class="text-muted mt-1">ترتيب المنشورات حسب</p>
+          <div class="d-flex justify-content-between align-items-center row pb-2 gap-3 gap-md-0">
+              <div class="col-md-4 mb-4">
+                  <select id="dateOrder" class="selectpicker w-100" data-style="btn-default">
+                      <option value="">الكل</option>
+                      <option value="desc">من الأحدث الى الأقدم</option>
+                      <option value="asc">من الأقدم الى الأحدث</option>
+                  </select>
+              </div>
+              <div class="col-md-4 mb-4">
+                  <select id="interactionOrder" class="selectpicker w-100" data-style="btn-default">
+                      <option value="">التفاعل</option>
+                      <option value="most">الأكثر تفاعل</option>
+                      <option value="least">الأقل تفاعل</option>
+                  </select>
+              </div>
+              <div class="col-md-4 mb-4">
+                  <select id="viewsOrder" class="selectpicker w-100" data-style="btn-default">
+                      <option value="">المشاهدة</option>
+                      <option value="most">الأكثر مشاهدة</option>
+                      <option value="least">الأقل مشاهدة</option>
+                  </select>
+              </div>
+          </div>
+      </div>
+      
+      <div class="card-body">
+        <div id="posts-container" class="row gy-4 mb-4">
+
+        </div>
+        <nav aria-label="Page navigation" class="d-flex align-items-center justify-content-center">
+          <ul class="pagination" id="pagination">
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+    <!-- Offcanvas to add new post -->
+    <div
+      class="offcanvas offcanvas-end"
+      tabindex="-1"
+      id="offcanvasAddPost"
+      aria-labelledby="offcanvasAddPostLabel">
+      <div class="offcanvas-header">
+        <h5 id="offcanvasAddUserLabel" class="offcanvas-title">اضافة منشور</h5>
+        <button
+          type="button"
+          class="btn-close text-reset"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body mx-0 flex-grow-0 pt-0 h-100">
+        <form class="add-new-post pt-0" id="addNewPostForm">
+          <div class="mb-3">
+            <label class="form-label" for="add-post-text">نص المنشور</label>
+            <textarea class="form-control" id="add-post-text" name='text' rows="3" style="height: 95px;"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="add-post-image" class="form-label">اضافة صورة</label>
+            <input 
+            class="form-control" 
+            type="file" 
+            id="add-post-image" 
+            name="add-post-image" />
+          </div>
+          <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">نشر</button>
+          <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">الغاء</button>
+        </form>
+      </div>
+    </div>
+</div>
+<!-- / Content -->
+{% endblock  %}
+{% block specialJsFiles %}
+<script type="module" src="{% static 'js/app-posts-list.js' %}"></script>
+<!-- Vendors JS -->
+<script src="{% static 'vendor/libs/bootstrap-select/bootstrap-select.js' %}"></script>
+<!-- Page JS -->
+{% endblock  %}
+

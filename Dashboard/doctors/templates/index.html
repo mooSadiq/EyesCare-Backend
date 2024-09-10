@@ -1,0 +1,40 @@
+{% extends 'master.html' %}
+{% load static %}
+{% block content %}
+  <div class="doc-container">
+    <div class="add-doctor">
+      <h1 class="page-title">الأطباء</h1>
+      <a href="{% url 'doc-add' %}"><button class="add-doctor-btn"><i class="fas fa-plus"></i> إضافة طبيب</button></a>
+    </div>
+
+    <table class="doctors-table">
+      <thead>
+        <tr>
+          <th>الصورة</th>
+          <th>الاسم</th>
+          <th>موقع</th>
+          <th>رقم الهاتف</th>
+          <th>ايميل</th>
+          <th>الحالة</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Doctor rows will be dynamically added here -->
+        {% for doctor in doctors %}
+          <tr class="doctor-row">
+            <td class="doctor-photo">
+              <img src="{{ MEDIA_URL }}{{ doctor.photo }}" alt="xx" />
+            </td>
+            <td>{{ doctor.name }}</td>
+            <td>{{ doctor.location }}</td>
+            <td>{{ doctor.phone }}</td>
+            <td>{{ doctor.email }}</td>
+            <td>{{ doctor.status }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="edit-tooltip">انقر للتعديل</div>
+  </div>
+{% endblock %}

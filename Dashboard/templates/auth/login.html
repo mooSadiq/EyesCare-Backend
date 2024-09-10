@@ -1,0 +1,228 @@
+{% load static %}
+
+<html
+  lang="ar" dir="rtl"
+  class="light-style layout-navbar-fixed layout-menu-fixed layout-compact"
+  data-theme="theme-default"
+  data-assets-path="{% static '/' %}"
+  data-base-url="{{url}}"
+  data-template="vertical-menu-template">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>
+      تسجيل الدخول
+    </title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <meta name="google-signin-client_id" content="87587319555-i5cute4uqqidlsoia8q6stljaodgtmko.apps.googleusercontent.com">
+
+    <meta name="description" content="" />
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon/logo1.ico' %}" />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&ampdisplay=swap"
+      rel="stylesheet" />
+    <!-- Icons -->
+    <link rel="stylesheet" href="{% static 'vendor/fonts/tabler-icons.css' %}" />
+    <link rel="stylesheet" href="{% static 'vendor/fonts/fontawesome.css' %}" />
+    <link rel="stylesheet" href="{% static 'vendor/fonts/flag-icons.css' %}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{% static 'vendor/css/rtl/core.css' %}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{% static 'vendor/css/rtl/theme-default.css' %}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{% static 'css/demo.css' %}" />
+    <link rel="stylesheet" href="{% static 'vendor/css/pages/page-auth.css' %}" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="{% static 'vendor/libs/node-waves/node-waves.css' %}" />
+    <link rel="stylesheet" href="{% static 'vendor/libs/perfect-scrollbar/perfect-scrollbar.css' %}" />
+    <link rel="stylesheet" href="{% static 'vendor/libs/typeahead-js/typeahead.css' %}" />
+    <link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
+    {% comment %} helper {% endcomment %}
+
+    
+    <link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/umd/styles/index.min.css' %}" />
+    <script src="{% static 'vendor/libs/@form-validation/umd/bundle/popular.min.js' %}"></script>
+    <script src="{% static 'vendor/libs/@form-validation/umd/plugin-bootstrap5/index.min.js' %}"></script>
+    <script src="{% static 'vendor/libs/@form-validation/umd/plugin-auto-focus/index.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'vendor/css/pages/page-auth.css' %}" />
+<script src="{% static 'js/pages-auth.js' %}"></script>
+<script src="{% static 'js/ui-popover.js' %}"></script>
+
+</head>
+
+<body>
+<div class="authentication-wrapper authentication-basic container-p-y">
+  <div class="authentication-inner py-4">
+    <!-- Login -->
+    <div class="card">
+      <div class="card-body">
+        <!-- Logo -->
+        <div class="app-brand justify-content-center mb-4 mt-2">
+          <a href="{% url 'index' %}" class="app-brand-link gap-2">
+            <span class="app-brand-text demo text-body fw-bold ms-1">EyesCare</span>
+            <img src="{% static 'img/branding/logo1.png' %}" class="app-brand-logo demo" alt="">
+          </a>
+        </div>
+        <!-- /Logo -->
+        <h4 class="mb-4 pt-2">مرحبا بك  في EyesCare! 👋</h4>
+        <div id="message-container"></div>'
+        <form id="formAuthentication" class="mb-3" action="" method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+              <label for="email" class="form-label">البريد الالكتروني</label>
+              <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  autofocus />
+          </div>
+          <div class="mb-3 form-password-toggle">
+              <div class="d-flex justify-content-between">
+                  <label class="form-label" for="password">كلمة المرور</label>
+                  <a href="{% url 'forgot-password' %}">
+                    <small>نسيت كلمة المرور</small>
+                </a>
+              </div>
+              <div class="input-group input-group-merge">
+                  <input
+                      type="password"
+                      id="password"
+                      class="form-control"
+                      name="password"
+                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                      aria-describedby="password" />
+                  <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
+              </div>
+          </div>
+          <div class="mb-3">
+              <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="remember-me" />
+                  <label class="form-check-label" for="remember-me">تذكرني</label>
+              </div>
+          </div>
+          {% if request.GET.next %}
+          <input type="hidden" name="next" value="{{request.GET.next}}">
+          {% endif %}
+          <div class="mb-3">
+            <button class="btn btn-primary d-grid w-100" type="submit">تسجيل الدخول</button>
+          </div>
+      </form>
+      <div id="g_id_onload"
+      data-client_id="87587319555-i5cute4uqqidlsoia8q6stljaodgtmko.apps.googleusercontent.com"
+      data-login_uri="http://localhost:8001/auth/google/login/"
+      data-auto_prompt="false">
+ </div>
+ 
+ <div class="g_id_signin"
+      data-type="standard"
+      data-shape="rectangular"
+      data-theme="outline"
+      data-text="sign_in_with"
+      data-size="large"
+      data-logo_alignment="left">
+ </div>
+       </div>
+    </div>
+    <!-- /Register -->
+  </div>
+</div>
+<script>
+  window.onload = function() {
+    google.accounts.id.initialize({
+        client_id: '87587319555-i5cute4uqqidlsoia8q6stljaodgtmko.apps.googleusercontent.com',
+        callback: handleCredentialResponse
+    });
+    google.accounts.id.renderButton(
+        document.getElementById("buttonDiv"), // عنصر HTML حيث سيتم عرض زر Google Sign-In
+        { theme: "outline", size: "large" } // تخصيص الزر
+    );
+    google.accounts.id.prompt(); // لإظهار الزر فورًا عند تحميل الصفحة
+};
+
+function handleCredentialResponse(response) {
+    var id_token = response.credential;
+
+    fetch('/auth/google/login/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id_token: id_token })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.access_token) {
+            localStorage.setItem('access_token', data.access_token);
+            window.location.href = '/dashboard/';
+        } else {
+            alert('Google login failed');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+  function getCsrfToken() {
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    return csrfToken;
+}
+
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+document.getElementById('formAuthentication').addEventListener('submit', async function(event) {
+    event.preventDefault(); // منع إرسال الفورم بالطريقة التقليدية
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const messageContainer = document.getElementById('message-container');
+
+    try {
+        const response = await fetch('/auth/login/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': getCsrfToken(),
+            },
+            body: new URLSearchParams({
+                email: email,
+                password: password
+            }),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+
+            // تحقق من وجود التوكنات و URL الصفحة التالية في الاستجابة
+            if (data.access_token && data.refresh_token && data.next_url) {
+                // تخزين التوكنات في localStorage
+                localStorage.setItem('access_token', data.access_token);
+                localStorage.setItem('refresh_token', data.refresh_token);
+
+                // إعادة التوجيه إلى الصفحة التالية
+                window.location.href = data.next_url;
+            } else {
+                console.error('استجابة غير صحيحة من السيرفر');
+                messageContainer.innerHTML = '<div class="alert alert-danger" role="alert">استجابة غير صحيحة من السيرفر</div>';
+                alert('حدث خطأ في تسجيل الدخول. حاول مرة أخرى.');
+            }
+        } else {
+            const data = await response.json();
+            console.error('خطأ في تسجيل الدخول');
+            messageContainer.innerHTML = `<div class="alert alert-danger" role="alert">${data.message}</div>`;
+        }
+    } catch (error) {
+        console.error('حدث خطأ أثناء الاتصال بالسيرفر:', error);
+        messageContainer.innerHTML = '<div class="alert alert-danger" role="alert">حدث خطأ. يرجى المحاولة مرة أخرى لاحقاً.</div>';
+    }
+});
+</script>
+
+</body>
+</html>

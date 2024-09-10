@@ -1,0 +1,95 @@
+{
+    "data":[
+        {
+          "id": 1,
+          "full_name": "محمد العزيز",
+          "evaluation": 5,
+          "email": "malaziz2@abc.net.au",
+          "comment": "التطبيق مذهل وموثوق به بشكل كبير، يساهم في تحسين الرعاية الصحية.",
+          "date": "2024/3/2",
+          "avatar": ""
+        },
+        {
+          "id": 2,
+          "full_name": "فاطمة الزهراء",
+          "evaluation": 4,
+          "email": "fzahraa3@abc.net.au",
+          "comment": "التطبيق رائع ويساعد كثيرا، أتمنى أن يشخص أمراض أكثر بدقة أكبر.",
+          "date": "2024/3/4",
+          "avatar": ""
+        },
+        {
+          "id": 3,
+          "full_name": "علي إبراهيم",
+          "evaluation": 3,
+          "email": "aibrahim4@abc.net.au",
+          "comment": "التطبيق جيد ولكن يحتاج لبعض التحسينات في التشخيص.",
+          "date": "2024/3/6",
+          "avatar": ""
+        },
+        {
+          "id": 4,
+          "full_name": "سارة حسن",
+          "evaluation": 2,
+          "email": "shassan5@abc.net.au",
+          "comment": "التطبيق متوسط الأداء، يحتاج لتحسينات كثيرة.",
+          "date": "2024/3/8",
+          "avatar": ""
+        },
+        {
+          "id": 5,
+          "full_name": "أحمد عبد الله",
+          "evaluation": 1,
+          "email": "aabdullah6@abc.net.au",
+          "comment": "لم أجد التطبيق مفيدًا بشكل كبير، نتائج التشخيص غير دقيقة.",
+          "date": "2024/3/10",
+          "avatar": ""
+        },
+        {
+          "id": 6,
+          "full_name": "ريم الكعبي",
+          "evaluation": 5,
+          "email": "rkaabi7@abc.net.au",
+          "comment": "تطبيق ممتاز ويعطي نتائج دقيقة جدًا.",
+          "date": "2024/3/12",
+          "avatar": ""
+        },
+        {
+          "id": 7,
+          "full_name": "يوسف العتيبي",
+          "evaluation": 4,
+          "email": "yalotaibi8@abc.net.au",
+          "comment": "تطبيق جيد ومفيد، لكن يمكنه أن يكون أفضل ببعض التحسينات.",
+          "date": "2024/3/14",
+          "avatar": ""
+        },
+        {
+          "id": 8,
+          "full_name": "نورة الحربي",
+          "evaluation": 3,
+          "email": "nalharbi9@abc.net.au",
+          "comment": "تجربة جيدة، لكن التطبيق يحتاج إلى بعض التطوير.",
+          "date": "2024/3/16",
+          "avatar": ""
+        },
+        {
+          "id": 9,
+          "full_name": "خالد العمري",
+          "evaluation": 2,
+          "email": "kalamri10@abc.net.au",
+          "comment": "التطبيق ليس كما توقعت، يحتاج لتحسينات كبيرة.",
+          "date": "2024/3/18",
+          "avatar": ""
+        },
+        {
+          "id": 10,
+          "full_name": "منى الغامدي",
+          "evaluation": 1,
+          "email": "malghamdi11@abc.net.au",
+          "comment": "لم أجد التطبيق مفيدًا، يحتاج لتطوير كبير.",
+          "date": "2024/3/20",
+          "avatar": ""
+        }
+      ]
+      
+  }

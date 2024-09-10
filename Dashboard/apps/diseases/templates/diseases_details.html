@@ -1,0 +1,241 @@
+{% extends 'master.html' %}
+{% load static %}
+{% block title %}
+      تفاصيل التشخيص
+{% endblock  %}
+{% block specialCssFiles %}
+<link rel="stylesheet" href="{% static 'vendor/css/pages/diseases-details.css' %}" />
+{% endblock  %}
+{% block content %}
+<!-- Content -->
+<div class="container-xxl flex-grow-1 ">
+  <div class="row diagnosis-preview">
+    <!--  -->
+    <div class="col-xl-9 col-md-8 col-12 mb-md-0 mb-4 print-content ">
+      <div class="card diagnosis-preview-card">
+        <div class="card-body">
+        <button class="btn btn-primary btn-edit" id="editButton" onclick="window.location.href='{% url 'edit_diseases_details' %}'"><i class="fas fa-edit"></i> تعديل المعلومات</button>
+        </div>
+        <hr class="my-0" />
+        <div class="card-body">
+          <h6 class="mb-3">وصف المرض</h6>
+          <p class="mb-1">المياه الزرقاء (الجلوكوما) هو مرض يصيب العين ويؤثر على العصب البصري، مما قد يؤدي إلى فقدان البصر تدريجياً.</p>
+          <div class="row p-sm-3 p-0">
+            <div class="col-xl-6 col-md-12 col-sm-5 col-12 mb-xl-0 mb-md-4 mb-sm-0 mb-4">
+              <h6 class="mb-3">الأسباب:</h6>
+              <ul>
+                <li class="mb-1">ضغط العين المرتفع: يُعد الضغط داخل العين (Intraocular Pressure) أحد الأسباب الرئيسية للمياه الزرقاء، حيث يؤثر على العصب البصري.</li>
+                <li class="mb-1">العوامل الوراثية: تُعد الوراثة عاملاً رئيسياً في بعض أنواع المياه الزرقاء.</li>
+                <li class="mb-1">العمر: يزداد خطر الإصابة بالمياه الزرقاء مع تقدم العمر.</li>
+                <li class="mb-1">أمراض أخرى: بعض الأمراض مثل السكري وارتفاع ضغط الدم قد تزيد من خطر الإصابة بالمياه الزرقاء.</li>
+                <li class="mb-1">بعض الأدوية: بعض الأدوية مثل الكورتيزون قد تزيد من خطر الإصابة بالمياه الزرقاء.</li>
+              </ul>
+            </div>
+            <div class="col-xl-6 col-md-12 col-sm-7 col-12">
+              <h6 class="mb-4">الأعراض:</h6>
+              <ul>
+                <li class="mb-1">فقدان البصر التدريجي: عادة ما يكون فقدان البصر في المياه الزرقاء تدريجياً ولا يُلاحظ في البداية.</li>
+                <li class="mb-1">فقدان الرؤية المحيطية: يُعد فقدان الرؤية المحيطية (الجانبية) أحد الأعراض المبكرة للمياه الزرقاء.</li>
+                <li class="mb-1">رؤية هالات حول الأضواء: قد تظهر هالات حول الأضواء في بعض الحالات.</li>
+                <li class="mb-1">ألم في العين: قد يشعر بعض المرضى بألم في العين، خاصة في المراحل المتقدمة.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="mt-2 row p-sm-3 p-0">
+            <div class="col-xl-6 col-md-12 col-sm-5 col-12 mb-xl-0 mb-md-4 mb-sm-0 mb-4">
+              <h6 class="mb-3">طرق التشخيص:</h6>
+              <ul>
+                <li class="mb-1">فحص العين: يشمل فحص العين قياس ضغط العين، وفحص قاع العين، وقياس مجال الرؤية.</li>
+                <li class="mb-1">اختبارات أخرى: قد تتضمن اختبارات أخرى مثل التصوير بالرنين المغناطيسي (MRI) أو التصوير المقطعي المحوسب (CT Scan) في بعض الحالات</li>
+              </ul>
+            </div>
+            <div class="col-xl-6 col-md-12 col-sm-7 col-12">
+              <h6 class="mb-4">طرق العلاج:</h6>
+              <ul>
+                <li class="mb-1">قطرات العين: تُستخدم قطرات العين لتقليل ضغط العين.</li>
+                <li class="mb-1">العلاج بالليزر: يمكن استخدام الليزر لعلاج بعض أنواع المياه الزرقاء.</li>
+                <li class="mb-1">الجراحة: قد تكون الجراحة ضرورية في بعض الحالات لعلاج المياه الزرقاء.</li>
+              </ul>
+            </div>
+          </div>
+          <h6 class="mb-3">طرق الوقاية:</h6>
+          <ul>
+            <li class="mb-1">فحص العين المنتظم: يُنصح بإجراء فحص العين بشكل منتظم، خاصة بعد سن الأربعين.</li>
+            <li class="mb-1">التحكم في ضغط الدم: يُنصح بالتحكم في ضغط الدم، خاصة إذا كنت مصاباً بارتفاع ضغط الدم.</li>
+            <li class="mb-1">التحكم في مرض السكري: يُنصح بالتحكم في مرض السكري، خاصة إذا كنت مصاباً بالسكري.</li>
+            <li class="mb-1">التغذية الصحية: يُنصح باتباع نظام غذائي صحي غني بالفواكه والخضروات.</li>
+            <li class="mb-1">التجنب من التدخين: يُنصح بالتوقف عن التدخين.</li>
+          </ul>
+        </div>
+        {% comment %} صور توضيحية {% endcomment %}
+        <h6 class="mb-3">صور توضيحية:</h6>
+          <div class="disease-images row mx-2">
+            <div class="col-md-4">
+              <img src="{% static 'img/diseases/diseases_1.jpg' %}" alt="صورة 1">
+            </div>
+            <div class="col-md-4">
+              <img src="{% static 'img/diseases/diseases_2.jpg' %}" alt="صورة 2">
+            </div>
+            <div class="col-md-4">
+              <img src="{% static 'img/diseases/diseases_3.jpg' %}" alt="صورة 3">
+            </div>
+          </div>
+        
+      </div>
+    </div>
+    <!-- / -->
+
+    <!-- diseases Actions -->
+    <div class="col-xl-3 col-md-4 col-12 diagnosis-actions hide-print">
+      <div class="card">
+        <div class="card-body">
+          <button
+            class="btn btn-primary d-grid w-100 mb-2"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#senddiagnosisOffcanvas">
+            <span class="d-flex align-items-center justify-content-center text-nowrap"
+              ><i class="ti ti-send ti-xs me-2"></i>إرسال</span
+            >
+          </button>
+          <a
+            class="btn btn-label-secondary d-grid w-100 mb-2"
+            type="button"
+            id="printButton"
+            href="javascript:;">
+            <span
+              class="d-flex align-items-center justify-content-center text-nowrap">
+              <i class="ti ti-printer ti-xs me-2"></i>طباعة
+            </span>            
+          </a>
+          <a href="javascript:;"
+            id="confirm-text"
+            class="btn btn-label-danger d-grid w-100 mb-2">
+            <span
+              class="d-flex align-items-center justify-content-center text-nowrap">
+              <i class="ti ti-trash ti-xs me-2"></i>حذف
+            </span> 
+          </a>
+
+        </div>
+      </div>
+    </div>
+    <!-- /diagnosis Actions -->
+  </div>
+
+  <!-- Offcanvas -->
+  <!-- Send diagnosis Sidebar -->
+  <div class="offcanvas offcanvas-end" id="senddiagnosisOffcanvas" aria-hidden="true">
+    <div class="offcanvas-header my-1">
+      <h5 class="offcanvas-title">Send diagnosis</h5>
+      <button
+        type="button"
+        class="btn-close text-reset"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body pt-0 flex-grow-1">
+      <form>
+        <div class="mb-3">
+          <label for="diagnosis-from" class="form-label">From</label>
+          <input
+            type="text"
+            class="form-control"
+            id="diagnosis-from"
+            value="shelbyComapny@email.com"
+            placeholder="company@email.com" />
+        </div>
+        <div class="mb-3">
+          <label for="diagnosis-to" class="form-label">To</label>
+          <input
+            type="text"
+            class="form-control"
+            id="diagnosis-to"
+            value="qConsolidated@email.com"
+            placeholder="company@email.com" />
+        </div>
+        <div class="mb-3">
+          <label for="diagnosis-subject" class="form-label">Subject</label>
+          <input
+            type="text"
+            class="form-control"
+            id="diagnosis-subject"
+            value="diagnosis of purchased Admin Templates"
+            placeholder="diagnosis regarding goods" />
+        </div>
+        <div class="mb-3">
+          <label for="diagnosis-message" class="form-label">Message</label>
+          <textarea class="form-control" name="diagnosis-message" id="diagnosis-message" cols="3" rows="8">
+            Dear Queen Consolidated,
+            Thank you for your business, always a pleasure to work with you!
+            We have generated a new diagnosis in the amount of $95.59
+            We would appreciate payment of this diagnosis by 05/11/2021</textarea
+          >
+        </div>
+        <div class="mb-4">
+          <span class="badge bg-label-primary">
+            <i class="ti ti-link ti-xs"></i>
+            <span class="align-middle">diagnosis Attached</span>
+          </span>
+        </div>
+        <div class="mb-3 d-flex flex-wrap">
+          <button type="button" class="btn btn-primary me-3" data-bs-dismiss="offcanvas">Send</button>
+          <button type="button" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- /Send diagnosis Sidebar -->
+  <!-- /Offcanvas -->
+</div>
+<!-- / Content -->
+{% endblock  %}
+{% block specialJsFiles %}
+<script>
+(function () {
+  //دالة تعمل على طباعة التقرير بتحديد العناصر المراد طباعتها واخفاء البقية
+  $("#printButton").click(function() {
+    // إخفاء العناصر التي لا نريد طباعتها
+    $(".hide-print").hide();
+    // إضافة كلاس shadow-none حتى يتم اخفاء ظل العناثر في الملف المطبوع
+    $(".diagnosis-preview-card").addClass("shadow-none");
+
+    //  طباعة الصفحة
+    window.print();
+
+    // إزالة كلاس shadow-none وإعادة عرض العناصر المخفية
+    $(".diagnosis-preview-card").removeClass("shadow-none");
+    $(".hide-print").show();
+  });
+
+
+  // Alert With Functional Confirm Button حذف
+  const confirmText = document.querySelector('#confirm-text');
+  confirmText.onclick = function () {
+    Swal.fire({
+      title: 'هل أنت متأكد؟',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'نعم !',
+      CancelButtonText: 'الغاء',
+      customClass: {
+        confirmButton: 'btn btn-primary me-3 ',
+        cancelButton: 'btn btn-label-secondary '
+      },
+      buttonsStyling: false
+    }).then(function (result) {
+      if (result.value) {
+        Swal.fire({
+          icon: 'success',
+          title: 'تم الحذف!',
+          text: 'لقد تم حذف التشخيص بنجاح.',
+          customClass: {
+            confirmButton: 'btn btn-success '
+          }
+        });
+      }
+    });
+  };
+})();
+</script>
+{% endblock  %}
+

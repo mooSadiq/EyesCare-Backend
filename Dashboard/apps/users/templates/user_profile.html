@@ -1,0 +1,367 @@
+{% extends 'master.html' %}
+{% load static %}
+{% block title %}
+      تفاصيل المستخدم
+{% endblock  %}
+{% block specialCssFiles %}
+<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
+{% endblock  %}
+
+{% block content %}
+<!-- Content -->
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h4 class="py-3 mb-4"> المستخدمين /<span class="text-muted fw-light"> تفاصيل المستخدم </span></h4>
+  <div class="row">
+    <!-- User Sidebar -->
+    <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
+      <!-- User Card  تفاصيل المستخدم الاساسية بشكل عام-->
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="user-avatar-section">
+            <div class="d-flex align-items-center flex-column">
+              <img
+                id="user-avatar"
+                class="img-fluid rounded mb-3 pt-1 mt-4"
+                src=""
+                height="100"
+                width="100"
+                alt="User avatar" />
+              <div class="user-info text-center">
+                <h4 id="user-ful-name" class=" mb-2 mt-1"></h4>
+                <span class="badge bg-label-secondary mt-1" id="userType"></span>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-around flex-wrap  pb-4 border-bottom">
+          </div>
+          <p class="mt-4 small text-uppercase text-muted">التفاصيل الاساسية</p>
+          <div class="info-container">
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <span class="fw-medium me-1">رقم المستخدم:</span>
+                <span id="user-number">#</span>
+              </li>
+              <li class="mb-2 pt-1">
+                <span class="fw-medium me-1">البريد الالكتروني:</span>
+                <span id="user-email"></span>
+              </li>
+              <li class="mb-2 pt-1">
+                <span class="fw-medium me-1"> رقم الهاتف:</span>
+                <span id="user-phone"></span>
+              </li>
+              <li class="mb-2 pt-1">
+                <span class="fw-medium me-1"> الجنس:</span>
+                <span id="user-gender"></span>
+              </li>
+              <li class="mb-2 pt-1">
+                <span class="fw-medium me-1"> تاريخ الميلاد:</span>
+                <span id="user-birthdate"></span>
+              </li>
+              <li class="mb-2 pt-1">
+                <span class="fw-medium me-1">الحالة:</span>
+                <span id="user-status" class="badge bg-label-success"></span>
+              </li>
+              <li class="mb-2 pt-1">
+                <span class="fw-medium me-1">التوثيق:</span>
+                <span id="user-verification" class="badge bg-label-danger"></span>
+              </li>
+            </ul>
+            <div class="d-flex justify-content-center">
+              <a
+                href="javascript:;"
+                class="btn btn-primary me-3"
+                data-bs-target="#editUser"
+                data-bs-toggle="modal">تعديل
+                </a>
+              <a 
+                href="javascript:;"
+                class="btn suspend-user"
+                type="button" id="confirm-active-alert">
+                
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /User Card -->
+    </div>
+    <!--/ User Sidebar -->
+    <!-- User Content التفاصيل الخاصة يالمستخدم -->
+    <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
+      <!-- User Tabs أزرار التنقل بين النوافذ مع محتويات كل نافذة  -->
+      <div class="nav-align-top nav-tabs-shadow mb-4">
+        <ul class="nav nav-tabs nav-fill" role="tablist">
+          <li class="nav-item">
+            <button
+              type="button"
+              class="nav-link active"
+              role="tab"
+              data-bs-toggle="tab"
+              data-bs-target="#navs-justified-devices"
+              aria-controls="navs-justified-devices"
+              aria-selected="false">
+              الأجهزة 
+              <i class="tf-icons ti ti-device-mobile ti-xs me-1"></i> 
+            </button>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="navs-justified-devices" role="tabpanel">
+            <!-- Recent Devices الأجهزة التي تم الدخول منها  -->
+            <div class="card mb-4" style=" box-shadow: none;">
+              <h5 class="card-header">الأجهزة الحديثة</h5>
+              <div class="table-responsive">
+                <table class="table border-top">
+                  <thead>
+                    <tr>
+                      <th class="text-truncate">المتصفح</th>
+                      <th class="text-truncate">الجهاز</th>
+                      <th class="text-truncate">الموقع</th>
+                      <th class="text-truncate">الأنشطة الحديثة</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="text-truncate">
+                        <i class="ti ti-brand-windows text-info ti-xs me-2"></i>
+                        <span class="fw-medium">Chrome on Windows</span>
+                      </td>
+                      <td class="text-truncate">HP Spectre 360</td>
+                      <td class="text-truncate">Switzerland</td>
+                      <td class="text-truncate">10, July 2021 20:07</td>
+                    </tr>
+                    <tr>
+                      <td class="text-truncate">
+                        <i class="ti ti-device-mobile text-danger ti-xs me-2"></i>
+                        <span class="fw-medium">Chrome on iPhone</span>
+                      </td>
+                      <td class="text-truncate">iPhone 12x</td>
+                      <td class="text-truncate">Australia</td>
+                      <td class="text-truncate">13, July 2021 10:10</td>
+                    </tr>
+                    <tr>
+                      <td class="text-truncate">
+                        <i class="ti ti-brand-android text-success ti-xs me-2"></i>
+                        <span class="fw-medium">Chrome on Android</span>
+                      </td>
+                      <td class="text-truncate">Oneplus 9 Pro</td>
+                      <td class="text-truncate">Dubai</td>
+                      <td class="text-truncate">14, July 2021 15:15</td>
+                    </tr>
+                    <tr>
+                      <td class="text-truncate">
+                        <i class="ti ti-brand-apple ti-xs me-2"></i>
+                        <span class="fw-medium">Chrome on MacOS</span>
+                      </td>
+                      <td class="text-truncate">Apple iMac</td>
+                      <td class="text-truncate">India</td>
+                      <td class="text-truncate">16, July 2021 16:17</td>
+                    </tr>
+                    <tr>
+                      <td class="text-truncate">
+                        <i class="ti ti-brand-windows text-info ti-xs me-2"></i>
+                        <span class="fw-medium">Chrome on Windows</span>
+                      </td>
+                      <td class="text-truncate">HP Spectre 360</td>
+                      <td class="text-truncate">Switzerland</td>
+                      <td class="text-truncate">20, July 2021 21:01</td>
+                    </tr>
+                    <tr>
+                      <td class="text-truncate border-bottom-0">
+                        <i class="ti ti-brand-android text-success ti-xs me-2"></i>
+                        <span class="fw-medium">Chrome on Android</span>
+                      </td>
+                      <td class="text-truncate border-bottom-0">Oneplus 9 Pro</td>
+                      <td class="text-truncate border-bottom-0">Dubai</td>
+                      <td class="text-truncate border-bottom-0">21, July 2021 12:22</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!--/ Recent Devices الأجهزة التي تم الدخول منها  -->
+          </div>
+        </div>
+      </div>
+      <!--/ User Tabs أزرار التنقل بين النوافذ مع محتويات كل نافذة -->
+    </div>
+    <!--/ User Content -->
+  </div>
+  <!-- Modals -->
+  <!-- Edit User Modal نافذة منبثقة لتعديل معلومات المستخدم-->
+  <div class="modal fade" id="editUser" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-simple modal-edit-user">
+      <div class="modal-content p-1 ">
+        <div class="modal-body">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="text-center mb-4">
+            <h3 class="mb-2">تعديل معلومات المستخدم</h3>
+            <p class="text-muted">سيتم فحص تحديث بيانات المستخدم من خلال مراجعة خصوصية.</p>
+          </div>
+          <form id="editUserForm" enctype="multipart/form-data" class="row g-3" onsubmit="return false">
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="modalEditUserFirstName">الاسم الاول</label>
+              <input
+                type="text"
+                id="modalEditUserFirstName"
+                name="first_name"
+                class="form-control"
+                placeholder="John" />
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="modalEditUserLastName">الاسم الثاني</label>
+              <input
+                type="text"
+                id="modalEditUserLastName"
+                name="last_name"
+                class="form-control"
+                placeholder="John" />
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="modalEditUserEmail">البريد الالكتروني</label>
+              <input
+                type="text"
+                id="modalEditUserEmail"
+                name="email"
+                class="form-control"
+                readonly
+                placeholder="example@domain.com" />
+            </div>
+            <div class="col-12 col-md-6">
+              <label for="modalEditUserFile" class="form-label">الصورة الشخصية</label>
+              <input 
+              class="form-control" 
+              type="file" 
+              id="modalEditUserFile" 
+              name="profile_picture" />
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="modalEditUserPhone">Phone Number</label>
+              <div class="input-group">
+                <input
+                  type="text"
+                  id="modalEditUserPhone"
+                  name="phone_number"
+                  class="form-control phone-number-mask"
+                  placeholder="202 555 0111" />
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="modalEditUsergender">الجنس</label>
+              <select
+                id="modalEditUsergender"
+                name="gender"
+                class="select2 form-select"
+                aria-label="Default select example">
+                <option value="ذكر">ذكر</option>
+                <option value="أنثى">أنثى</option>
+              </select>
+            </div>
+            <div class="col-12 col-md-6">
+              <label for="bs-datepicker-autoclose-birthdate" class="form-label">تاريخ الميلاد</label>
+              <input
+                type="date"
+                id="bs-datepicker-autoclose-birthdate"
+                name="birth_date"
+                placeholder="MM/DD/YYYY"
+                class="form-control" />
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="modalEditUserRole">نوع المستخدم</label>
+              <select
+                id="modalEditUserRole"
+                name="user_type"
+                class="select2 form-select"
+                aria-label="Default select example">
+                <option value="admin">مدير</option>
+                <option value="user">مستخدم عادي</option>
+                <option value="patient">مريض</option>
+                <option value="doctor">طبيب</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="switch">
+                <input type="checkbox" name="is_blue_verified" id="switch-input-verified" class="switch-input" />
+                <span class="switch-toggle-slider">
+                  <span class="switch-on"></span>
+                  <span class="switch-off"></span>
+                </span>
+                <span class="switch-label">توثيق الحساب</span>
+              </label>
+            </div>
+            <div class="col-12 text-center">
+              <button type="submit" class="btn btn-primary me-sm-3 me-1">حفظ التعديلات</button>
+              <button
+                type="reset"
+                class="btn btn-label-secondary"
+                data-bs-dismiss="modal"
+                aria-label="Close">
+                الغاء
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Edit User Modal نافذة منبثقة لتعديل معلومات المستخدم-->
+  <!-- Enable OTP Modal -->
+  <div class="modal fade" id="enableOTP" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-simple modal-enable-otp modal-dialog-centered">
+      <div class="modal-content p-3 p-md-5">
+        <div class="modal-body">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="text-center mb-4">
+            <h3 class="mb-2">Enable One Time Password</h3>
+            <p>Verify Your Mobile Number for SMS</p>
+          </div>
+          <p>Enter your mobile phone number with country code and we will send you a verification code.</p>
+          <form id="enableOTPForm" class="row g-3" onsubmit="return false">
+            <div class="col-12">
+              <label class="form-label" for="modalEnableOTPPhone">Phone Number</label>
+              <div class="input-group">
+                <span class="input-group-text">US (+1)</span>
+                <input
+                  type="text"
+                  id="modalEnableOTPPhone"
+                  name="modalEnableOTPPhone"
+                  class="form-control phone-number-otp-mask"
+                  placeholder="202 555 0111" />
+              </div>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
+              <button
+                type="reset"
+                class="btn btn-label-secondary"
+                data-bs-dismiss="modal"
+                aria-label="Close">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Enable OTP Modal -->
+  <!-- /Modals -->
+</div>
+<!-- / Content -->
+{% endblock  %}
+{% block specialJsFiles %}
+<!-- Vendors JS -->
+<script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+<!-- Page JS -->
+<script>
+  const getId = '{{ user_id }}';
+</script>
+<script type="module" src="{% static 'js/app-user-profile.js' %}"></script>
+
+<script>
+{% endblock  %}
+
