@@ -1,2 +1,4 @@
 # EyesCare-Backend
-This repository is the central hub of the EyesCare project, organizing and driving all application functions.
+This repository is the beating heart of the EyesCare project. Here, the power of Django and Django REST Framework combine to manage data and deliver sophisticated APIs, alongside an administrative dashboard designed with simplicity and efficiency using HTML, CSS, JavaScript, and Bootstrap. This repository is the central hub that organizes and drives all application functions, from user management and disease data storage to tracking doctor consultations. It seamlessly integrates with AI models to provide accurate diagnoses to users.
+
+This project is the result of a collective effort and true spirit of collaboration. Each member of the team contributed a piece of their heart and mind, and through our combined efforts, we were able to turn our ideas into a tangible reality. We have brought together our passion and creativity to create something to be proud of, and this work embodies the power of teamwork, dedication, and loyalty.
