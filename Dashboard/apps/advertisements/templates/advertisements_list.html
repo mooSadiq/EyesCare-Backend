@@ -4,6 +4,35 @@
       قائمة الإعلانات
 {% endblock  %}
 {% block specialCssFiles %}
+<style>
+  /* نمط الشريط المائل */
+.special-offer-ribbon {
+  position: absolute;
+  top: 10px;
+  right: -30px; /* لضبط الميلان */
+  border-radius: 25%%;
+  padding: 5px 20px;
+  font-weight: bold;
+  font-size: 14px;
+  transform: rotate(45deg); /* الميلان */
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+/* تحديد الحجم الثابت للإطار */
+.ad-card {
+  width: 80%%;  /* يمكن تغيير العرض حسب الحاجة */
+  height: 250px; /* يمكن تغيير الارتفاع حسب الحاجة */
+  overflow: hidden;
+}
+
+/* ضبط حجم الصورة داخل الإطار */
+.ad-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* يمكنك استخدام contain أو fill حسب رغبتك */
+}
+
+</style>
 <link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-select/bootstrap-select.css' %}" />
 {% endblock  %}
 
@@ -12,7 +41,7 @@
 <div class="container-xxl flex-grow-1 container-p-y">
   <h4 class="py-3 mb-4">إدارة الإعلانات / <span class="text-muted fw-light">قائمة الإعلانات</span></h4>
   <!-- Users List Table -->
-  <div class="app-post">
+  <div class="app-academy">
     <!-- Statistics -->
     <div class="col-lg-12 mb-2 col-md-12">
       <div class="card">
@@ -26,7 +55,7 @@
                   <i class="ti ti-chart-pie-2 ti-sm"></i>
                 </div>
                 <div class="card-info">
-                  <h5 class="mb-0">230k</h5>
+                  <h5 class="mb-0" id="advrtisement_count">230k</h5>
                   <small>إجمالي الإعلانات  </small>
                 </div>
               </div>
@@ -37,7 +66,7 @@
                   <i class="ti ti-users ti-sm"></i>
                 </div>
                 <div class="card-info">
-                  <h5 class="mb-0">8.549k</h5>
+                  <h5 class="mb-0" id="advrtisement_views_count">8.549k</h5>
                   <small>إجمالي المشاهدات</small>
                 </div>
               </div>
@@ -48,7 +77,7 @@
                   <i class="ti ti-shopping-cart ti-sm"></i>
                 </div>
                 <div class="card-info">
-                  <h5 class="mb-0">1.423k</h5>
+                  <h5 class="mb-0" id="advrtisement_clicks_count">1.423k</h5>
                   <small>إجمالي النقرات</small>
                 </div>
               </div>
@@ -59,7 +88,7 @@
                   <i class="ti ti-currency-dollar ti-sm"></i>
                 </div>
                 <div class="card-info">
-                  <h5 class="mb-0">$9745</h5>
+                  <h5 class="mb-0">$9745 </h5>
                   <small>Revenue</small>
                 </div>
               </div>
@@ -68,13 +97,15 @@
         </div>
       </div>
     </div>
+    <!-- End Statistics -->
+    
     <div class="card shadow-none p-0 mb-0">
       <div class="card-body d-flex justify-content-between ">
           <div class="d-flex align-items-center ">
             <input type="search" placeholder="البحث" class="form-control me-2" />
             <button type="submit" class="btn btn-primary btn-icon"><i class="ti ti-search"></i></button>
           </div>
-        <button class="add-new btn btn-primary waves-effect waves-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddPost">
+        <button class="add-new btn btn-primary waves-effect waves-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddAdvertisement">
           <span class="d-none d-sm-inline-block"> إعلان جديد</span>
           <i class="ti ti-plus ti-xs ms-3"></i>
         </button>
@@ -134,165 +165,10 @@
         </div>
       </div>
       <div class="card-body">
-        <div class="row gy-4 mb-4">
-          <div class="col-sm-6 col-lg-4">
-            <div class="card p-2 h-55 shadow-none border">
-              <div class="rounded-2 text-center mb-2">
-                <a href="javascript:;"
-                  ><img
-                    class="img-fluid"
-                    src="{% static 'img/pages/app-post-tutor-3.png' %}"
-                    alt="tutor image 1"
-                /></a>
-              </div>
-              <div class="card-body p-3 pt-2 text-center">
-                <div class="d-flex justify-content-around  align-items-center mb-1">
-                  <h6 class="d-flex align-items-center justify-content-center gap-1 mb-0">
-                    <span class="text-muted">4.23k</span>
-                    <span class="text "><i class="ti ti-eye me-1 mt-n1"></i></span>
-                  </h6>
-                  <h6 class="d-flex align-items-center justify-content-center gap-1 mb-0">
-                    <span class="text-muted">1.23k</span>
-                    <span class=" "><i class="ti ti-hand-click me-1 mt-n1"></i></span>
-                  </h6>
-                </div>
-                <a href="javascript:;" class="h6">اسم الجهة المعلنة</a>
-                <div class="date d-flex align-items-center mt-2">
-                  <i class="ti ti-clock me-2 mb-3"></i>
-                  <p class="start_date">Sat Aug 25, 2024</p>
-                  <p class="mx-1"> - </p>
-                  <p class="end_date"> Fri Sep 25, 2024 </p>
-                </div>
-                <div class="d-flex justify-content-center  gap-2 text-nowrap text-center">
-                  <a
-                    class=" btn btn-label-danger"
-                    href="javascript:;"
-                    type="button" id="confirm-text" >
-                    <i class="ti ti-trash align-middle "></i>
-                  </a>
-                  <a
-                    class=" btn btn-label-primary  "
-                    href="javascript:;"
-                    type="button" id="confirm-text"
-                    data-bs-toggle="modal" 
-                    data-bs-target="#modalCenter" >
-                    <i class="ti ti-edit align-middle "></i>
-                  </a>
-                  <a
-                    class=" btn btn-label-success d-flex align-items-center"
-                    href="javascript:;">
-                    <span class="me-2">نشط</span>
-                    <i class="ti ti-activity  ti-sm"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-4">
-            <div class="card p-2 h-55 shadow-none border">
-              <div class="rounded-2 text-center mb-2">
-                <a href="javascript:;"
-                  ><img
-                    class="img-fluid"
-                    src="{% static 'img/pages/app-post-tutor-3.png' %}"
-                    alt="tutor image 1"
-                /></a>
-              </div>
-              <div class="card-body p-3 pt-2 text-center">
-                <div class="d-flex justify-content-around  align-items-center mb-1">
-                  <h6 class="d-flex align-items-center justify-content-center gap-1 mb-0">
-                    <span class="text-muted">4.23k</span>
-                    <span class="text "><i class="ti ti-eye me-1 mt-n1"></i></span>
-                  </h6>
-                  <h6 class="d-flex align-items-center justify-content-center gap-1 mb-0">
-                    <span class="text-muted">1.23k</span>
-                    <span class=" "><i class="ti ti-hand-click me-1 mt-n1"></i></span>
-                  </h6>
-                </div>
-                <a href="javascript:;" class="h6">اسم الجهة المعلنة</a>
-                <div class="date d-flex align-items-center mt-2">
-                  <i class="ti ti-clock me-2 mb-3"></i>
-                  <p class="start_date">Sat Aug 25, 2024</p>
-                  <p class="mx-1"> - </p>
-                  <p class="end_date"> Fri Sep 25, 2024 </p>
-                </div>
-                <div class="d-flex justify-content-center  gap-2 text-nowrap text-center">
-                  <a
-                    class=" btn btn-label-danger"
-                    href="javascript:;"
-                    type="button" id="confirm-text" >
-                    <i class="ti ti-trash align-middle "></i>
-                  </a>
-                  <a
-                    class=" btn btn-label-primary  "
-                    href="javascript:;"
-                    type="button" id="confirm-text"
-                    data-bs-toggle="modal" 
-                    data-bs-target="#modalCenter" >
-                    <i class="ti ti-edit align-middle "></i>
-                  </a>
-                  <a
-                    class=" btn btn-label-warning d-flex align-items-center"
-                    href="javascript:;">
-                    <span class="me-2">قيد الانتظار</span>
-                    <i class="ti ti-clock-play  ti-sm"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-4">
-            <div class="card p-2 h-55 shadow-none border">
-              <div class="rounded-2 text-center mb-2">
-                <a href="javascript:;"
-                  ><img
-                    class="img-fluid"
-                    src="{% static 'img/pages/app-post-tutor-3.png' %}"
-                    alt="tutor image 1"
-                /></a>
-              </div>
-              <div class="card-body p-3 pt-2 text-center">
-                <div class="d-flex justify-content-around  align-items-center mb-1">
-                  <h6 class="d-flex align-items-center justify-content-center gap-1 mb-0">
-                    <span class="text-muted">4.23k</span>
-                    <span class="text "><i class="ti ti-eye me-1 mt-n1"></i></span>
-                  </h6>
-                  <h6 class="d-flex align-items-center justify-content-center gap-1 mb-0">
-                    <span class="text-muted">1.23k</span>
-                    <span class=" "><i class="ti ti-hand-click me-1 mt-n1"></i></span>
-                  </h6>
-                </div>
-                <a href="javascript:;" class="h6">اسم الجهة المعلنة</a>
-                <div class="date d-flex align-items-center mt-2">
-                  <i class="ti ti-clock me-2 mb-3"></i>
-                  <p class="start_date">Sat Aug 25, 2024</p>
-                  <p class="mx-1"> - </p>
-                  <p class="end_date"> Fri Sep 25, 2024 </p>
-                </div>
-                <div class="d-flex justify-content-center  gap-2 text-nowrap text-center">
-                  <a
-                    class=" btn btn-label-danger"
-                    href="javascript:;"
-                    type="button" id="confirm-text" >
-                    <i class="ti ti-trash align-middle "></i>
-                  </a>
-                  <a
-                    class=" btn btn-label-secondary  "
-                    href="javascript:;"
-                    type="button" id="confirm-text">
-                    <i class="ti ti-edit align-middle "></i>
-                  </a>
-                  <a
-                    class=" btn btn-label-primary d-flex align-items-center"
-                    href="javascript:;">
-                    <span class="me-2">منتهي</span>
-                    <i class="ti ti-square-check  ti-sm"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="row gy-4 mb-4" id="advertisementsContainer">
+
+      </div>
+        {% comment %} التنقل بين الصفحات {% endcomment %}
         <nav aria-label="Page navigation" class="d-flex align-items-center justify-content-center">
           <ul class="pagination">
             <li class="page-item prev">
@@ -325,12 +201,12 @@
       </div>
     </div>
   </div>
-    <!-- Offcanvas to add new post -->
+    <!-- Offcanvas to add new advertisement  قالب اضافة اعلان جديد-->
     <div
       class="offcanvas offcanvas-end"
       tabindex="-1"
-      id="offcanvasAddPost"
-      aria-labelledby="offcanvasAddPostLabel">
+      id="offcanvasAddAdvertisement"
+      aria-labelledby="offcanvasAddAdvertisementLabel">
       <div class="offcanvas-header">
         <h5 id="offcanvasAddUserLabel" class="offcanvas-title">اضافة إعلان</h5>
         <button
@@ -340,7 +216,19 @@
           aria-label="Close"></button>
       </div>
       <div class="offcanvas-body mx-0 flex-grow-0 pt-0 h-100">
-        <form class="add-new-user pt-0" id="addNewUserForm" onsubmit="return false">
+        <form class="add-new-user pt-0" id="addNewAdvertidementForm" onsubmit="return false" >
+          
+          <div class="mb-3">
+            <label class="form-label" for="add-advertiser-phoneNumber">رقم هاتف الجهة المعلنة</label>
+            <input
+            required
+              type="text"
+              class="form-control"
+              id="add-advertiser-phoneNumber"
+              placeholder="+ 967 774 656 846"
+              name="advertiserPhoneNumber"
+              aria-label="" />
+          </div>
           <div class="mb-3">
             <label for="formValidationFile" class="form-label"> صورة الإعلان</label>
             <input 
@@ -350,47 +238,61 @@
             name="formValidationFile" />
           </div>
           <div class="mb-3">
-            <label class="form-label" for="add-user-fullname">اسم الجهة المعلنة</label>
+            <label class="form-label" for="add-advertiser-fullname">اسم الجهة المعلنة</label>
             <input
+            required
               type="text"
               class="form-control"
-              id="add-user-fullname"
-              placeholder="John Doe"
-              name="userFullname"
+              id="add-advertiser-fullname"
+              placeholder="اسم الجهة المعلنة"
+              name="advertiserFullname"
               aria-label="John Doe" />
           </div>
           <div class="mb-3">
-            <label class="form-label" for="add-user-fullname">الرابط او رقم الهاتف</label>
+            <label class="form-label" for="add-link">رابط موقع الجهة المعلنة</label>
             <input
               type="text"
               class="form-control"
-              id="add-user-fullname"
-              placeholder="John Doe"
-              name="userFullname"
-              aria-label="John Doe" />
+              id="add-link"
+              placeholder="رابط لصفحة الجهة المعلنة"
+              name="advertisementLink"
+              aria-label="" />
           </div>
           <div class="mb-3">
-            <label for="bs-datepicker-autoclose" class="form-label">تاريخ البداية</label>
+            <label class="form-label" for="advertisement-text"> نص الاعلان  </label>
+            <textarea
+            required
+              class="form-control"
+              id="advertisement-text"
+              placeholder="نص الاعلان"
+              name="advertisementLink"
+              aria-label="" >
+             </textarea>
+          </div>
+          <div class="mb-3">
+            <label for="start-date" class="form-label">تاريخ البداية</label>
             <input
+            required
               type="date"
-              id="bs-datepicker-autoclose"
+              id="start-date"
               placeholder="MM/DD/YYYY"
               class="form-control" />
           </div>
           <div class="mb-3">
-            <label for="bs-datepicker-autoclose" class="form-label">تاريخ الانتهاء</label>
+            <label for="end-date" class="form-label">تاريخ الانتهاء</label>
             <input
+            required
               type="date"
-              id="bs-datepicker-autoclose"
+              id="end-date"
               placeholder="MM/DD/YYYY"
               class="form-control" />
           </div>
-          <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">نشر</button>
+          <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit" >نشر</button>
           <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">الغاء</button>
         </form>
       </div>
     </div>
-      <!-- Modal -->
+      <!-- Modal نافذة التعديل--> 
   <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -413,8 +315,18 @@
               <input 
               class="form-control" 
               type="file" 
-              id="formValidationFile" 
-              name="formValidationFile" />
+              id="modalEditUserFile" 
+              name="modalEditUserFile" />
+            </div>
+            <div class="col-12">
+              <label class="switch">
+                <input type="checkbox" name="is_blue_verified" id="switch-input-verified" class="switch-input" />
+                <span class="switch-toggle-slider">
+                  <span class="switch-on"></span>
+                  <span class="switch-off"></span>
+                </span>
+                <span class="switch-label"> مسموح ظهور الإعلان</span>
+              </label>
             </div>
           </form>
         </div>
@@ -422,7 +334,7 @@
           <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
             الغاء
           </button>
-          <button type="button" class="btn btn-primary">حفظ التعديلات</button>
+          <button type="button" class="btn btn-primary save-update">حفظ التعديلات</button>
         </div>
       </div>
     </div>
@@ -460,7 +372,7 @@
 <script>
 (function () {
   // Alert With Functional Confirm Button
-  const confirmText = document.querySelector('#confirm-text');
+  const confirmText = document.querySelector('#confirm-textt');
   confirmText.onclick = function () {
     Swal.fire({
       title: 'هل أنت متأكد؟',
@@ -486,11 +398,13 @@
         });
       }
     });
-  };
+ };
 })();
 </script>
 <!-- Vendors JS -->
-<script src="{% static 'vendor/libs/bootstrap-select/bootstrap-select.js' %}"></script>
-<!-- Page JS -->
+
+
+ <!-- Page JS -->
+<script type="module" src="{% static 'js/app-advertisements_list.js' %}"></script>
 {% endblock  %}
 

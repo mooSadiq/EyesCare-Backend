@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'apps.diseases',
     'apps.evaluations',
     'apps.chat',
+    'apps.consultations',
     
 
 ]
@@ -99,7 +100,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'eyescare_db2',
+        'NAME': 'eyescare_db',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '127.0.0.1',
@@ -209,4 +210,9 @@ PUSHER_SECRET = '3c8d562b800fbe10857e'
 PUSHER_CLUSTER = 'ap1'       
 
 # Pusher options
-PUSHER_SSL = True                     
+PUSHER_SSL = True   
+
+
+#اعدادات الموديل
+ROBOFLOW_API_KEY = 'Mw0WRYo7QKz4vlBJWxWG'  # استبدل هذا بالمفتاح الفعلي
+                  
