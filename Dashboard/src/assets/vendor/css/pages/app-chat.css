@@ -346,3 +346,7 @@
   border-top-left-radius: 0;
   border-top-right-radius: 0.375rem !important;
 }
+
+.app-chat-history {
+  background-image: url(../../../img/backgrounds/chats-back.png);
+}

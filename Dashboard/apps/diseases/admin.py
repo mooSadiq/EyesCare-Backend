@@ -3,4 +3,4 @@ from .models import Disease
 # Register your models here.
 @admin.register(Disease)
 class DiseaseAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description')
+    list_display = ('name_en', 'description_en')

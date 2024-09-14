@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -49,6 +48,7 @@ class PostListView(APIView):
             'posts': serializer.data,
             'total_posts_count': total_posts_count  
         })
+        
 def index(request):
   return render(request, 'posts_list.html')
 

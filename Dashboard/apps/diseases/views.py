@@ -55,14 +55,14 @@ def set_diseas(request):
         data=request.data
         print(data)
         Disease.objects.create(
-            name=data["name"],
-            description=data["description"],
+            name_ar=data["name"],
+            description_ar=data["description"],
             image=data["image"],
-            causes=data["causes"],
-            symptoms=data["symptoms"],
-            diagnosis_methods=data["diagnosis_methods"],
-            treatment_options=data["treatment_options"],
-            prevention_recommendations=data["prevention_recommendations"]
+            causes_ar=data["causes"],
+            symptoms_ar=data["symptoms"],
+            diagnosis_methods_ar=data["diagnosis_methods"],
+            treatment_options_ar=data["treatment_options"],
+            prevention_recommendations_ar=data["prevention_recommendations"]
         )
         return Response({"message":"تم إضافة المرض بنجاح"},status.HTTP_201_CREATED)
 
@@ -73,14 +73,14 @@ def upadate_disease(request,pk):
     if not serializer.data:
         return Response({"message":"لايوجد اي مرض"},status.HTTP_404_NOT_FOUND)
     else:
-        disease.name=request.data["name"]
-        disease.description=request.data["description"]
+        disease.name_ar=request.data["name"]
+        disease.description_ar=request.data["description"]
         disease.image=request.data["image"]
-        disease.causes=request.data["causes"]
-        disease.symptoms=request.data["symptoms"]
-        disease.diagnosis_methods=request.data["diagnosis_methods"]
-        disease.treatment_options=request.data["treatment_options"]
-        disease.prevention_recommendations=request.data["prevention_recommendations"]
+        disease.causes_ar=request.data["causes"]
+        disease.symptoms_ar=request.data["symptoms"]
+        disease.diagnosis_methods_ar=request.data["diagnosis_methods"]
+        disease.treatment_options_ar=request.data["treatment_options"]
+        disease.prevention_recommendations_ar=request.data["prevention_recommendations"]
         disease.save()
         return Response({"message":"تم تحديث المرض بنجاح"},status.HTTP_200_OK)
 

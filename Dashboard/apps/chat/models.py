@@ -24,7 +24,17 @@ class Message(models.Model):
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name='messages')
     sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     content = models.TextField()
+    is_received = models.BooleanField(default=False)
+    is_read = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
-
+    
     def __str__(self):
         return f"Message from {self.sender.username} in conversation {self.conversation.id}"
+
+
+class File(models.Model):
+  message = models.OneToOneField(Message, on_delete=models.CASCADE, related_name='file')
+  file = models.FileField(upload_to='chat_file')
+  
+  def __str__(self):
+      return f"File attached to message {self.message.id}"
