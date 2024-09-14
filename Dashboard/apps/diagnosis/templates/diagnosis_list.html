@@ -17,7 +17,7 @@
       <div class="card h-100">
         <div class="card-header pb-0">
           <h6 class="mb-2 card-title">عدد التشخيصات الكلي</h6>
-          <h5 class="mb-0">28,450</h5>
+          <h5 class="mb-0" id="all_diagnosis_count">28,450</h5>
         </div>
         <div class="card-body px-0">
           <div id="averageDailySales"></div>
@@ -29,10 +29,10 @@
       <div class="card h-100">
         <div class="card-body">
           <div class="badge p-2 bg-label-success mb-2 rounded"><i class="ti ti-credit-card ti-sm"></i></div>
-          <p class="card-title mb-1 pt-1">تشخيصات مكتملة </p>
-          <p class="mb-2 mt-1">$4,673</p>
+          <p class="card-title mb-1 pt-1" >تشخيصات مكتملة </p>
+          <p class="mb-2 mt-1" id="completed_diagnosis_count">$4,673</p>
           <div class="pt-1">
-            <span class="badge bg-label-success">+25.2%</span>
+            <span class="badge bg-label-success" id="completed_percentage">+25.2%</span>
           </div>
         </div>
       </div>
@@ -42,10 +42,10 @@
       <div class="card h-100">
         <div class="card-body">
           <div class="badge p-2 bg-label-danger mb-2 rounded"><i class="ti ti-credit-card ti-sm"></i></div>
-          <p class="card-title mb-1 pt-1">تشخيصات لم يتم التعرف عليها </p>
-          <p class="mb-2 mt-1">1.28k</p>
+          <p class="card-title mb-1 pt-1" >تشخيصات لم يتم التعرف عليها </p>
+          <p class="mb-2 mt-1" id="non_complete_diagnosis_count" >1.28k</p>
           <div class="pt-1">
-            <span class="badge bg-label-danger">-12.2%</span>
+            <span class="badge bg-label-danger" id="non_complete_percentage">-12.2%</span>
           </div>
         </div>
       </div>
@@ -114,7 +114,7 @@
     <div
       class="offcanvas offcanvas-end"
       tabindex="-1"
-      id="offcanvasAddUser"
+      id="offcanvasAddDiagnose"
       aria-labelledby="offcanvasAddUserLabel">
       <div class="offcanvas-header">
         <h5 id="offcanvasAddUserLabel" class="offcanvas-title">تشخيص جديد</h5>
@@ -125,7 +125,7 @@
           aria-label="Close"></button>
       </div>
       <div class="offcanvas-body mx-0 flex-grow-0 pt-0 h-100">
-        <form class="add-new-user pt-0" id="addNewUserForm" onsubmit="return false">
+        <form class="add-new-user pt-0" id="addNewDiagnoseForm" onsubmit="return false" >
           <div class="mb-3">
             <label for="formValidationFile" class="form-label">اختيار صورة</label>
             <input 
@@ -153,6 +153,6 @@
 <script src="{% static 'vendor/libs/apex-charts/apexcharts.js' %}"></script>
 <!-- Page JS -->
 <script src="{% static 'js/cards-statistics.js' %}"></script>
-<script src="{% static 'js/app-diagnosis-list.js' %}"></script>
+<script type="module" src="{% static 'js/app-diagnosis-list.js' %}"></script>
 {% endblock  %}
 

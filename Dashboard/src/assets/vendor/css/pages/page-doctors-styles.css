@@ -1,0 +1,284 @@
+/* تنسيق متعلق بصفحة index */
+.main-heading {
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-weight: bold;
+}
+
+.form-input,
+.form-textarea {
+    width: 100%;
+    padding: 5px;
+}
+
+.form-button {
+    display: block;
+    margin: 0 auto;
+}
+
+/* تنسيق متعدد */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar {
+    /* position: fixed;
+    top: 0;
+    right: -300px;
+    width: 300px;
+    height: 100vh;
+    background-color: #333;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    transition: right 0.3s ease-in-out; */
+
+    /* position: fixed;
+    top: 0;
+    right: -300px;
+    width: 300px;
+    height: 98vh;
+    background-color: #4b0000;
+    color: #fff;
+    box-shadow: 0 0 10px rgb(166 0 255);
+    transition: right 0.3s ease-in-out;
+    border: 7px solid #10a5f66e;
+    border-radius: 3%; */
+
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 264px;
+    height: 98vh;
+    background-color: #7e9d8275;
+    color: #fff;
+    box-shadow: 0 0 10px rgb(40 137 0);
+    transition: right 0.3s ease-in-out;
+    border: 7px solid #ebf8ff6e;
+    border-radius: 3%;
+}
+
+.sidebar.open {
+    right: 0;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li a {
+    display: block;
+    padding: 10px;
+    color: #000;
+    text-decoration: none;
+    transition: background-color 0.3s ease-in-out;
+
+    border: 1px #8fa15ab0 solid;
+    font-weight: bold;
+}
+
+.sidebar ul li a:hover {
+    background-color: #555;
+}
+
+.content {
+    transition: margin-right 0.3s ease-in-out;
+}
+
+.content.open {
+    margin-right: 300px;
+}
+
+.toggle-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease-in-out;
+}
+
+.toggle-button:hover {
+    background-color: #555;
+}
+
+.title{
+    text-align: center;
+}
+
+.icons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.icons a {
+    text-decoration: none;
+    text-align: center;
+    color: #333;
+    width: 254px;
+    height: 170px;
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.icons img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+
+
+
+/* تنسيق صفحة اضافة   */
+
+.main-heading {
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-weight: bold;
+}
+
+.form-input,
+.form-textarea {
+    width: 100%;
+    padding: 5px;
+}
+
+.form-button {
+    display: block;
+    margin: 0 auto;
+}
+
+
+
+/* تنسيقات صفحة index */
+.doc-container{
+    width: 90%; /* تحديد العرض الأقصى للحاوية */
+    margin: 0 auto; /* تركيز الحاوية في المنتصف */
+    padding: 0 20px; /* إضافة مسافة من اليمين واليسار */
+    margin-top: 15px;
+}
+.add-doctor{
+    background: linear-gradient(72.47deg, rgba(115, 103, 240, 0.7) 22.16%, #016c97 76.47%) !important;
+  color: #fff;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.page-title{
+    color: white;
+}
+
+.doctors-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .doctors-table th, .doctors-table td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .doctors-table th {
+    background: linear-gradient(72.47deg, rgba(115, 103, 240, 0.7) 22.16%, #016c97 76.47%) !important;
+    color: #fff;
+  }
+  
+  .doctors-table td {
+    background-color: #fff;
+  }
+  
+  .doctors-table td.doctor-photo {
+    text-align: center;
+  }
+  
+  .doctors-table td.doctor-photo img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+  
+  .add-doctor-btn {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .edit-tooltip {
+    display: none;
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+
+  /* تنسيق صفحة add-doctor */
+  .doc-main {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    width: 95%;
+    margin: 0 auto;
+    
+  }
+
+  .doctor-container{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .doc-form-group {
+    margin-bottom: 15px;
+  }
+  .doc-form{
+    background-color: rgb(253 253 253) !important;
+    
+  }
+
+
+  .doc-label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-weight: bold;
+  }

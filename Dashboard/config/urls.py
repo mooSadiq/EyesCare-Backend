@@ -46,7 +46,7 @@ urlpatterns = [
     path('doc/', include("doctors.urls")),
     # diagnosis history
     path('diagnosis/', include("apps.diagnosis.urls")),
-    path('api/diagnosis/', include("apps.diagnosis.api_urls")),
+    # path('api/diagnosis/', include("apps.diagnosis.api_urls")),
     # advertisements 
     path('advertisements/', include("apps.advertisements.urls")),
     # authentication
@@ -62,5 +62,11 @@ urlpatterns = [
     #chat
     path('chat/', include('apps.chat.urls')),
     path('api/chat/', include('apps.chat.api_urls')),
-        
+    
+    #consultations
+    path('consultations/', include('apps.consultations.urls')),
+    
+    
+    
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
