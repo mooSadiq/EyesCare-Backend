@@ -1,0 +1,166 @@
+{% extends 'master.html' %}
+{% load static %}
+{% block title %}
+      تفاصيل المنشور
+{% endblock  %}
+{% block specialCssFiles %}
+{% endblock  %}
+
+{% block content %}
+<!-- Content -->
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h4 class="py-3 mb-2"> المنشورات /<span class="text-muted fw-light"> تفاصيل المنشور </span></h4>
+  <div class="card g-3 mt-0">
+    <div class="card-body row g-3">
+      <div class="col-lg-12">
+        <div class="d-flex justify-content-between align-items-center flex-wrap mb-2 gap-1">
+          <div class="me-1">
+            <h5 class="mb-1">تاريخ ووقت النشر</h5>
+            <p class="mb-1"><span class="fw-medium">Fri Jun 25, 2024 12:05 pm</span></p>
+          </div>
+          <div class="d-flex align-items-center">
+            <a
+              href="javascript:;" 
+              class="text-body "
+              data-bs-toggle="tooltip" 
+              data-bs-placement="top" 
+              data-bs-original-title="نسخ">
+              <i class="ti ti-copy ti-sm mx-2"></i>
+            </a>
+            <a href="javascript:;" 
+              type="button" 
+              class="text-body " 
+              data-bs-toggle="modal" 
+              data-bs-target="#modalCenter"
+              >
+              <i class="ti ti-edit ti-sm mx-2"></i>
+            </a>
+            <a href="javascript:;" 
+              type="button" id="confirm-text" 
+              class="text-body delete-record"
+              data-bs-toggle="tooltip" 
+              data-bs-placement="top" 
+              data-bs-original-title="حذف">
+              <i class="ti ti-trash ti-sm mx-2"></i>
+            </a>
+          </div>
+        </div>
+        <div class=" d-flex align-items-center -center  shadow-none border">
+          <div class="card-body col-8">
+            <p class="mb-4">
+              التعب البصري شعور مزعج قد يصيبكِ بألم في العين، صداع، 
+              وضبابية في الرؤية. أسباب التعب البصري عديدة مثل قضاء وقت طويل أمام الشاشات، عدم الراحة المنتظمة للعيون، 
+              وبعض الأمراض. لِعلاج التعب البصري، 
+              احرصِ على الراحة المنتظمة للعيون، 
+              قللِ من وقت التعرض للشاشات، واستخدم قطرات العين المُرطبة.
+            </p>
+          </div>
+          <div class="p-2 col-4">
+            <img
+            class="img-fluid"
+            src="{% static 'img/pages/app-academy-tutor-1.png' %}"
+            alt="tutor image 1"/>
+          </div>
+        </div>
+        <div class="d-flex justify-content-around align-items-center mt-4">
+          <div class="d-flex justify-content-start align-items-center user-name">
+            <div class="avatar-wrapper">
+              <div class="avatar me-2">
+                <img src="{% static 'img/avatars/10.png' %}" alt="Avatar" class="rounded-circle" />
+              </div>
+            </div>
+            <div class="d-flex flex-column">
+              <a href="{% url 'user_profile' %}" class="text-body">
+                <span class="fw-medium">ميسون علي</span>
+              </a>
+              <small class="text-muted">طبيب</small>
+            </div>
+          </div>
+          <h6 class="d-flex align-items-center justify-content-center gap-1 mb-0">
+            <span class="text-muted">4.23k</span>
+            <span class="text "><i class="ti ti-eye me-1 mt-n1"></i></span>
+          </h6>
+          <h6 class="d-flex align-items-center justify-content-center gap-1 mb-0">
+            <span class="text-muted">1.23k</span>
+            <span class="text-danger "><i class="ti ti-heart-filled me-1 mt-n1"></i></span>
+          </h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalCenterTitle">تعديل المنشور</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form class="">
+            <div class="col mb-3">
+              <label for="nameWithTitle" class="form-label">نص المنشور</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" style="height: 95px;"></textarea>
+            </div>
+            <div class="col mb-3">
+              <label for="formValidationFile" class="form-label">اضافة صورة</label>
+              <input 
+              class="form-control" 
+              type="file" 
+              id="formValidationFile" 
+              name="formValidationFile" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
+            الغاء
+          </button>
+          <button type="button" class="btn btn-primary">حفظ التعديلات</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- / Content -->
+{% endblock  %}
+{% block specialJsFiles %}
+<script>
+(function () {
+  // Alert With Functional Confirm Button
+  const confirmText = document.querySelector('#confirm-text');
+  confirmText.onclick = function () {
+    Swal.fire({
+      title: 'هل أنت متأكد؟',
+      text: "لن تستطيع استعادته بعد الحذف!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'نعم، حذف!',
+      CancelButtonText: 'الغاء',
+      customClass: {
+        confirmButton: 'btn btn-primary me-3 ',
+        cancelButton: 'btn btn-label-secondary '
+      },
+      buttonsStyling: false
+    }).then(function (result) {
+      if (result.value) {
+        Swal.fire({
+          icon: 'success',
+          title: 'تم الحذف!',
+          text: 'لقد تم حذف المنشور بنجاح.',
+          customClass: {
+            confirmButton: 'btn btn-success '
+          }
+        });
+      }
+    });
+  };
+})();
+</script>
+
+{% endblock  %}
+

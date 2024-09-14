@@ -24,44 +24,44 @@
               </div>
               <div class="mb-2 pt-1">
                 <span class="fw-medium">تاريخ التشخيص:</span>
-                <span>April 25, 2021</span>
+                <span id="diagnosis_date">April 25, 2021</span>
               </div>
               <span class="fw-medium">تفاصيل المريض</span>
               <div class="pe-1">
                 <span> اسم المريض:</span>
                 <a href="" class="text-body text-truncate">
-                  <span>ياسر صالح</span>
+                  <span id="patient_name">ياسر صالح</span>
                 </a>
               </div>
               <div class="pe-2">
                 <span>البريد الالكتروني:</span>
-              <small class="text-muted">yasser@gmail.com</small>
+              <small id="patient_email" class="text-muted">yasser@gmail.com</small>
               </div>
               <div class=" pt-1">
-                <span class="fw-medium">اسم المرض المشخص:</span>
-                <span>مياه زرقاء</span>
+                <span  class="fw-medium">اسم المرض المشخص:</span>
+                <span id="diagnosis_result">مياه زرقاء</span>
               </div>
             </div>
             <div class="mt-5">
               <div class="mb-1">
                 <span class="fw-medium">رقم التشخيص:</span>
-                <span>#86423</span>
+                <span id="diagnosis-id">#86423</span> 
               </div>
               <div class="mb-1 pt-1">
                 <span class="fw-medium">الصورة المقدمة للتشخيص</span>
               </div>
-              <img src="{% static 'img/elements/images-9.jpeg' %}" width="180px" height="150px" style="border-radius: 10px;" alt="" >
+              <img id="diagnosis_image" src="{% static 'img/elements/images-9.jpeg' %}" width="180px" height="150px" style="border-radius: 10px;" alt="" >
             </div>
           </div>
         </div>
         <hr class="my-0" />
         <div class="card-body">
           <h6 class="mb-3">وصف المرض</h6>
-          <p class="mb-1">المياه الزرقاء (الجلوكوما) هو مرض يصيب العين ويؤثر على العصب البصري، مما قد يؤدي إلى فقدان البصر تدريجياً.</p>
+          <p id="disease_description" class="mb-1">المياه الزرقاء (الجلوكوما) هو مرض يصيب العين ويؤثر على العصب البصري، مما قد يؤدي إلى فقدان البصر تدريجياً.</p>
           <div class="row p-sm-3 p-0">
             <div class="col-xl-6 col-md-12 col-sm-5 col-12 mb-xl-0 mb-md-4 mb-sm-0 mb-4">
               <h6 class="mb-3">الأسباب:</h6>
-              <ul>
+              <ul id="disease_causes">
                 <li class="mb-1">ضغط العين المرتفع: يُعد الضغط داخل العين (Intraocular Pressure) أحد الأسباب الرئيسية للمياه الزرقاء، حيث يؤثر على العصب البصري.</li>
                 <li class="mb-1">العوامل الوراثية: تُعد الوراثة عاملاً رئيسياً في بعض أنواع المياه الزرقاء.</li>
                 <li class="mb-1">العمر: يزداد خطر الإصابة بالمياه الزرقاء مع تقدم العمر.</li>
@@ -70,8 +70,8 @@
               </ul>
             </div>
             <div class="col-xl-6 col-md-12 col-sm-7 col-12">
-              <h6 class="mb-4">الأعراض:</h6>
-              <ul>
+              <h6  class="mb-4">الأعراض:</h6>
+              <ul id="disease_symptoms">
                 <li class="mb-1">فقدان البصر التدريجي: عادة ما يكون فقدان البصر في المياه الزرقاء تدريجياً ولا يُلاحظ في البداية.</li>
                 <li class="mb-1">فقدان الرؤية المحيطية: يُعد فقدان الرؤية المحيطية (الجانبية) أحد الأعراض المبكرة للمياه الزرقاء.</li>
                 <li class="mb-1">رؤية هالات حول الأضواء: قد تظهر هالات حول الأضواء في بعض الحالات.</li>
@@ -82,14 +82,14 @@
           <div class="mt-2 row p-sm-3 p-0">
             <div class="col-xl-6 col-md-12 col-sm-5 col-12 mb-xl-0 mb-md-4 mb-sm-0 mb-4">
               <h6 class="mb-3">طرق التشخيص:</h6>
-              <ul>
+              <ul id="diagnosis_methods">
                 <li class="mb-1">فحص العين: يشمل فحص العين قياس ضغط العين، وفحص قاع العين، وقياس مجال الرؤية.</li>
                 <li class="mb-1">اختبارات أخرى: قد تتضمن اختبارات أخرى مثل التصوير بالرنين المغناطيسي (MRI) أو التصوير المقطعي المحوسب (CT Scan) في بعض الحالات</li>
               </ul>
             </div>
             <div class="col-xl-6 col-md-12 col-sm-7 col-12">
               <h6 class="mb-4">طرق العلاج:</h6>
-              <ul>
+              <ul id="treatment_options">
                 <li class="mb-1">قطرات العين: تُستخدم قطرات العين لتقليل ضغط العين.</li>
                 <li class="mb-1">العلاج بالليزر: يمكن استخدام الليزر لعلاج بعض أنواع المياه الزرقاء.</li>
                 <li class="mb-1">الجراحة: قد تكون الجراحة ضرورية في بعض الحالات لعلاج المياه الزرقاء.</li>
@@ -97,7 +97,7 @@
             </div>
           </div>
           <h6 class="mb-3">طرق الوقاية:</h6>
-          <ul>
+          <ul id="prevention_recommendations">
             <li class="mb-1">فحص العين المنتظم: يُنصح بإجراء فحص العين بشكل منتظم، خاصة بعد سن الأربعين.</li>
             <li class="mb-1">التحكم في ضغط الدم: يُنصح بالتحكم في ضغط الدم، خاصة إذا كنت مصاباً بارتفاع ضغط الدم.</li>
             <li class="mb-1">التحكم في مرض السكري: يُنصح بالتحكم في مرض السكري، خاصة إذا كنت مصاباً بالسكري.</li>
@@ -160,7 +160,7 @@
   <!-- Send diagnosis Sidebar -->
   <div class="offcanvas offcanvas-end" id="senddiagnosisOffcanvas" aria-hidden="true">
     <div class="offcanvas-header my-1">
-      <h5 class="offcanvas-title">Send diagnosis</h5>
+      <h5 class="offcanvas-title">ارسال التقرير</h5>
       <button
         type="button"
         class="btn-close text-reset"
@@ -170,50 +170,47 @@
     <div class="offcanvas-body pt-0 flex-grow-1">
       <form>
         <div class="mb-3">
-          <label for="diagnosis-from" class="form-label">From</label>
+          <label for="diagnosis-from" class="form-label">من</label>
           <input
             type="text"
             class="form-control"
             id="diagnosis-from"
-            value="shelbyComapny@email.com"
+            value=""
             placeholder="company@email.com" />
         </div>
         <div class="mb-3">
-          <label for="diagnosis-to" class="form-label">To</label>
+          <label for="diagnosis-to" class="form-label">إلى</label>
           <input
             type="text"
             class="form-control"
             id="diagnosis-to"
-            value="qConsolidated@email.com"
+            value=""
             placeholder="company@email.com" />
         </div>
         <div class="mb-3">
-          <label for="diagnosis-subject" class="form-label">Subject</label>
+          <label for="diagnosis-subject" class="form-label">العنوان</label>
           <input
             type="text"
             class="form-control"
             id="diagnosis-subject"
-            value="diagnosis of purchased Admin Templates"
+            value=""
             placeholder="diagnosis regarding goods" />
         </div>
         <div class="mb-3">
-          <label for="diagnosis-message" class="form-label">Message</label>
-          <textarea class="form-control" name="diagnosis-message" id="diagnosis-message" cols="3" rows="8">
-            Dear Queen Consolidated,
-            Thank you for your business, always a pleasure to work with you!
-            We have generated a new diagnosis in the amount of $95.59
-            We would appreciate payment of this diagnosis by 05/11/2021</textarea
+          <label for="diagnosis-message" class="form-label">الرسالة</label>
+          <textarea class="form-control" name="diagnosis-message" id="diagnosis-message" cols="3" rows="8" value="thank you">
+           </textarea
           >
         </div>
         <div class="mb-4">
           <span class="badge bg-label-primary">
             <i class="ti ti-link ti-xs"></i>
-            <span class="align-middle">diagnosis Attached</span>
+            <span class="align-middle">المرفقات </span>
           </span>
         </div>
         <div class="mb-3 d-flex flex-wrap">
-          <button type="button" class="btn btn-primary me-3" data-bs-dismiss="offcanvas">Send</button>
-          <button type="button" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+          <button type="button" class="btn btn-primary me-3" data-bs-dismiss="offcanvas">إرسال</button>
+          <button type="button" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">إلغاء</button>
         </div>
       </form>
     </div>
@@ -225,51 +222,20 @@
 {% endblock  %}
 {% block specialJsFiles %}
 <script>
-(function () {
-  //دالة تعمل على طباعة التقرير بتحديد العناصر المراد طباعتها واخفاء البقية
-  $("#printButton").click(function() {
-    // إخفاء العناصر التي لا نريد طباعتها
-    $(".hide-print").hide();
-    // إضافة كلاس shadow-none حتى يتم اخفاء ظل العناثر في الملف المطبوع
-    $(".diagnosis-preview-card").addClass("shadow-none");
 
-    //  طباعة الصفحة
-    window.print();
-
-    // إزالة كلاس shadow-none وإعادة عرض العناصر المخفية
-    $(".diagnosis-preview-card").removeClass("shadow-none");
-    $(".hide-print").show();
-  });
-
-
-  // Alert With Functional Confirm Button حذف
-  const confirmText = document.querySelector('#confirm-text');
-  confirmText.onclick = function () {
-    Swal.fire({
-      title: 'هل أنت متأكد؟',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'نعم !',
-      CancelButtonText: 'الغاء',
-      customClass: {
-        confirmButton: 'btn btn-primary me-3 ',
-        cancelButton: 'btn btn-label-secondary '
-      },
-      buttonsStyling: false
-    }).then(function (result) {
-      if (result.value) {
-        Swal.fire({
-          icon: 'success',
-          title: 'تم الحذف!',
-          text: 'لقد تم حذف التشخيص بنجاح.',
-          customClass: {
-            confirmButton: 'btn btn-success '
-          }
-        });
-      }
-    });
-  };
-})();
 </script>
+<!-- Vendors JS -->
+<script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+
+<script>
+  const diagnosisId = '{{ diagnosis_id }}';
+</script>
+
+<script type="module" src="{% static 'js/app-diagnosis-details.js' %}"></script>
+
 {% endblock  %}
 

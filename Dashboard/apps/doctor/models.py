@@ -6,6 +6,7 @@ class Doctor(models.Model):
     address = models.CharField(max_length=255) #العنوان
     hospital = models.CharField(max_length=255) # اسم المستشفى او العيادة
     specialization = models.CharField(max_length=255) # التخصص
+    # consultation_fee = models.IntegerField()  #رسوم الاستشارة
     about = models.TextField(null=True)
 
     def __str__(self):
