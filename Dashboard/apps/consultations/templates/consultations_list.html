@@ -1,7 +1,7 @@
 {% extends 'master.html' %}
 {% load static %}
 {% block title %}
-قائمة المستخدمين
+قائمة الاستشارات
 {% endblock %}
 {% block specialCssFiles %}
 <link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
@@ -16,12 +16,12 @@
         <div class="card-body">
           <div class="d-flex align-items-start justify-content-between">
             <div class="content-left">
-              <span>جلسة</span>
+              <span>الاستشارات</span>
               <div class="d-flex align-items-center my-2">
-                <h3 class="mb-0 me-2">21,459</h3>
-                <p class="text-success mb-0">(+29%)</p>
+                <h3 class="mb-0 me-2" id="all_consultations_count">21,459</h3>
+                <p class="text-success mb-0">(100%)</p>
               </div>
-              <p class="mb-0">إجمالي المستخدمين</p>
+              <p class="mb-0">إجمالي الاستشارات الطبية</p>
             </div>
             <div class="avatar">
               <span class="avatar-initial rounded bg-label-primary">
@@ -37,12 +37,12 @@
         <div class="card-body">
           <div class="d-flex align-items-start justify-content-between">
             <div class="content-left">
-              <span> الأسبوع الماضي</span>
+              <span>  الاستشارات المكتملة</span>
               <div class="d-flex align-items-center my-2">
-                <h3 class="mb-0 me-2">4,567</h3>
-                <p class="text-success mb-0">(+18%)</p>
+                <h3 class="mb-0 me-2" id="completed_consultations_count">4,567</h3>
+                <p class="text-success mb-0" id="completed_percentage">(+18%)</p>
               </div>
-              <p class="mb-0">تحليلات الأسبوع الماضي</p>
+              <p class="mb-0">  إجمالي الاستشارات المكتملة</p>
             </div>
             <div class="avatar">
               <span class="avatar-initial rounded bg-label-danger">
@@ -58,12 +58,12 @@
         <div class="card-body">
           <div class="d-flex align-items-start justify-content-between">
             <div class="content-left">
-              <span>المستخدمون النشطون</span>
+              <span> الاستشارات الغير مكتملة</span>
               <div class="d-flex align-items-center my-2">
-                <h3 class="mb-0 me-2">19,860</h3>
-                <p class="text-danger mb-0">(-14%)</p>
+                <h3 class="mb-0 me-2" id="non_complete_consultations_count">19,860</h3>
+                <p class="text-danger mb-0" id="non_complete_percentage">(-14%)</p>
               </div>
-              <p class="mb-0">تحليلات الأسبوع الماضي</p>
+              <p class="mb-0">إجمالي الاستشارات الغير مكتملة</p>
             </div>
             <div class="avatar">
               <span class="avatar-initial rounded bg-label-success">
@@ -74,61 +74,26 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-6 col-xl-3">
-      <div class="card">
-        <div class="card-body">
-          <div class="d-flex align-items-start justify-content-between">
-            <div class="content-left">
-              <span>المستخدمون المعلّقون</span>
-              <div class="d-flex align-items-center my-2">
-                <h3 class="mb-0 me-2">237</h3>
-                <p class="text-success mb-0">(+42%)</p>
-              </div>
-              <p class="mb-0">تحليلات الأسبوع الماضي</p>
-            </div>
-            <div class="avatar">
-              <span class="avatar-initial rounded bg-label-warning">
-                <i class="ti ti-user-exclamation ti-sm"></i>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    
   </div>
   <!-- Users List Table -->
   <div class="card">
     <div class="card-header border-bottom">
       <h5 class="card-title mb-3">فلتر البحث</h5>
       <div class="d-flex justify-content-between align-items-center row pb-2 gap-3 gap-md-0">
-        <div class="col-md-4 user_role">
-          <select id="UserRole" class="form-select text-capitalize">
-            <option value="">اختر الدور</option>
-            <option value="user">مستخدم</option>
-            <option value="patient">مريض</option>
-            <option value="doctor">طبيب</option>
-            <option value="admin">ادمن</option>
-            <option value="support">فريق الدعم</option>
-          </select>
-        </div>
-        <div class="col-md-4 user_plan">
-          <select id="Userblue_verified" class="form-select text-capitalize">
-            <option value="">التوثيق</option>
-            <option value="نعم">موثق</option>
-            <option value="لا">غبر موثق</option>
-          </select>
-        </div>
+       
+        
         <div class="col-md-4 user_status">
-          <select id="UserStatus" class="form-select text-capitalize">
+          <select id="consultationStatus" class="form-select text-capitalize">
             <option value="">اختر الحالة</option>
-            <option value="نشط">نشط</option>
-            <option value="غير نشط">غير نشط</option>
+            <option value="مكتمل">مكتمل</option>
+            <option value="غير مكتمل">غير مكتمل</option>
           </select>
         </div>
       </div>
     </div>
     <div class="card-datatable table-responsive">
-      <table class="datatables-users table">
+      <table class="datatables-consultations table">
         <thead class="border-top">
           <tr>
             <th></th>
@@ -141,56 +106,7 @@
         </thead>
       </table>
     </div>
-    <!-- Offcanvas to add new user  اضاقة مستخدم جديد-->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAddUser" aria-labelledby="offcanvasAddUserLabel">
-      <div class="offcanvas-header">
-        <h5 id="offcanvasAddUserLabel" class="offcanvas-title">اضافة مستخدم</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body mx-0 flex-grow-0 pt-0 h-100">
-        <form class="add-new-user pt-0" id="addNewUserForm" onsubmit="return false">
-          <div class="mb-3">
-            <label class="form-label" for="add-user-firstname">الاسم الاول</label>
-            <input type="text" class="form-control" id="add-user-firstname" placeholder="John Doe"
-              name="AddUserFirstname" aria-label="John Doe" />
-          </div>
-          <div class="mb-3">
-            <label class="form-label" for="add-user-lastname">الاسم الثاني</label>
-            <input type="text" class="form-control" id="add-user-lastname" placeholder="John Doe" name="AddUserLastname"
-              aria-label="John Doe" />
-          </div>
-          <div class="mb-3">
-            <label class="form-label" for="add-user-email">البريد الالكتروني</label>
-            <input type="text" id="add-user-email" class="form-control" placeholder="john.doe@example.com"
-              aria-label="john.doe@example.com" name="AddUserEmail" />
-          </div>
-          <div class="mb-3">
-            <div class="form-password-toggle">
-              <label class="form-label" for="formValidationPass">كلمة المرور</label>
-              <div class="input-group input-group-merge">
-                <input class="form-control" type="password" id="formValidationPass" name="addUserPass"
-                  placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                  aria-describedby="multicol-password2" />
-                <span class="input-group-text cursor-pointer" id="multicol-password2"><i
-                    class="ti ti-eye-off"></i></span>
-              </div>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label" for="modalEditUserRole">نوع المستخدم</label>
-            <select id="add-user-role" name="addUserType" class="select2 form-select"
-              aria-label="Default select example">
-              <option value="admin">مدير</option>
-              <option value="user">مستخدم عادي</option>
-              <option value="patient">مريض</option>
-              <option value="doctor">طبيب</option>
-            </select>
-          </div>
-          <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">اضافة</button>
-          <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">الفاء</button>
-        </form>
-      </div>
-    </div>
+    
   </div>
 </div>
 <!-- / Content -->

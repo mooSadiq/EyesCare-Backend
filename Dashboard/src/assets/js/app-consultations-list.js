@@ -2,7 +2,7 @@ import { fetchAllData, submitRequest } from './api.js';
 import { showAlert, showConfirmationDialog } from './general-function.js';
 
 'use strict';
-var dt_user_table = $('.datatables-users'); 
+var dt_consultations_table = $('.datatables-consultations'); 
 
 /**
  * Initializes the DataTable with the provided data.
@@ -11,17 +11,22 @@ var dt_user_table = $('.datatables-users');
  * It also ensures the table is responsive and sets up filtering for subscription status.
  */
 function initializeDataTable(data){
-  if ($.fn.DataTable.isDataTable(dt_user_table)) {
-      dt_user_table.DataTable().clear().destroy();
+
+  let all_consultations_count = 0;
+  let completed_consultations_count = 0;
+  let non_complete_consultations_count = 0;
+
+  if ($.fn.DataTable.isDataTable(dt_consultations_table)) {
+      dt_consultations_table.DataTable().clear().destroy();
   }
-    dt_user_table.DataTable({
-      data: data.users,
+    dt_consultations_table.DataTable({
+      data: data.consultations,
       columns: [
             { data: null },  // Empty column for respons
             { data: 'first_name' },
-            { data: 'user_type' },
-            { data: 'is_blue_verified' },
-            { data: 'is_active' },
+            { data: 'doctor' },
+            { data: 'date' },
+            { data: 'is_complete' },
             { data: null }  // Actions column
       ],
       columnDefs: [
@@ -36,27 +41,27 @@ function initializeDataTable(data){
             return '';
           }
         },
-        // Render user's name, email, and profile picture
+        // Render patient's name, email, and profile picture
         {
           targets: 1,
           responsivePriority: 4,
           render: function (data, type, full, meta) {
-                var name = `${full['first_name']} ${full['last_name']}`;
-                var email = full['email'];
-                var image = full['profile_picture'];
+                var name = `${full['patient'].first_name} ${full['patient'].last_name}`;
+                var email = full['patient'].email;
+                var image = full['patient'].profile_picture;
                 var output;
                 if (image) {
                   output = `<img src="${image}" alt="Avatar" class="rounded-circle">`;
             } else {
-                  var initials = `${full['first_name'][0]}${full['last_name'][0]}`;
+                  var initials = `${full['patient'].first_name[0]}${full['patient'].last_name[0]}`;
                 var stateNum = Math.floor(Math.random() * 6);
                 var states = ['success', 'danger', 'warning', 'info', 'primary', 'secondary'];
                   var state = states[stateNum];
                   output = `<span class="avatar-initial rounded-circle bg-label-${state}">${initials}</span>`;
             }
         
-                var userId = full['id'];
-                var userIdProfileUrl = `/users/profile/${userId}/`; 
+                var patientId = full['patient'].id;
+                var patientIdProfileUrl = `/patients/profile/${patientId}/`;
                 return `
                   <div class="d-flex justify-content-start align-items-center user-name">
                     <div class="avatar-wrapper">
@@ -65,59 +70,69 @@ function initializeDataTable(data){
                       </div>
                     </div>
                     <div class="d-flex flex-column">
-                      <a href="${userIdProfileUrl}" class="text-body text-truncate">
+                      <a href="${patientIdProfileUrl}" class="text-body text-truncate">
                         <span class="fw-medium">${name}</span>
                       </a>
                       <small class="text-muted">${email}</small>
                     </div>
                   </div>`;
               }
-            },
-        {
-          // Render User Role
-          targets: 2,
-          render: function (data, type, full, meta) {
-            var $role = full['user_type'];
-            var roleBadgeObj = {
-                  "doctor":
-                    '<span class="badge badge-center rounded-pill bg-label-success w-px-30 h-px-30 me-2"><i class="ti ti-nurse ti-sm"></i></span>', //  
-                  "fondution":
-                '<span class="badge badge-center rounded-pill bg-label-primary w-px-30 h-px-30 me-2"><i class="ti ti-building-hospital ti-sm"></i></span>', // رمز مناسب 
-                  "user":
-                '<span class="badge badge-center rounded-pill bg-label-warning w-px-30 h-px-30 me-2"><i class="ti ti-user ti-sm"></i></span>', // 
-                  "patient":
-                '<span class="badge badge-center rounded-pill bg-label-info w-px-30 h-px-30 me-2"><i class="ti ti-heart ti-sm"></i></span>', // 
-                  "admin":
-                '<span class="badge badge-center rounded-pill bg-label-secondary w-px-30 h-px-30 me-2"><i class="ti ti-device-laptop ti-sm"></i></span>' // 
-            };
-            return "<span class='text-truncate d-flex align-items-center'>" + roleBadgeObj[$role] + $role + '</span>';
-          }
-        },
+         },
+         {
+              targets: 2,
+              responsivePriority: 4,
+              render: function (data, type, full, meta) {
+                    var name = `${full['doctor'].first_name} ${full['doctor'].last_name}`;
+                    var email = full['patient'].email;
+                    var image = full['doctor'].profile_picture;
+                    var output;
+                    if (image) {
+                      output = `<img src="${image}" alt="Avatar" class="rounded-circle">`;
+                } else {
+                      var initials = `${full['doctor'].first_name[0]}${full['doctor'].last_name[0]}`;
+                    var stateNum = Math.floor(Math.random() * 6);
+                    var states = ['success', 'danger', 'warning', 'info', 'primary', 'secondary'];
+                      var state = states[stateNum];
+                      output = `<span class="avatar-initial rounded-circle bg-label-${state}">${initials}</span>`;
+                }
+            
+                    var doctorId = full['doctor'].id;
+                    var doctorIdProfileUrl = `/doctors/profile/${doctorId}/`;
+                    return `
+                      <div class="d-flex justify-content-start align-items-center user-name">
+                        <div class="avatar-wrapper">
+                          <div class="avatar me-3">
+                            ${output}
+                          </div>
+                        </div>
+                        <div class="d-flex flex-column">
+                          <a href="${doctorIdProfileUrl}" class="text-body text-truncate">
+                            <span class="fw-medium">${name}</span>
+                          </a>
+                          <small class="text-muted">${email}</small>
+                        </div>
+                      </div>`;
+                  }
+         },
         {
         // Render user is verified with blue_verified or not
           targets: 3,
           render: function (data, type, full, meta) {
-                var $ver = full['is_blue_verified'];
-                if ($ver == 1) {
-              return "<span class='text-truncate d-flex align-items-center'>" + '<span class="badge badge-center rounded-pill bg-label-primary w-px-30 h-px-30 me-2"><i class="ti ti-check ti-sm"></i></span>' + '<span class="fw-medium">نعم</span>' + '</span>';
-              ;
-            }
-            else {
-              return "<span class='text-truncate d-flex align-items-center'>" + '<span class="badge badge-center rounded-pill bg-label-danger w-px-30 h-px-30 me-2"><i class="ti ti-x ti-sm"></i></span>' + '<span class="fw-medium">لا</span>' + '</span>';
-            }
+            var $date = full['consultation_date'];
+            return '<span class="fw-medium">' + $date + '</span>';
 
           }
         },
         {
-          // Render User Status
+          // Render consultation Status
           targets: 4,
           render: function (data, type, full, meta) {
-            var $isActive = full['is_active'];
-                if ($isActive == 1) {
-                  return '<span class="fw-medium badge bg-label-success text-center ">نشط</span>';
+            var $isComplete = full['is_complete'];
+                if ($isComplete == 1) {
+                  return '<span class="fw-medium badge bg-label-success text-center ">مكتملة</span>';
                 }
                 else {
-                  return '<span class="fw-medium  badge bg-label-danger text-center">غير نشط</span>';
+                  return '<span class="fw-medium  badge bg-label-danger text-center">غير مكتملة</span>';
                 }
           }
         },
@@ -129,15 +144,15 @@ function initializeDataTable(data){
           searchable: false,
           orderable: false,
           render: function (data, type, full, meta) {
-                var userId = full['id'];
-                var userProfileUrl = `/users/profile/${userId}/`;
-                var userType = full['user_type'];
+                var doctorId = full['doctor'].id;
+                var doctorProfileUrl = `/doctors/profile/${doctorId}/`;
+                var consultationId = full['id'];
                 return `
                   <div class="d-flex align-items-center view-profile">
-                    <a href="${userProfileUrl}" class="text-body view-profile" data-id="${userId}" data-type="${userType}">
+                    <a href="${doctorProfileUrl}" class="text-body view-profile" data-id="${doctorId}">
                         <i class="ti ti-eye ti-sm me-2"></i>
                     </a>
-                    <a href="javascript:;" class="text-body delete-record" data-id="${userId}">
+                    <a href="javascript:;" class="text-body delete-record" data-id="${consultationId}">
                       <i class="ti ti-trash ti-sm mx-2"></i>
                     </a>
                   </div>`;
@@ -304,14 +319,7 @@ function initializeDataTable(data){
             }
           ]
         },
-        {
-          text: '<i class="ti ti-plus me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">اضافة مستخدم جديد</span>',
-          className: 'add-new btn btn-primary waves-effect waves-light',
-          attr: {
-            'data-bs-toggle': 'offcanvas',
-            'data-bs-target': '#offcanvasAddUser'
-          }
-        }
+       
       ],
       // For responsive popup
       responsive: {
@@ -319,7 +327,7 @@ function initializeDataTable(data){
           display: $.fn.dataTable.Responsive.display.modal({
             header: function (row) {
               var data = row.data();
-                  return 'تفاصيل ل  ' + data['first_name'];
+                  return 'تفاصيل ل  ' + data['patient'].first_name;
             }
           }),
           type: 'column',
@@ -348,105 +356,73 @@ function initializeDataTable(data){
       },
       initComplete: function () {
         this.api()
-          .columns(2)
-          .every(function () {
-            var column = this;
-                $('#UserRole').on('change', function () {
-                var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                column.search(val ? '^' + val + '$' : '', true, false).draw();
-              });
-            });
-        this.api()
-          .columns(3)
-          .every(function () {
-            var column = this;
-                $('#Userblue_verified').on('change', function () {
-                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                    column.search(val ? '^' + val + '$' : '', true, false).draw();
-              });
-          });
-        this.api()
                 .columns(4)
           .every(function () {
             var column = this;
-                    $('#UserStatus').on('change', function () {
+                    $('#consultationStatus').on('change', function () {
                         var val = $(this).val();
                         column.search(val ? '^' + val + '$' : '', true, false).draw();
             });
                 });                        
           }
     });
+
+    //الجزء الخاص باعداد الاحصائيات
+  $.each(data.consultations, function (index, consultations) {
+    all_consultations_count++;
+
+    if (consultations.is_complete) {
+      completed_consultations_count++;
+    } else {
+      non_complete_consultations_count++;
+    }
+  });
+  // حساب النسب المئوية للاستشارات المكتملة وغير المكتملة
+  let completed_percentage = 0;
+  let non_complete_percentage = 0;
+
+  if (all_consultations_count > 0) {
+    completed_percentage = (completed_consultations_count / all_consultations_count) * 100;
+    non_complete_percentage = (non_complete_consultations_count / all_consultations_count) * 100;
+  }
+  // تقريبهما لأقرب عدد صحيح
+  completed_percentage = Math.round(completed_percentage);
+  non_complete_percentage = Math.round(non_complete_percentage);
+
+  //تضمسن الاحصائيات في العناصر
+  $('#all_consultations_count').text(all_consultations_count);
+  $('#completed_consultations_count').text(completed_consultations_count);
+  $('#non_complete_consultations_count').text(non_complete_consultations_count);
+
+  $('#completed_percentage').text(completed_percentage + "%");
+  $('#non_complete_percentage').text(non_complete_percentage + "%");
 }
 
-/**
- * Fetches the user data from the server and initializes the DataTable.
- * This function handles asynchronous fetching of user data and
- * populates the DataTable with the fetched data.
- */
+// دالة جلب قائمة الاستشارات عبر ال api
 
 async function fetchAndInitializeTable() {
-  const url_get_users_data = '/users/api/get/users/';
+  const url_get_users_data = '/consultations/api/getConsultations/';
   try {
     const data = await fetchAllData(url_get_users_data);
     initializeDataTable(data);
   } catch (error) {
-    console.error('خطأ في جلب بيانات المستخدمين:', error);
+    console.error('خطأ في جلب بيانات التشخيصات:', error);
   }
 }
 
-// Initialize on page load
+// الدالة التي تعمل فور استدعاء الصفحة
 document.addEventListener('DOMContentLoaded', fetchAndInitializeTable);
 
-/**
- * Handles the submission of the 'Add New User' form.
- * This function validates the form, sends a POST request to add a new user,
- * and updates the DataTable with the newly added user.
- */
-document.getElementById('addNewUserForm').addEventListener('submit', async function (event) {
-  event.preventDefault();
-
-  const formData = new FormData();
-  formData.append('first_name', document.getElementById('add-user-firstname').value);
-  formData.append('last_name', document.getElementById('add-user-lastname').value);
-  formData.append('email', document.getElementById('add-user-email').value);
-  formData.append('password', document.getElementById('formValidationPass').value);
-  formData.append('user_type', document.getElementById('add-user-role').value);
-
-  
-  const method = 'POST';
-  const url = '/users/api/add/';
-  try {
-    const result = await submitRequest(url, method, formData );
-    if (result.success) {
-      const offcanvasElement = document.getElementById('offcanvasAddUser');
-      const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
-      if (offcanvas) {
-        offcanvas.hide();  
-      }
-      showAlert('success', 'تم الحفظ!', result.message, 'btn btn-success');
-      fetchAndInitializeTable();
-      this.reset();
-    } else {
-      showAlert('error', 'فشل الحفظ!', result.message, 'btn btn-error');
-    }
-  } catch (error) {
-    console.error('Error adding user:', error);
-  }
-  });
 
 
-/**
- * Handles the deletion of a user when the delete button is clicked.
- * This function prompts the user for confirmation and sends a DELETE request to the server.
- * Upon successful deletion, it updates the DataTable to reflect the change.
- */
+//دالة حذف تشخيص
 
 $(document).on('click', '.delete-record', async function () {
-    const userId = $(this).data('id');
+    const consultationId = $(this).data('id');
     const result = await showConfirmationDialog();
     if (result.isConfirmed) {
       const method = 'DELETE';
-      const url = `/users/api/delete/${userId}/`;
+      const url = `/consultations/api/delete/${consultationId}/`;
       const deleteResult = await submitRequest(url, method, null);
 
       if (deleteResult.success) {
