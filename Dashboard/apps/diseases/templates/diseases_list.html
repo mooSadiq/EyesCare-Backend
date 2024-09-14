@@ -90,7 +90,7 @@
             <th>اسم المرض</th>
             <th>الصورة</th>
             <th>الحالة</th>
-            <th> تاريخ الإضافة</th>
+            <th>تاريخ الإضافة</th>
             <th></th>
           </tr>
         </thead>
@@ -101,7 +101,7 @@
     <div
       class="offcanvas offcanvas-end"
       tabindex="-1"
-      id="offcanvasAddUser"
+      id="offcanvasAdddiseases"
       aria-labelledby="offcanvasAddUserLabel">
       <div class="offcanvas-header">
         <h5 id="offcanvasAddUserLabel" class="offcanvas-title"> إضافة مرض</h5>
@@ -112,39 +112,39 @@
           aria-label="Close"></button>
       </div>
       <div class="offcanvas-body mx-0 flex-grow-0 pt-0 h-100">
-        <form id="diseaseForm" class="mt-2">
+        <form id="diseaseForm" class="mt-2" enctype="multipart/form-data">
           <div class="section">
             <h5 class="section-title title">اسم المرض</h5>
-            <input class="form-control" id="diseaseDescription" rows="3"  placeholder="أدخل اسم المرض">
+            <input class="form-control" id="diseaseDescription" rows="3"  placeholder="أدخل اسم المرض" name="name"></input>
         </div>
           <div class="section">
               <h5 class="section-title title">وصف المرض</h5>
-              <textarea class="form-control" id="diseaseDescription" rows="3"  placeholder="أدخل وصف المرض"></textarea>
+              <textarea class="form-control" id="diseaseDescription" rows="3"  placeholder="أدخل وصف المرض" name="description"></textarea>
           </div>
           <div class="section">
               <h5 class="section-title title">الأعراض</h5>
-              <textarea class="form-control" id="diseaseSymptoms" rows="4"  placeholder="أدخل أعراض المرض"></textarea>
+              <textarea class="form-control" id="diseaseSymptoms" rows="4"  placeholder="أدخل أعراض المرض" name="symptoms"></textarea>
           </div>
           <div class="section">
               <h5 class="section-title title">الأسباب</h5>
-              <textarea class="form-control" id="diseaseCauses" rows="4"  placeholder="أدخل أسباب المرض"></textarea>
+              <textarea class="form-control" id="diseaseCauses" rows="4"  placeholder="أدخل أسباب المرض" name="causes"></textarea>
           </div>
           <div class="section">
               <h5 class="section-title title">طرق التشخيص</h5>
-              <textarea class="form-control" id="diseaseDiagnosis" rows="4"  placeholder="أدخل طرق التشخيص"></textarea>
+              <textarea class="form-control" id="diseaseDiagnosis" rows="4"  placeholder="أدخل طرق التشخيص" name="diagnosis_methods"></textarea>
           </div>
           <div class="section">
               <h5 class="section-title title">طرق العلاج</h5>
-              <textarea class="form-control" id="diseaseTreatment" rows="3"  placeholder="أدخل طرق العلاج"></textarea>
+              <textarea class="form-control" id="diseaseTreatment" rows="3"  placeholder="أدخل طرق العلاج" name="treatment_options"></textarea>
           </div>
           <div class="section">
               <h5 class="section-title title" >الصور التوضيحية</h5>
-              <input type="file" class="form-control-file" id="diseaseImages" multiple placeholder="اختر صوراً ">
+              <input type="file" class="form-control-file" id="diseaseImages"  placeholder="اختر صورة" name="image">
               <div class="image-preview" id="imagePreview"></div>
           </div>
           <div class="section">
               <h5 class="section-title title">نصائح للوقاية</h5>
-              <textarea class="form-control" id="diseasePrevention" rows="6"  placeholder="أدخل طرق الوقاية"></textarea>
+              <textarea class="form-control" id="diseasePrevention" rows="6"  placeholder="أدخل طرق الوقاية" name="prevention_recommendations"></textarea>
           </div>
       </form>
       <button class="btn btn-primary btn-save" id="saveButton" style="display: none;"><i class="fas fa-save m-1"></i> حفظ </button>
@@ -158,7 +158,6 @@
 {% endblock  %}
 {% block specialJsFiles %}
 <!-- Vendors JS -->
-<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
 <script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
 <script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
 <script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
