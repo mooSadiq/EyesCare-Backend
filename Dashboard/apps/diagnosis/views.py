@@ -52,7 +52,8 @@ def detect_Eye():
 #     "Eye",
 #     "Internal-Eye",
 #     "No detection: No eye detected",
-#     "No sufficient confidence."
+#     "No sufficient confidence.",
+#      "Error during RobowFlow inference hint:'Check Internet'."
 # }
 
 #اعداد رابط ارسال الصورة الى المودل

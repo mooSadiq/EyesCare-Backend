@@ -57,20 +57,24 @@ def save_image_with_boxes(image_path, prediction, folder):
 
 def classify_and_save_image(image_path, model_id="all_eye_detect/2", confidence_threshold=55):
     """Classify the image, save it based on the detection result, and return the classification result."""
-    result = CLIENT.infer(image_path, model_id=model_id)
-    predictions = result.get('predictions', [])
-    
-    if not predictions:
+    try:
+        result = CLIENT.infer(image_path, model_id=model_id)
+        predictions = result.get('predictions', [])
+        
+        if not predictions:
+            save_image(image_path, NO_EYE_DETECT_DIR)
+            return "No detection: No eye detected"
+        
+        for prediction in predictions:
+            if prediction['confidence'] >= confidence_threshold / 100:
+                save_image(image_path, EYE_DIR)
+                save_image_with_boxes(image_path, prediction, EYE_DETECT_DIR)
+                predicted_class = prediction['class']
+                return predicted_class
+        
         save_image(image_path, NO_EYE_DETECT_DIR)
-        return "No detection: No eye detected"
-    
-    for prediction in predictions:
-        if prediction['confidence'] >= confidence_threshold / 100:
-            save_image(image_path, EYE_DIR)
-            save_image_with_boxes(image_path, prediction, EYE_DETECT_DIR)
-            predicted_class = prediction['class']
-            return predicted_class
-    
-    save_image(image_path, NO_EYE_DETECT_DIR)
-    return "No sufficient confidence."
+        return "No sufficient confidence."
+    except Exception as e:
+        save_image(image_path, NO_EYE_DETECT_DIR)
+        return "Error during RobowFlow inference hint:'Check Internet'."
 
