@@ -6,7 +6,7 @@ from django.conf import settings
 # Initialize the inference client
 CLIENT = InferenceHTTPClient(
     api_url="https://detect.roboflow.com",
-    api_key="BNMaKnfVi9xtFUFmcOFY"
+    api_key=settings.ROBOFLOW_API_KEY_For_Detection
 )
 
 # Define directories

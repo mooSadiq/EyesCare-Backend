@@ -44,7 +44,7 @@ def diagnosisDetailsPrint(request):
 
 # هذي الدالة الي توصل لل module
 def detect_Eye():
-    result = Detect_Eye.classify_and_save_image(image_path='i.jpg')
+    result = Detect_Eye.classify_and_save_image(image_path='1.jpg')
     print(result)
 
 # result شكل النتائج 
