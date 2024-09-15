@@ -7,6 +7,7 @@ from django.views import View
 from django.conf import settings
 from .models import MyModel  # استيراد النموذج الذي يحتوي على حقل الملف
 from inference_sdk import InferenceHTTPClient
+from . import Detect_Eye
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ImageInferenceView(View):
@@ -51,3 +52,17 @@ def diagnosisDetails(request):
 
 def diagnosisDetailsPrint(request):
   return render(request, 'diagnosis_details_print.html')
+
+
+# هذي الدالة الي توصل لل module
+def detect_Eye():
+    result = Detect_Eye.classify_and_save_image(image_path='i.jpg')
+    print(result)
+
+# result شكل النتائج 
+# {
+#     "Eye",
+#     "Internal-Eye",
+#     "No detection: No eye detected",
+#     "No sufficient confidence."
+# }
