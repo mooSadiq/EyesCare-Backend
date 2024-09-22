@@ -32,17 +32,15 @@ urlpatterns = [
     path("patients/", include("apps.patients.urls")),
     # doctor
     path("doctors/", include("apps.doctor.urls")),
+    path('api/doctor/', include("apps.doctor.api_urls")),
     # emails
     path("emails/", include("apps.emails.urls")),
-    # doctors not important
-    path("doc/", include("doctors.urls")),
+
 
     path('patients/', include("apps.patients.urls")),
     # posts
     path('posts/', include("apps.posts.urls")),
     path('api/posts/', include("apps.posts.api_urls")),
-    # doctors
-    path('doc/', include("doctors.urls")),
     # diagnosis history
     path('diagnosis/', include("apps.diagnosis.urls")),
     # path('api/diagnosis/', include("apps.diagnosis.api_urls")),

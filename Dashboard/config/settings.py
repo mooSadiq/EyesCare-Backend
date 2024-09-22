@@ -29,6 +29,7 @@ ALLOWED_HOSTS = ['localhost',
                  '0.0.0.0',
                  '192.168.1.104',
                  '192.168.117.104',
+                 '192.168.117.237',
                  '192.168.179.104',
                  '192.168.8.22',
                  '127.0.0.1',
@@ -48,7 +49,6 @@ INSTALLED_APPS = [
     "authentication",
     'apps.home',
     "apps.users",
-    'doctors',
     "apps.doctor",
     "apps.patients",
     "apps.emails",
@@ -214,5 +214,6 @@ PUSHER_SSL = True
 
 
 #اعدادات الموديل
-ROBOFLOW_API_KEY = 'Mw0WRYo7QKz4vlBJWxWG'  # استبدل هذا بالمفتاح الفعلي
-ROBOFLOW_API_KEY_For_Detection="BNMaKnfVi9xtFUFmcOFY"
+# ROBOFLOW_API_KEY = 'Mw0WRYo7QKz4vlBJWxWG'  # استبدل هذا بالمفتاح الفعلي
+ROBOFLOW_API_KEY = 'ItXgPAZWt0DYyYfbUnic'  # استبدل هذا بالمفتاح الفعلي
+ROBOFLOW_API_KEY_For_Detection = "BNMaKnfVi9xtFUFmcOFY"

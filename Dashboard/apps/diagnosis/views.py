@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view,permission_classes
 from rest_framework import status
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-
+import torch
 from .models import DiagnosisReport, Disease, mymodel
 from apps.patients.models import Patient
 
@@ -75,6 +75,7 @@ class DisagnosisListView(APIView):
         # حذف التشخيص
         diagnosis.delete()
         
+        
         # إرجاع استجابة تأكيدية بنجاح الحذف
         return Response({'success': True, 'message': 'تشخيص تم حذفه بنجاح'}, status=status.HTTP_200_OK)
 # دلة تشخيص صورة
@@ -99,7 +100,7 @@ class ImageUploadView(APIView):
         # مسار الملف المحفوظ بشكل دائم
         saved_image_path = my_model_instance.image.path
         print(saved_image_path)
-        
+        print(f"torch version: {torch.__version__}")
         disease = get_object_or_404(Disease, id=1)
         disease_type = "unknown"
         completed = False
@@ -107,7 +108,8 @@ class ImageUploadView(APIView):
           
             
             # تمرير مسار الملف المحفوظ بشكل دائم إلى infer
-            response = client.infer(saved_image_path, model_id="alltheimaegs/1")
+            # response = client.infer(saved_image_path, model_id="alltheimaegs/1")
+            response = client.infer(saved_image_path, model_id="ccatract/4")
             
             if response:
                 predictions = response.get('predictions', [])

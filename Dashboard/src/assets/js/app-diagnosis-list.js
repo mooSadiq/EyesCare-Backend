@@ -466,7 +466,7 @@ document.getElementById('addNewDiagnoseForm').addEventListener('submit', async f
       }
       if (result.disease_type !== 'unknown') {
         showAlert('success', 'تم التشخيص!', result.message, 'btn btn-success');
-        fetchAdvertisementsData();
+        fetchAndInitializeTable();
 
         this.reset();
       }
