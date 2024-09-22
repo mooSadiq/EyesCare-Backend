@@ -22,6 +22,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 
 from inference_sdk import InferenceHTTPClient
+from . import Detect_Eye
 
 # Create your views here.
 # إعداد عميل Roboflow
@@ -38,6 +39,22 @@ def diagnosisDetails(request, id):
 
 def diagnosisDetailsPrint(request):
   return render(request, 'diagnosis_details_print.html')
+
+
+
+# هذي الدالة الي توصل لل module
+def detect_Eye():
+    result = Detect_Eye.classify_and_save_image(image_path='1.jpg')
+    print(result)
+
+# result شكل النتائج 
+# {
+#     "Eye",
+#     "Internal-Eye",
+#     "No detection: No eye detected",
+#     "No sufficient confidence.",
+#      "Error during RobowFlow inference hint:'Check Internet'."
+# }
 
 #اعداد رابط ارسال الصورة الى المودل
 client = InferenceHTTPClient(
@@ -153,4 +170,3 @@ class ReportDiagnosisView(APIView):
         except Exception as e:
             # إرجاع رسالة خطأ عامة في حالة حدوث استثناء آخر
             return JsonResponse({'error': 'gggg'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)     
-          
