@@ -1,7 +1,7 @@
 import os
 import cv2
 from inference_sdk import InferenceHTTPClient
-from django.conf import settings
+from config import settings
 
 # Initialize the inference client
 CLIENT = InferenceHTTPClient(
