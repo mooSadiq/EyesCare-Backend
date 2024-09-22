@@ -9,7 +9,7 @@ from rest_framework import status
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import DiagnosisReport, Disease, mymodel
+from .models import DiagnosisReport, Disease, MyModel
 from apps.patients.models import Patient
 
 from .serializers import DiagnosisSerializer, DiseaseSerializer, ImageUploadSerializer
@@ -76,7 +76,7 @@ class ImageUploadView(APIView):
         #جلب كائن المريض من جدول المرضى
         patient = get_object_or_404(Patient, id=2) 
         # حفظ الملف بشكل دائم في قاعدة البيانات
-        my_model_instance = mymodel(title="MyImage", image=image)
+        my_model_instance = MyModel(title="MyImage", image=image)
         my_model_instance.save()
 
         # مسار الملف المحفوظ بشكل دائم

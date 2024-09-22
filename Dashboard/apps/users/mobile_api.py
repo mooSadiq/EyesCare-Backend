@@ -24,3 +24,24 @@ class CuurentUserDetailView(APIView):
         'message': 'success',
         'data': profile_serializer.data})
     
+
+class UpdateProfileView(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+    def put(self, request):
+        user = user = request.user
+        serializer = UserProfileSerializer(user, data=request.data, partial=True)        
+        if serializer.is_valid():
+            if 'profile_picture' in request.FILES and request.FILES['profile_picture']:
+                user.profile_picture = request.FILES['profile_picture']
+            serializer.save()
+            return Response({
+                'status': True,
+                'code': status.HTTP_200_OK,
+                "message": "تم تعديل بياناتك بنجاح"
+            })
+        
+        return Response({
+                'status': False,
+                'code': status.HTTP_400_BAD_REQUEST,
+                "message": serializer.errors
+            })

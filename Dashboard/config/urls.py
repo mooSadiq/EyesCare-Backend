@@ -46,7 +46,7 @@ urlpatterns = [
     path('doc/', include("doctors.urls")),
     # diagnosis history
     path('diagnosis/', include("apps.diagnosis.urls")),
-    # path('api/diagnosis/', include("apps.diagnosis.api_urls")),
+    path('api/diagnosis/', include("apps.diagnosis.api_urls")),
     # advertisements 
     path('advertisements/', include("apps.advertisements.urls")),
     # authentication

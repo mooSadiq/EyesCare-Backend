@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from config import settings
 from .models import Conversation, Message, File
-from .serializers import ConversationSerializer, MessageSerializer
+from .serializers import ConversationSerializer, MessageSerializer,ContactsSerializer
 from rest_framework.permissions import IsAuthenticated
 from apps.users.models import CustomUser
 from django.db import transaction
@@ -19,7 +19,6 @@ pusher_client = pusher.Pusher(
 
 class ConversationList(APIView):
     permission_classes = [IsAuthenticated]
-
     def get(self, request):
         conversations = Conversation.objects.filter(user1=request.user) | Conversation.objects.filter(user2=request.user)
         serializer = ConversationSerializer(conversations, many=True, context={'request': request})
@@ -55,11 +54,11 @@ class MessageList(APIView):
         return Response(serializer.data)
       
     def post(self, request):
-        content = request.data.get('content')
+        content = request.data.get('content', '') 
         receiver_id = request.data.get('receiver')
         file = request.FILES.get('file')
         
-        if not content:
+        if not content and not file:
             return Response({'error': 'Content is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
         if not receiver_id:
@@ -76,7 +75,10 @@ class MessageList(APIView):
         )
 
         with transaction.atomic():
-            serializer = MessageSerializer(data={'content': content, 'conversation': conversation.id, 'sender': request.user.id})
+            message_data = {'conversation': conversation.id, 'sender': request.user.id}
+            if content:
+              message_data['content'] = content
+            serializer = MessageSerializer(data=message_data)
             if serializer.is_valid():
                 serializer.save(sender=request.user)
                 message = serializer.instance
@@ -89,3 +91,5 @@ class MessageList(APIView):
 
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+

@@ -1,6 +1,8 @@
 from django.db import models
 from apps.patients.models import Patient
 from apps.diseases.models import Disease
+import uuid
+import time
 
 # Create your models here.
 class DiagnosisReport(models.Model):
@@ -14,9 +16,18 @@ class DiagnosisReport(models.Model):
     def __str__(self):
         return f"{self.patient},{self.diagnosis_date}" 
 
-class mymodel(models.Model):
-    title = models.CharField(max_length=300)
-    image = models.ImageField(upload_to="diag/")
-    
-    def str(self):
+class MyModel(models.Model):
+    title = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='images_try/')  # حفظ الملف في مجلد 'images/' داخل 'MEDIA_ROOT'
+
+    def save(self, *args, **kwargs):
+        if self.image:
+            extension = self.image.name[self.image.name.rfind('.'):]
+
+            unique_id = int(time.time() * 1000) 
+            self.image.name = f"diag_img_{unique_id}{extension}"
+        
+        super(MyModel, self).save(*args, **kwargs)
+
+    def __str__(self):
         return self.title

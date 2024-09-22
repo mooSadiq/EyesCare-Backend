@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sign-In</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        #user-info {
+            margin-top: 20px;
+        }
+        #user-info img {
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sign in with Google</h1>
+    <div id="buttonDiv"></div>
+    <div id="user-info" style="display: none;">
+        <h2>User Information</h2>
+        <p><strong>Name:</strong> <span id="userName"></span></p>
+        <p><strong>Email:</strong> <span id="userEmail"></span></p>
+        <p><strong>ID Token:</strong> <span id="userToken"></span></p>
+        <img id="userImage" alt="Profile Picture" width="100" height="100"/>
+    </div>
+
+    <script>
+        window.onload = function() {
+            google.accounts.id.initialize({
+                client_id: '259124334397-ucv9aft7ptguv39jbmenbbceaepgjn3h.apps.googleusercontent.com',
+                callback: handleCredentialResponse
+            });
+
+            google.accounts.id.renderButton(
+                document.getElementById('buttonDiv'),
+                { theme: "outline", size: "large" }
+            );
+
+            google.accounts.id.prompt(); // also display the One Tap UI
+        };
+
+        function handleCredentialResponse(response) {
+            if (!response.credential) {
+                console.error('No credential response');
+                return;
+            }
+
+            var id_token = response.credential;
+
+            const tokenParts = id_token.split('.');
+            if (tokenParts.length === 3) {
+                try {
+                    const payload = JSON.parse(atob(tokenParts[1]));
+
+                    document.getElementById('userName').textContent = payload.name;
+                    document.getElementById('userEmail').textContent = payload.email;
+                    document.getElementById('userToken').textContent = id_token;
+                    document.getElementById('userImage').src = payload.picture;
+
+                    document.getElementById('user-info').style.display = 'block';
+                } catch (e) {
+                    console.error('Error parsing token payload', e);
+                }
+            } else {
+                console.error('Invalid ID token format');
+            }
+        }
+    </script>
+</body>
+</html>

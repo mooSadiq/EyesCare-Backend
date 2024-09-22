@@ -4,16 +4,13 @@ function scrollToBottom() {
   chatHistoryBody.scrollTo(0, chatHistoryBody.scrollHeight);
 }
 scrollToBottom();
+let otherUserId = null;
+
 const pusher = new Pusher('6c5bc3a240a5017e7aac', {
   cluster: 'ap1',
   encrypted: true
 });
-const chatHistoryHeader = document.getElementById('chat-history-header');
-const chatHistoryFooter = document.getElementById('chat-history-footer');
-const userAvatarElement = document.getElementById('user-avatar');
-const userNameElement = document.getElementById('user-name');
-const userEmailElement = document.getElementById('user-email');
-console.log(pusher);
+
 
 // دالة للاشتراك في المحادثة
 function subscribeToConversation(conversationId) {
@@ -24,9 +21,16 @@ function subscribeToConversation(conversationId) {
     console.log('Subscribed successfully to the channel.');
   });
   // استقبال الرسائل الجديدة
-  channel.bind('new-message', function(data) {
+  channel.bind('new-message', async function(data) {
     console.log('New message received:', data.message);
     renderNewMessage(data.message); // قم بإضافة الرسالة إلى واجهة المستخدم
+    const method = 'POST';
+    const url = `/api/chat/received/${data.message.id}/`;
+    const messageReceived = await submitRequest(url, method, null);
+    if(messageReceived.success) {
+      console.log('recevied');
+    }
+
   });
 }
 
@@ -37,25 +41,36 @@ function renderNewMessage(message) {
   const messageItem = document.createElement('li');
 
   if (message.sender !== otherUserId) {
-    messageItem.className = 'chat-message chat-message-right';
-    messageItem.innerHTML = `
-      <div class="d-flex overflow-hidden">
-        <div class="chat-message-wrapper flex-grow-1">
-          <div class="chat-message-text">
-            <p class="mb-0">${message.content}</p>
-          </div>
-          <div class="text-end text-muted mt-1">
-            <i class="ti ti-checks ti-xs me-1 text-success"></i>
-            <small>${new Date(message.timestamp).toLocaleTimeString()}</small>
-          </div>
-        </div>
-        <div class="user-avatar flex-shrink-0 ms-3">
-          <div class="avatar avatar-sm">
-            <img src="${'../../assets/img/avatars/1.png'}" alt="Avatar" class="rounded-circle" />
-          </div>
-        </div>
-      </div>
-    `;
+    // messageItem.className = 'chat-message chat-message-right';
+    // messageItem.innerHTML = `
+    //   <div class="d-flex overflow-hidden">
+    //     <div class="chat-message-wrapper flex-grow-1">
+    //       <div class="chat-message-text">
+    //       ${
+    //         message.file !== null
+    //           ? `
+    //             <img src="${message.file.file}" alt="Image" width="120" height="150"" />
+    //             ${
+    //               message.content !== null
+    //                 ? `<p class="mb-0">${message.content}</p>`  
+    //                 : ' ' 
+    //             }
+    //           `
+    //           : `<p class="mb-0">${message.content}</p>` 
+    //       }
+    //       </div>
+    //       <div class="text-end text-muted mt-1">
+    //         <i class="ti ti-checks ti-xs me-1 text-success"></i>
+    //         <small>${new Date(message.timestamp).toLocaleTimeString()}</small>
+    //       </div>
+    //     </div>
+    //     <div class="user-avatar flex-shrink-0 ms-3">
+    //       <div class="avatar avatar-sm">
+    //         <img src="${'../../assets/img/avatars/1.png'}" alt="Avatar" class="rounded-circle" />
+    //       </div>
+    //     </div>
+    //   </div>
+    // `;
   } else {
     messageItem.className = 'chat-message';
     messageItem.innerHTML = `
@@ -82,61 +97,49 @@ function renderNewMessage(message) {
 
 }
 
-function initializeChatData(data) {
-  const contactList = document.getElementById('chat-list');
+function initializeData(data) {
+  const chatList = document.getElementById('chat-list');
+  const contactList = document.getElementById('contact-list');
+  const users = data.users;
+  // تصفية المستخدمين الذين لديهم محادثات
+  const usersWithConversations = users.filter(user => user.conversations && user.conversations.length > 0);
+  const usersWithoutConversations = users.filter(user => !user.conversations || user.conversations.length === 0);
 
-  contactList.innerHTML = '';
-  console.log(data)
-  data.forEach(chat => {
+  chatList.innerHTML = '';
+  usersWithConversations.forEach(chat => {
+      console.log('chat',chat);
       const li = document.createElement('li');
       li.classList.add('chat-contact-list-item');
-      const name = chat.other_user.first_name +' ' + chat.other_user.last_name;
+      const name = chat.first_name +' ' + chat.last_name;
+      const chatIdd = chat.conversations[0].id;
+      console.log(chatIdd);
       li.innerHTML = `
-          <a class="d-flex align-items-center chat-contact-item" href="javascript:void(0);" data-id="${chat.id}" data-name="${name}" data-avatar="${chat.other_user.profile_picture}" data-email="${chat.other_user.email}">
+          <a class="d-flex align-items-center chat-contact-item" href="javascript:void(0);" data-id="${chat.id}" data-name="${name}" data-avatar="${chat.profile_picture}" data-email="${chat.email}">
               <div class="flex-shrink-0 avatar avatar-online'}">
-                  <img src="${chat.other_user.profile_picture || '../../assets/img/avatars/default-avatar.png'}" alt="Avatar" class="rounded-circle" />
+                  <img src="${chat.profile_picture || '../../assets/img/avatars/default-avatar.png'}" alt="Avatar" class="rounded-circle" />
               </div>
               <div class="chat-contact-info flex-grow-1 ms-2">
                   <h6 class="chat-contact-name text-truncate m-0">${name}</h6>
-                  <p class="chat-contact-status text-muted text-truncate mb-0">${chat.last_message.content}</p>
+                  <p class="chat-contact-status text-muted text-truncate mb-0">${chat.conversations[0].last_message.content}</p>
               </div>
-              <small class="text-muted mb-auto">${chat.last_message.time_since}</small>
+              <small class="text-muted mb-auto">${chat.conversations[0].last_message.time_since}</small>
           </a>
       `;
-      contactList.appendChild(li);
-  });
-  document.querySelectorAll('.chat-contact-item').forEach(link => {
-    link.addEventListener('click', function () {
-        const chatId = parseInt(this.getAttribute('data-id'), 10);
-        const userName = this.getAttribute('data-name');
-        const userEmail = this.getAttribute('data-email');
-        const userAvatar = this.getAttribute('data-avatar');
-        if (!isNaN(chatId)) {
-          userNameElement.innerText = userName;
-          userEmailElement.innerText = userEmail;
-          userAvatarElement.src = userAvatar;
-          chatHistoryHeader.classList.remove('d-none');
-          chatHistoryFooter.classList.remove('d-none');
-          addMessagesToChat(chatId);
-          console.log(chatId);
-        }
-    });
-});
-}
-function initializeData(data) {
-  // الحصول على العنصر <ul> الذي يحتوي على قائمة المستخدمين
-  const contactList = document.getElementById('contact-list');
 
-  // تفريغ أي محتويات سابقة
-  // contactList.innerHTML = '';
-  console.log(data.users)
+      li.addEventListener('click', () => {
+        updateChatHeader(chat);
+        addMessagesToChat(chatIdd);
+        scrollToBottom();
+        // حفظ معرف المستخدم لاستخدامه لاحقًا عند إرسال الرسائل
+      });
+      chatList.appendChild(li);
+  });
+
   // تكرار لكل مستخدم في البيانات
-  data.users.forEach(user => {
-      // إنشاء عنصر <li> جديد
-      const li = document.createElement('li');
+  usersWithoutConversations.forEach(user => {
+      const li  = document.createElement('li');
       li.classList.add('chat-contact-list-item');
       const name = user.first_name +' ' + user.last_name;
-      // إضافة محتوى المستخدم داخل <li>
       li.innerHTML = `
           <a class="d-flex align-items-center">
               <div class="flex-shrink-0 avatar avatar-online'}">
@@ -148,12 +151,33 @@ function initializeData(data) {
               </div>
           </a>
       `;
-
-      // إضافة عنصر <li> إلى القائمة
+    li.addEventListener('click', () => {
+      updateChatHeader(user);
+      otherUserId = user.id;
+      startChatWithUser(user.id);
+    });
       contactList.appendChild(li);
   });
 }
-let otherUserId = null;
+
+// دالة لتحديث الـ Header الخاص بالشات
+function updateChatHeader(user) {
+  const chatHeader = document.getElementById('chat-history-header');
+  const userAvatar = document.getElementById('user-avatar');
+  const userName = document.getElementById('user-name');
+  const userEmail = document.getElementById('user-email');
+
+  // تحديث الصورة والاسم والبريد الإلكتروني
+  userAvatar.src = user.profile_picture || '../../assets/img/avatars/default-avatar.png';
+  userName.textContent = `${user.first_name} ${user.last_name}`;
+  userEmail.textContent = user.email;
+  const chatHistory = document.getElementById('chat-history');
+  chatHistory.innerHTML = '';
+  // إظهار الـ Header والشات
+  chatHeader.classList.remove('d-none');
+  document.getElementById('chat-history-footer').classList.remove('d-none');
+}
+
 async function addMessagesToChat(chatId) {
   const url_get_chat_data = `/api/chat/conversations/${chatId}`;
   try {
@@ -165,31 +189,40 @@ async function addMessagesToChat(chatId) {
     const otherUserprofile_picture = conversationData.other_user.profile_picture;
   
     conversationData.messages.forEach(message => {
-      // إنشاء عنصر الرسالة
       const messageItem = document.createElement('li');
   
-      // تحديد التنسيق حسب المرسل
       if (message.sender !== otherUserId) {
         // رسالة المستخدم الحالي (الرسالة على اليمين)
         messageItem.className = 'chat-message chat-message-right';
         messageItem.innerHTML = `
-          <div class="d-flex overflow-hidden">
-            <div class="chat-message-wrapper flex-grow-1">
-              <div class="chat-message-text">
-                <p class="mb-0">${message.content}</p>
-              </div>
-              <div class="text-end text-muted mt-1">
-                <i class="ti ti-checks ti-xs me-1 text-success"></i>
-                <small>${new Date(message.timestamp).toLocaleTimeString()}</small>
-              </div>
+        <div class="d-flex overflow-hidden">
+          <div class="chat-message-wrapper flex-grow-1">
+            <div class="chat-message-text">
+            ${
+              message.file !== null
+                ? `
+                  <img src="${message.file.file}" alt="Image" width="120" height="150"" />
+                  ${
+                    message.content !== null
+                      ? `<p class="mb-0">${message.content}</p>`  
+                      : ' ' 
+                  }
+                `
+                : `<p class="mb-0">${message.content}</p>` 
+            }
             </div>
-            <div class="user-avatar flex-shrink-0 ms-3">
-              <div class="avatar avatar-sm">
-                <img src="${ '../../assets/img/avatars/1.png'}" alt="Avatar" class="rounded-circle" />
-              </div>
+            <div class="text-end text-muted mt-1">
+              <i class="ti ti-checks ti-xs me-1 text-success"></i>
+              <small>${new Date(message.timestamp).toLocaleTimeString()}</small>
             </div>
           </div>
-        `;
+          <div class="user-avatar flex-shrink-0 ms-3">
+            <div class="avatar avatar-sm">
+              <img src="${'../../assets/img/avatars/1.png'}" alt="Avatar" class="rounded-circle" />
+            </div>
+          </div>
+        </div>
+      `;
       } else {
         // رسالة المستخدم الآخر (الرسالة على اليسار)
         messageItem.className = 'chat-message';
@@ -202,7 +235,18 @@ async function addMessagesToChat(chatId) {
             </div>
             <div class="chat-message-wrapper flex-grow-1">
               <div class="chat-message-text">
-                <p class="mb-0">${message.content}</p>
+              ${
+                message.file !== null
+                  ? `
+                    <img src="${message.file.file}" alt="Image" width="120" height="150" class="chat-image" />
+                    ${
+                      message.content !== null
+                        ? `<p class="mb-0">${message.content}</p>`  
+                        : ' ' 
+                    }
+                  `
+                  : `<p class="mb-0">${message.content}</p>` // عرض النص فقط إذا لم يكن هناك ملف
+              }
               </div>
               <div class="text-muted mt-1">
                 <small>${new Date(message.timestamp).toLocaleTimeString()}</small>
@@ -229,7 +273,7 @@ console.log(otherUserId);
 // استدعاء الدالة بعد جلب بيانات المحادثة
 
 async function fetchAndInitializeData() {
-  const url_get_users_data = '/chat/api/get/users/';
+  const url_get_users_data = '/api/chat/contacts/';
   try {
       const data = await fetchAllData(url_get_users_data);
       initializeData(data);
@@ -238,16 +282,7 @@ async function fetchAndInitializeData() {
   }
 }
 
-async function fetchConv() {
-  const url_get_users_data = '/chat/api/get/conv/';
-  try {
-      const data = await fetchAllData(url_get_users_data);
-      initializeChatData(data);
-  } catch (error) {
-      console.error('خطأ في جلب بيانات :', error);
-  }
-  
-}
+
 const formSendMessage = document.querySelector('.form-send-message');
 const messageInput = document.querySelector('.message-input');
 // Send Message
@@ -256,51 +291,70 @@ formSendMessage.addEventListener('submit', async (e) => {
   console.log(otherUserId);
   const otheruserId = otherUserId;
   console.log(otheruserId);
-  if (messageInput.value) {
+  const fileInput = document.getElementById('attach-doc').files[0];
+    if (messageInput.value || fileInput) {
     // الحصول على الرسالة
     const messageContent = messageInput.value;
 
     // // إنشاء عنصر جديد للرسالة المرسلة
-    // const messageItem = document.createElement('li');
-    // messageItem.className = 'chat-message chat-message-right';
-    // messageItem.innerHTML = `
-    //   <div class="d-flex overflow-hidden">
-    //     <div class="chat-message-wrapper flex-grow-1">
-    //       <div class="chat-message-text">
-    //         <p class="mb-0 text-break">${messageContent}</p>
-    //       </div>
-    //       <div class="text-end text-muted mt-1">
-    //         <i class="ti ti-checks ti-xs me-1 text-success"></i>
-    //         <small>${new Date().toLocaleTimeString()}</small>
-    //       </div>
-    //     </div>
-    //     <div class="user-avatar flex-shrink-0 ms-3">
-    //       <div class="avatar avatar-sm">
-    //         <img src="${'../../assets/img/avatars/1.png'}" alt="Avatar" class="rounded-circle" />
-    //       </div>
-    //     </div>
-    //   </div>
-    // `;
+    const messageItem = document.createElement('li');
+    messageItem.className = 'chat-message chat-message-right';
+    messageItem.innerHTML = `
+    <div class="d-flex overflow-hidden">
+      <div class="chat-message-wrapper flex-grow-1">
+        <div class="chat-message-text">
+        ${
+          fileInput? `<img src="${fileInput}" alt="Image" width="120" height="150"" />
+              ${
+                messageContent !== null
+                  ? `<p class="mb-0">${messageContent}</p>`  
+                  : ' ' 
+              }
+            `
+            : `<p class="mb-0">${messageContent}</p>` 
+        }
+        </div>
+        <div class="text-end text-muted mt-1">
+          <i class="ti ti-clock ti-xs me-1 text-success" id="status-icon"></i>
+          <small>${new Date().toLocaleTimeString()}</small>
+        </div>
+      </div>
+      <div class="user-avatar flex-shrink-0 ms-3">
+        <div class="avatar avatar-sm">
+          <img src="${'../../assets/img/avatars/1.png'}" alt="Avatar" class="rounded-circle" />
+        </div>
+      </div>
+    </div>
+  `;
 
     // // إضافة الرسالة إلى قائمة الرسائل
-    // document.getElementById('chat-history').appendChild(messageItem);
-
-    // إعادة تعيين حقل الإدخال
+    document.getElementById('chat-history').appendChild(messageItem);
     messageInput.value = '';
+    // إعادة تعيين حقل الإدخال
 
     // التمرير إلى الأسفل
-    // scrollToBottom();
+    scrollToBottom();
     const method = 'POST';
     const formData = new FormData();
     formData.append('content', messageContent);
     console.log(otherUserId);
     formData.append('receiver', otherUserId);
+      // Check if a profile picture is uploaded, and add it to the form data
+    
+    if (fileInput) {
+        formData.append('file', fileInput);
+    }
     // هنا يمكنك إرسال الرسالة إلى السيرفر إذا كنت ترغب في حفظها
     try {
       const url = '/api/chat/messages/send/';
       const result = await submitRequest(url, method, formData);      
       if (result.success) {
         console.log('تم إرسال الرسالة بنجاح:');
+        const statusIcon = messageItem.querySelector('#status-icon');
+        if (statusIcon) {
+          statusIcon.className = 'ti ti-checks ti-xs me-1 text-success';
+        }
+        messageInput.value = '';
         scrollToBottom();
 
       }
@@ -312,7 +366,6 @@ formSendMessage.addEventListener('submit', async (e) => {
     }
   }
 });
-// Initialize on page load
 
 'use strict';
 
@@ -320,7 +373,6 @@ document.addEventListener('DOMContentLoaded',
  function () {
   
   (function () {
-    fetchConv();
     fetchAndInitializeData();
     const chatContactsBody = document.querySelector('.app-chat-contacts .sidebar-body'),
       chatContactListItems = [].slice.call(
@@ -375,11 +427,6 @@ document.addEventListener('DOMContentLoaded',
       });
     }
 
-    // Scroll to bottom function
-    function scrollToBottom() {
-      chatHistoryBody.scrollTo(0, chatHistoryBody.scrollHeight);
-    }
-    scrollToBottom();
 
     // User About Maxlength Init
     if (chatSidebarLeftUserAbout.length) {

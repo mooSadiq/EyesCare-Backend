@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Conversation, Message, File
 from apps.users.models import CustomUser
 from django.utils.timesince import timesince
+from django.db.models import Q
 
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -41,7 +42,39 @@ class ConversationSerializer(serializers.ModelSerializer):
         last_message = obj.messages.order_by('-timestamp').first()  # جلب آخر رسالة
         return MessageSerializer(last_message).data
 
+
+
+
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'email', 'first_name', 'last_name', 'profile_picture']
+        
+class ContactsConversationSerializer(serializers.ModelSerializer):
+    messages = MessageSerializer(many=True, read_only=True)
+    last_message = serializers.SerializerMethodField()  # آخر رسالة
+    class Meta:
+        model = Conversation
+        fields = ['id', 'user1', 'user2', 'created_at', 'messages','last_message']
+        
+    def get_last_message(self, obj):
+        last_message = obj.messages.order_by('-timestamp').first()  # جلب آخر رسالة
+        return MessageSerializer(last_message).data
+        
+class ContactsSerializer(serializers.ModelSerializer):
+    conversations = serializers.SerializerMethodField()
+
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'first_name', 'last_name', 'profile_picture', 'email', 'conversations']
+
+    def get_conversations(self, user):
+        request_user = self.context['request'].user
+        conversations = Conversation.objects.filter(
+            (Q(user1=request_user) & Q(user2=user)) |
+            (Q(user2=request_user) & Q(user1=user))
+        )
+        return ContactsConversationSerializer(conversations, many=True).data if conversations.exists() else None
+      
