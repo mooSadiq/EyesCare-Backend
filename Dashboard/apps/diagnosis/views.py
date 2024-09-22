@@ -100,7 +100,7 @@ class ImageUploadView(APIView):
         # مسار الملف المحفوظ بشكل دائم
         saved_image_path = my_model_instance.image.path
         print(saved_image_path)
-        print(f"torch version: {torch.__version__}")
+        
         disease = get_object_or_404(Disease, id=1)
         disease_type = "unknown"
         completed = False
