@@ -214,5 +214,5 @@ PUSHER_SSL = True
 
 
 #اعدادات الموديل
-ROBOFLOW_API_KEY = 'Mw0WRYo7QKz4vlBJWxWG'  # استبدل هذا بالمفتاح الفعلي
+ROBOFLOW_API_KEY = 'ItXgPAZWt0DYyYfbUnic'  # استبدل هذا بالمفتاح الفعلي
 ROBOFLOW_API_KEY_For_Detection="BNMaKnfVi9xtFUFmcOFY"
