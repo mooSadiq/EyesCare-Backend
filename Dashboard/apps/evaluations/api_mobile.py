@@ -16,7 +16,7 @@ def get_all_reviews(request):
     else:
         return Response({"status":False,"code":404,"Info":"لا يوجد أي بيانات"},status.HTTP_404_NOT_FOUND)
 
-@api_view(['img-fluid'])
+@api_view(['POST'])
 def set_review(request):
     user_id = request.data.get('user')
     if not user_id:

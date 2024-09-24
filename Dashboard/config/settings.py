@@ -149,6 +149,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+DJANGO_NOTIFICATIONS_CONFIG = {
+    'USE_JSONFIELD': True
+    }
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

@@ -67,6 +67,10 @@ urlpatterns = [
     path('consultations/', include('apps.consultations.urls')),
     
     
+    #notifications
+    path('notifications/', include('apps.notifications.urls')),
+    
+    
     
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
