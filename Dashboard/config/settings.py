@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'apps.evaluations',
     'apps.chat',
     'apps.consultations',
+    'apps.researches',
     
 
 ]
