@@ -147,6 +147,37 @@ function toJson(data) {
     }
 }
 
+function timeAgo(timestamp) {
+    const now = new Date();
+    const pastDate = new Date(timestamp);
+    const diffInMs = now - pastDate; 
+    const diffInSeconds = Math.floor(diffInMs / 1000);
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    const diffInHours = Math.floor(diffInMinutes / 60); 
+    const diffInDays = Math.floor(diffInHours / 24);
+    const diffInWeeks = Math.floor(diffInDays / 7);
+    const diffInMonths = Math.floor(diffInDays / 30);
+    const diffInYears = Math.floor(diffInDays / 365);
+
+    if (diffInSeconds < 60) {
+        return `${diffInSeconds} seconds ago`;
+    } else if (diffInMinutes < 60) {
+        return `${diffInMinutes} minutes ago`;
+    } else if (diffInHours < 24) {
+        return `${diffInHours} hours ago`;
+    } else if (diffInDays < 7) {
+        return `${diffInDays} days ago`;
+    } else if (diffInWeeks < 4) {
+        return `${diffInWeeks} weeks ago`;
+    } else if (diffInMonths < 12) {
+        return `${diffInMonths} months ago`;
+    } else {
+        return `${diffInYears} years ago`;
+    }
+}
+
+
+
 
 function add_item(notification,listofnotifications){
     let notification_id=notification.id;
@@ -163,7 +194,7 @@ function add_item(notification,listofnotifications){
         </div>
         </div>
             <div class="flex-grow-1">
-        <a href="evaluations/" onclick="read(${notification_id})">
+        <a href="/evaluations/" onclick="read(${notification_id})">
             <h6 class="mb-1">${notification.verb}</h6>
             <p class="mb-0">${notification.description}</p>
         </a>`
@@ -187,7 +218,7 @@ function add_item(notification,listofnotifications){
     </div>
     </div>
         <div class="flex-grow-1">
-        <a href="diagnosis/" onclick="read(${notification_id})">
+        <a href="/diagnosis/" onclick="read(${notification_id})">
             <h6 class="mb-1">${notification.verb}</h6>
             <p class="mb-0">${notification.description}</p>
         </a>`
@@ -199,7 +230,7 @@ function add_item(notification,listofnotifications){
     </div>
     </div>
         <div class="flex-grow-1">
-        <a href="doctors/" onclick="read(${notification_id})">
+        <a href="/doctors/" onclick="read(${notification_id})">
             <h6 class="mb-1">${notification.verb}</h6>
             <p class="mb-0">${notification.description}</p>
         </a>`
@@ -211,7 +242,7 @@ function add_item(notification,listofnotifications){
     </div>
     </div>
         <div class="flex-grow-1">
-        <a href="patients/" onclick="read(${notification_id})">
+        <a href="/patients/" onclick="read(${notification_id})">
             <h6 class="mb-1">${notification.verb}</h6>
             <p class="mb-0">${notification.description}</p>
         </a>`
@@ -223,7 +254,7 @@ function add_item(notification,listofnotifications){
     </div>
     </div>
         <div class="flex-grow-1">
-        <a href="posts/" onclick="read(${notification_id})">
+        <a href="/posts/" onclick="read(${notification_id})">
             <h6 class="mb-1">${notification.verb}</h6>
             <p class="mb-0">${notification.description}</p>
         </a>`
@@ -235,13 +266,13 @@ function add_item(notification,listofnotifications){
     </div>
     </div>
         <div class="flex-grow-1">
-        <a href="users/" onclick="read(${notification_id})">
+        <a href="/users/" onclick="read(${notification_id})">
             <h6 class="mb-1">${notification.verb}</h6>
             <p class="mb-0">${notification.description}</p>
         </a>`
     : ''
     }
-        <small class="text-muted">${notification.timestamp}</small>
+        <small class="text-muted">${timeAgo(notification.timestamp)}</small>
         </div>
         <div class="flex-shrink-0 dropdown-notifications-actions">
             ${notification.unread == 1 ? `
@@ -256,10 +287,19 @@ function add_item(notification,listofnotifications){
 </li>`;
     listofnotifications.innerHTML += list_item;
 }
-function showPatientProfile(data) {
-    document.getElementById('noti-count').innerText = data.count;
+function shownotifications(data) {
+    if(typeof data.count === "undefined" || data.count === null)
+        document.getElementById('noti-count').innerText = 0;
+    else{
+        document.getElementById('noti-count').innerText=data.count;
+    }
     notifications=data.data
     listofnotifications=document.getElementById('notification-list')
+    if (listofnotifications) {
+    while (listofnotifications.firstChild) {
+        listofnotifications.removeChild(listofnotifications.firstChild);
+    }
+}
     for(let i=0;i<notifications.length;i++){
         add_item(notifications[i],listofnotifications);
     }
@@ -269,8 +309,7 @@ async function fetchAndInitializelist() {
     const url_get_deseases_data = '/notifications/get/all/';
     try {
         const data = await fetchAllData(url_get_deseases_data);
-        showPatientProfile(data);
-        console.log(data.data);
+        shownotifications(data);
     } catch (error) {
         console.error('خطأ في جلب بيانات :', error);
     }
@@ -301,7 +340,6 @@ async function read_all(){
             try {
             const result = await submitRequest(url, method);
             if (result.success) {
-                window.location.href = '';
                 fetchAndInitializelist() 
                 this.reset();
             }
@@ -318,7 +356,6 @@ async function delete_notifictions(notification_id){
     const url = `/notifications/delete/${notification_id}/`;
     const deleteResult = await submitRequest(url, method);
     if (deleteResult.success) {
-        window.location.href = '';
         fetchAndInitializelist();
     } else {
         showAlert('error', 'حدث خطأ!', deleteResult.message, 'btn btn-danger');
