@@ -5,6 +5,7 @@ from apps.users.models import CustomUser
 
 class Field(models.Model):
     name = models.CharField(max_length=100)  # اسم المجال
+    description = models.TextField(null=True)
     created_at = models.DateField(auto_now_add=True)  
 
     def __str__(self):
@@ -13,9 +14,10 @@ class Field(models.Model):
 
 class Journal(models.Model):
     name = models.CharField(max_length=255)  
+    abbreviation = models.CharField(max_length=10) #اختصار اسم المجلة في حروف
+    logo = models.ImageField(upload_to='journals_logo/')
     website_url = models.URLField()  # رابط موقع المجلة
     created_at = models.DateField(auto_now_add=True)  
-
     def __str__(self):
         return self.name
 
@@ -27,7 +29,7 @@ class Research(models.Model):
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE)  # معرف المجلة التي نُشر فيها البحث
     authors = models.CharField(max_length=255)  
     institution = models.CharField(max_length=255) 
-    pdf_file = models.FileField(upload_to='pdfs/')  # ملف PDF
+    file = models.FileField(upload_to='research/')  # ملف PDF
     field = models.ForeignKey(Field, on_delete=models.CASCADE)  # معرف المجال (التصنيف العلمي)
     views_count = models.PositiveIntegerField(default=0)  # عدد مرات مشاهدة البحث
     downloads_count = models.PositiveIntegerField(default=0)  # عدد مرات تحميل البحث

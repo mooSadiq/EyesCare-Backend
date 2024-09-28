@@ -16,8 +16,8 @@ from apps.users.models import CustomUser
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
-from google.oauth2 import id_token
-from google.auth.transport import requests
+# from google.oauth2 import id_token
+# from google.auth.transport import requests
 from django.views.generic import TemplateView
 from rest_framework.views import APIView
 from django.utils import timezone

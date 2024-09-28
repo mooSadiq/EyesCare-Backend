@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.db.models import Q
 from config import settings
 from .models import Conversation, Message, File
 from .serializers import ConversationSerializer, MessageSerializer,ContactsSerializer
@@ -34,32 +35,54 @@ class ConversationList(APIView):
 
 class ConversationDetails(APIView):
     permission_classes = [IsAuthenticated]
-		
     def get(self, request, pk):
-        conversations = Conversation.objects.get(id=pk)
-        serializer = ConversationSerializer(conversations, many=False, context={'request': request})
-        return Response(serializer.data)
-
-class MessageList(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, conversation_id):
         try:
-            conversation = Conversation.objects.get(id=conversation_id, user1_id=request.user) | Conversation.objects.get(id=conversation_id, user2_id=request.user)
+            conversation = Conversation.objects.get(
+                Q(id=pk) & (Q(user1=request.user) | Q(user2=request.user))
+            )
         except Conversation.DoesNotExist:
             return Response({'error': 'Conversation not found or not authorized.'}, status=status.HTTP_404_NOT_FOUND)
 
+        other_user = conversation.user1 if conversation.user1 != request.user else conversation.user2
+        conversation.messages.filter(is_read=False, sender=other_user).update(is_read=True)
+
         messages = conversation.messages.all()
-        serializer = MessageSerializer(messages, many=True)
+        serializer = MessageSerializer(messages, many=True, context={'request': request})
         return Response(serializer.data)
       
+    def post(self, request, pk):
+        try:
+            conversation = Conversation.objects.get(
+                Q(id=pk) & (Q(user1=request.user) | Q(user2=request.user))
+            )
+        except Conversation.DoesNotExist:
+            return Response({'error': 'Conversation not found or not authorized.'}, status=status.HTTP_404_NOT_FOUND)
+        user_type = request.user.user_type
+        if user_type == 'doctor':
+            conversation.is_active = False
+            conversation.save()
+            return Response({
+                'status': True,
+                'code': status.HTTP_200_OK,
+                'message': 'تم إغلاق المحادثة'
+            }, status=status.HTTP_200_OK)
+        
+        return Response({
+            'status': False,
+            'code': status.HTTP_403_FORBIDDEN,
+            'message': 'ليس لديك صلاحية إغلاق المحادثة'
+        }, status=status.HTTP_403_FORBIDDEN)
+        
+  
+class MessageList(APIView):
+    permission_classes = [IsAuthenticated]
     def post(self, request):
         content = request.data.get('content', '') 
         receiver_id = request.data.get('receiver')
         file = request.FILES.get('file')
         
         if not content and not file:
-            return Response({'error': 'Content is required.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Content or file is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
         if not receiver_id:
             return Response({'error': 'Receiver ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -75,10 +98,14 @@ class MessageList(APIView):
         )
 
         with transaction.atomic():
-            message_data = {'conversation': conversation.id, 'sender': request.user.id}
+            message_data = {
+              'conversation': conversation.id,
+              'sender': request.user.id
+              }
+            
             if content:
               message_data['content'] = content
-            serializer = MessageSerializer(data=message_data)
+            serializer = MessageSerializer(data=message_data, context={'request': request})
             if serializer.is_valid():
                 serializer.save(sender=request.user)
                 message = serializer.instance

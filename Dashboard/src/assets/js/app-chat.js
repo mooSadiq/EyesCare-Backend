@@ -273,7 +273,7 @@ console.log(otherUserId);
 // استدعاء الدالة بعد جلب بيانات المحادثة
 
 async function fetchAndInitializeData() {
-  const url_get_users_data = '/api/chat/contacts/';
+  const url_get_users_data = '/chat/contacts/';
   try {
       const data = await fetchAllData(url_get_users_data);
       initializeData(data);

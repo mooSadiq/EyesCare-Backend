@@ -59,8 +59,8 @@ INSTALLED_APPS = [
     'apps.evaluations',
     'apps.chat',
     'apps.consultations',
-    'apps.researches',
-    
+    'apps.researches',    
+    'notifications',
 
 ]
 
@@ -150,13 +150,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+DJANGO_NOTIFICATIONS_CONFIG = {
+    'USE_JSONFIELD': True
+    }
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Aden'
 
 USE_I18N = True
 
@@ -215,5 +217,5 @@ PUSHER_SSL = True
 
 
 #اعدادات الموديل
-ROBOFLOW_API_KEY = 'Mw0WRYo7QKz4vlBJWxWG'  # استبدل هذا بالمفتاح الفعلي
+ROBOFLOW_API_KEY = 'ItXgPAZWt0DYyYfbUnic'  
 ROBOFLOW_API_KEY_For_Detection="BNMaKnfVi9xtFUFmcOFY"

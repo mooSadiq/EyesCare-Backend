@@ -8,6 +8,7 @@ from django.views import View
 from django.conf import settings
 from .models import MyModel  # استيراد النموذج الذي يحتوي على حقل الملف
 from inference_sdk import InferenceHTTPClient
+# from .Eye_Diseases_Detect import disease_detect
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ImageInferenceView(View):
@@ -19,9 +20,15 @@ class ImageInferenceView(View):
         my_model_instance = MyModel(title="My Image", image=image)
         my_model_instance.save()
 
-        saved_image_path = my_model_instance.image.path
-
-
+        # saved_image_path = my_model_instance.image.path
+        # detected_image,label=disease_detect(saved_image_path)
+        # {
+        #     image,classfication_label
+        #     None, "No eye detected in the image."
+        #     None, "The model did not find a confident prediction."
+        #     None, "Error during RobowFlow inference hint:'Check Internet'."
+        #     None, "No Diseases detected."
+        # }
         client = InferenceHTTPClient(
             api_url="https://detect.roboflow.com",
             api_key="ItXgPAZWt0DYyYfbUnic"

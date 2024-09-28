@@ -28,9 +28,11 @@ urlpatterns = [
     # users
     path("users/", include("apps.users.urls")),
     path("api/profile/", include("apps.users.api_urls")),
+    
     # patients
-
     path("patients/", include("apps.patients.urls")),
+    path('api/patients/', include("apps.patients.api_urls")),
+
     # doctor
     path("doctors/", include("apps.doctor.urls")),
     # emails
@@ -65,6 +67,13 @@ urlpatterns = [
     
     #consultations
     path('consultations/', include('apps.consultations.urls')),
+    
+    
+    #notifications
+    path('notifications/', include('apps.notifications.urls')),
+    #Research
+    path('researches/', include('apps.researches.urls')),
+    path('api/researches/', include('apps.researches.api_urls')),
     
     
     
