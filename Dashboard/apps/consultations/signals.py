@@ -9,4 +9,6 @@ def consultation_created_notification(sender, instance, created, **kwargs):
     if created:
         admin_users = CustomUser.objects.filter(is_staff=True)
         for admin in admin_users:
-            notify.send(instance.patient, recipient=admin, verb='تم طلب إستشارة جديدة', description=f'قام المريض{instance.patient} بطلب إستشارة من {instance.doctor}', action_object=instance,category='Consultation')
+            patient_name=f'{instance.patient.user.first_name} {instance.patient.user.last_name}'
+            doctor_name=f'{instance.doctor.user.first_name} {instance.doctor.user.last_name}'
+            notify.send(instance.patient, recipient=admin, verb='تم طلب إستشارة جديدة', description=f'قام المريض{patient_name} بطلب إستشارة من {doctor_name}', action_object=instance,category='Consultation')

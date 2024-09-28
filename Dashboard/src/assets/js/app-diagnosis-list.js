@@ -457,27 +457,27 @@ document.getElementById('addNewDiagnoseForm').addEventListener('submit', async f
 
   try {
     const result = await submitRequest(url, method, formData);
+if(result.success){
+if (result.data.success == true) {
+  const offcanvasElement = document.getElementById('offcanvasAddDiagnose');
+  const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+  if (offcanvas) {
+    offcanvas.hide();
+  }
 
-    if (result.success) {
-      const offcanvasElement = document.getElementById('offcanvasAddDiagnose');
-      const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
-      if (offcanvas) {
-        offcanvas.hide();
-      }
-      if (result.disease_type !== 'unknown') {
-        showAlert('success', 'تم التشخيص!', result.message, 'btn btn-success');
-        fetchAdvertisementsData();
-
-        this.reset();
-      }
-      else {
-        showAlert('error', 'فشل التشخيص!', 'لم يتم التعرف على المرض', 'btn btn-error');
-      }
-    } else {
-      showAlert('error', 'فشل التشخيص!', 'failed', 'btn btn-error');
-
-
-    }
+  // التحقق مما إذا كان disease_type غير معروف
+  if (result.data.disease_type !== 'unknown') {
+    showAlert('success', 'تم التشخيص!', result.message, 'btn btn-success');
+    fetchAdvertisementsData();
+    this.reset();
+  } else {
+    // إذا كان disease_type غير معروف، عرض رسالة خطأ
+    showAlert('error', 'فشل التشخيص!', 'لم يتم التعرف على المرض', 'btn btn-error');
+  }
+} else {
+  showAlert('error', 'فشل التشخيص!', result.message || 'حدث خطأ', 'btn btn-error');
+}
+}
   } catch (error) {
     console.error('Error adding advertisement:', error);
   }

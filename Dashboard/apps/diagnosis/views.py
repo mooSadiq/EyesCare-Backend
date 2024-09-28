@@ -23,13 +23,8 @@ from rest_framework.permissions import IsAuthenticated
 
 from inference_sdk import InferenceHTTPClient
 from . import Detect_Eye
+from . import Eye_Diseases_Detect
 
-# Create your views here.
-# إعداد عميل Roboflow
-# CLIENT = InferenceHTTPClient(
-#     api_url="https://detect.roboflow.com",
-#     api_key="Mw0WRYo7QKz4vlBJWxWG"
-# )
 
 def index(request):
   return render(request, 'diagnosis_list.html')
@@ -43,9 +38,15 @@ def diagnosisDetailsPrint(request):
 
 
 # هذي الدالة الي توصل لل module
-def detect_Eye():
-    result = Detect_Eye.classify_and_save_image(image_path='1.jpg')
-    print(result)
+def detect_Eye(image_path):
+    
+     image, label  = Eye_Diseases_Detect.disease_detect(image_path)
+   
+     if image is not None:  #  أي اذا كانت عين
+        return image,label
+     else:
+       return None, "تأكد من التقاط الصورة بشكل مناسب"
+    
 
 # result شكل النتائج 
 # {
@@ -87,57 +88,72 @@ class ImageUploadView(APIView):
 
         new_name = generate_image_name(image.name)
         
-        print(image.name)
-        image.name = new_name
-        print(image.name)
+        print(image.name) #قابل للحذف
+        image.name = new_name 
+        print(image.name) #قابل للحذف
         #جلب كائن المريض من جدول المرضى
-        patient = get_object_or_404(Patient, id=2) 
+        patient = get_object_or_404(Patient, id=2) #قابل للحذف
+        # patient = request.user
         # حفظ الملف بشكل دائم في قاعدة البيانات
         my_model_instance = MyModel(title="MyImage", image=image)
         my_model_instance.save()
 
         # مسار الملف المحفوظ بشكل دائم
         saved_image_path = my_model_instance.image.path
-        print(saved_image_path)
+        print(saved_image_path) #قابل للحذف
         
-        disease = get_object_or_404(Disease, id=1)
+        # disease = get_object_or_404(Disease, id=1) #قابل للحذف
+        
         disease_type = "unknown"
         completed = False
         try:
           
             
             # تمرير مسار الملف المحفوظ بشكل دائم إلى infer
-            response = client.infer(saved_image_path, model_id="alltheimaegs/1")
+            # response = client.infer(saved_image_path, model_id="alltheimaegs/1")
+            # response = client.infer(saved_image_path, model_id="ccatract/4")
+            # هنا يقوم ابستدعاء الدالة لتقوم بالكشف عن العين والتشخيص 
+            img, label = detect_Eye(saved_image_path)
+            if img is not None:
+              if label == "No Diseases detected.": # اذا لم يتم تحديد المرض
+                 disease_type= "unknown" # يتم تخزينه على انه غير معرف
+              else: #واذا تم تحديده نأخذ اسمه
+                disease = Disease.objects.get(name_en=label)
+                disease_type =disease.name_ar
+                print("label: ", label) #قابل للحذف
             
-            if response:
-                predictions = response.get('predictions', [])
+            
+              
+            
+            # if response:
+            #     predictions = response.get('predictions', [])
                 
-                for prediction in predictions:
-                  disease_type = prediction.get('class')
-
-                if disease_type == "unknown":
-                   completed = False
-                else:
+            #     for prediction in predictions:
+            #       disease_type = prediction.get('class')
+                # يتم حذف الكود السابق الاربعة الاسطر والمواصلة من هنا
+              if disease_type == "unknown":
+                 completed = False
+              else:
                   completed = True
+                  
                 # حفظ التشخيص في قاعدة البيانات
-                
-                diagnosis_report = DiagnosisReport(
+              diagnosis_report = DiagnosisReport(
                    diagnosis_result=disease_type,
                   image = saved_image_path,
                   compeleted= completed,
                   patient= patient,
                  disease = disease
                 )
-                diagnosis_report.save()
-
-                return JsonResponse({"message":' نتيجة التشخيص هي: '+ disease_type,
+              diagnosis_report.save()
+              #هنا اذا تم التعرف على العين يعيد نتيجة التشخيص اما اسم المرض بالعربي ااو unknown
+              return JsonResponse({"success":True, "message":' نتيجة التشخيص هي: '+ disease_type,
                                      'disease_type':disease_type})
             else:
-                return JsonResponse({'failed': 'عذراً، لم يتم التعرف على المرض!' + disease_type, 'disease_type':disease_type} )
+                return JsonResponse({"success":False,'message': 'عذراً، يبدوا أن الصورة التي تم ارسالها ليست صورة عين!'} )
         
         except Exception as e:
             return JsonResponse({'message': str(e)}, status=500)
-          
+             
 
 def generate_image_name(original_name):
     # الحصول على الوقت الحالي بصيغة يمكن قراءتها

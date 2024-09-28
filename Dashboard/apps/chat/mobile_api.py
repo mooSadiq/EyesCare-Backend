@@ -50,6 +50,7 @@ class ConversationDetails(APIView):
         serializer = MessageSerializer(messages, many=True, context={'request': request})
         return Response(serializer.data)
       
+    #دالة اغلاق المحادثة   
     def post(self, request, pk):
         try:
             conversation = Conversation.objects.get(

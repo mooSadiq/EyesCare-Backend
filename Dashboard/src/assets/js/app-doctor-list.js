@@ -12,6 +12,7 @@ async function fetchAndInitializeTable() {
   const url_get_doctors_data = '/doctors/api/getDoctors/';
   try {
     const data = await fetchAllData(url_get_doctors_data);
+    console.log(data);
     fetchDataToDatatable(data);
   } catch (error) {
     console.error('خطأ في جلب بيانات الأطباء:', error);

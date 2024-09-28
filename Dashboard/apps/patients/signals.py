@@ -9,4 +9,5 @@ def patient_created_notification(sender, instance, created, **kwargs):
     if created:
         admin_users = CustomUser.objects.filter(is_staff=True)
         for admin in admin_users:
-            notify.send(instance.user, recipient=admin, verb='تم إضافة مريض جديد', description=f'تم إضافة{instance.user} كمريض', action_object=instance,category='Patient')
+            user_name = f"{instance.user.first_name} {instance.user.last_name}".strip()
+            notify.send(instance.user, recipient=admin, verb='تم إضافة مريض جديد', description=f'تم إضافة{user_name} كمريض', action_object=instance,category='Patient')

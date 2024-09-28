@@ -38,7 +38,7 @@ function initializeDataTable(data){
             {
               // Categories and Category Detail
               targets: 1,
-              responsivePriority: 2,
+              responsivePriority: 1,
               render: function (data, type, full, meta) {
                 var $name = full['name'],
                   $category_detail = full['description'],
@@ -60,13 +60,11 @@ function initializeDataTable(data){
             {
               // Actions
               targets: -1,
-              data: null,
               searchable: false,
               orderable: false,
               render: function (data, type, full, meta) {
                 var categoryId = full['id'];
-                return
-                  `<div class="d-flex align-items-sm-center justify-content-sm-center">
+                return `<div class="d-flex align-items-sm-center justify-content-sm-center">
                    <button class="btn btn-sm btn-icon delete-record me-2" data-id="${categoryId}"><i class="ti ti-trash"></i></button>
                    <button class="btn btn-sm btn-icon edit-record" data-id="${categoryId}"><i class="ti ti-edit" ></i></button>
                    </div>`;
@@ -105,7 +103,7 @@ function initializeDataTable(data){
               display: $.fn.dataTable.Responsive.display.modal({
                 header: function (row) {
                   var data = row.data();
-                  return 'تفاصيل عن ' + data.user.first_name;
+                  return 'تفاصيل عن ' + data.name;
                 }
               }),
               type: 'column',

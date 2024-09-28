@@ -10,9 +10,10 @@ class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = File
         fields = '__all__'
+        
 class MessageSerializer(serializers.ModelSerializer):
     file = serializers.FileField(source='message_file.file', read_only=True)
-    time_since = serializers.SerializerMethodField()  # حقل الوقت بصيغة "منذ"
+    time_since = serializers.SerializerMethodField()  # حقل الوقت بصيغة منذ
 
     class Meta:
         model = Message
@@ -20,6 +21,7 @@ class MessageSerializer(serializers.ModelSerializer):
 
     def get_time_since(self, obj):
         return timesince(obj.timestamp) 
+      
       
 class ConversationSerializer(serializers.ModelSerializer):
     other_user = serializers.SerializerMethodField()  # حقل المستخدم الآخر
@@ -30,7 +32,6 @@ class ConversationSerializer(serializers.ModelSerializer):
         fields = ['id', 'user1', 'user2', 'created_at','last_message','unread_messages_count', 'other_user']
         
     def get_other_user(self, obj):
-        # تحديد المستخدم الآخر بناءً على من قام بالطلب
         request_user = self.context['request'].user
         other_user = obj.user1 if obj.user1 != request_user else obj.user2
         domain = self.context.get('request').get_host()
@@ -57,6 +58,8 @@ class ConversationSerializer(serializers.ModelSerializer):
         other_user = obj.user1 if obj.user1 != request_user else obj.user2
         unread_count = obj.messages.filter(is_read=False, sender=other_user).count()
         return unread_count
+
+
 
 
 

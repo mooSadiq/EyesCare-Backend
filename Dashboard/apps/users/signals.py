@@ -9,4 +9,4 @@ def user_created_notification(sender, instance, created, **kwargs):
     if created:
         admin_users = CustomUser.objects.filter(is_staff=True)
         for admin in admin_users:
-            notify.send(instance.first_name, recipient=admin, verb='تم إضافة مستخدم جديد', description=f'تم إضافة {instance.first_name} كامستخدم جديد', action_object=instance,category='User')
+            notify.send(instance, recipient=admin, verb='تم إضافة مستخدم جديد', description=f'تم إضافة {instance.first_name} كامستخدم جديد', action_object=instance,category='User')

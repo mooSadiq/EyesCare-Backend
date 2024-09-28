@@ -20761,7 +20761,7 @@ html:not(.layout-menu-fixed) .menu-inner-shadow {
   padding: 1rem;
   cursor: pointer;
 }
-.layout-navbar .navbar-dropdown.dropdown-notifications .dropdown-notifications-list .dropdown-notifications-item .dropdown-notifications-actions {
+.layout-navbar .navbar-dropdown.dropdown-notifications .dropdown-notifications-list .drop down-notifications-item .dropdown-notifications-actions {
   text-align: center;
 }
 .layout-navbar .navbar-dropdown.dropdown-notifications .dropdown-notifications-list .dropdown-notifications-item .dropdown-notifications-actions > a {
