@@ -1,10 +1,28 @@
-import os
-import cv2
+from transformers import AutoModelForImageClassification, pipeline
+from transformers import AutoFeatureExtractor
 from inference_sdk import InferenceHTTPClient
 from config import settings
 from .Detect_Eye import classify_and_save_image
+import os
+import cv2
+import numpy as np
 
-# Initialize the inference client
+
+#Load The Internal Eye Model
+model_id = "smartgmin/Entrnal_5class_agumm_last_newV7_model"
+
+# تحميل نموذج تصنيف الصور من TensorFlow
+image_classification_model = AutoModelForImageClassification.from_pretrained(model_id, from_tf=True, cache_dir="apps/diagnosis/Internal_Eye_Model/path")
+
+# تحميل معالج الميزات الذي يساعد في تجهيز الصور للنموذج
+feature_extractor = AutoFeatureExtractor.from_pretrained(model_id, cache_dir="apps/diagnosis/Internal_Eye_Model/path")
+
+image_classifier = pipeline(
+    "image-classification",
+    model=image_classification_model,
+    feature_extractor=feature_extractor,
+)
+# Initialize the inference client For External Eye
 CLIENT = InferenceHTTPClient(
     api_url="https://detect.roboflow.com",
     api_key=settings.ROBOFLOW_API_KEY
@@ -21,11 +39,16 @@ def resize_image(image_path):
     cv2.imwrite(resized_image_path, n_image_resized)
     return resized_image_path
 
+
 def disease_detect(image_path):
     image=resize_image(image_path)
     result = classify_and_save_image(image)
     if result == "Eye":
         image,label=run_model(image)
+        return image,label
+    
+    elif result=="Internal-Eye":
+        image,label=classify_internalEye_image(image)
         return image,label
     
     elif result == "No eye detected":
@@ -62,3 +85,10 @@ def draw_box(image,prediction):
                             1.5, (255,0,0), 2)
                 return image,label
 
+def classify_internalEye_image(image):
+    classification_results = image_classifier(image)
+    best_prediction = max(classification_results, key=lambda x: x["score"])
+    confidence_score = "{:f}".format(best_prediction["score"])
+    predicted_label = best_prediction["label"]
+    label_confidence=f'{predicted_label} _ {confidence_score}'
+    return None,label_confidence

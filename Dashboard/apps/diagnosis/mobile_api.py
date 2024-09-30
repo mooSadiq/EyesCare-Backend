@@ -20,7 +20,7 @@ class ImageInferenceView(View):
         my_model_instance = MyModel(title="My Image", image=image)
         my_model_instance.save()
 
-        # saved_image_path = my_model_instance.image.path
+        saved_image_path = my_model_instance.image.path
         # detected_image,label=disease_detect(saved_image_path)
         # {
         #     image,classfication_label
@@ -28,6 +28,7 @@ class ImageInferenceView(View):
         #     None, "The model did not find a confident prediction."
         #     None, "Error during RobowFlow inference hint:'Check Internet'."
         #     None, "No Diseases detected."
+        #     None, Internal_Disease_classfication_label
         # }
         client = InferenceHTTPClient(
             api_url="https://detect.roboflow.com",

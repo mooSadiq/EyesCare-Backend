@@ -147,7 +147,7 @@ function initializeDataTable(data){
   });
 }
 async function fetchAndInitializeTable() {
-  const url_get_reviews_data = '/evaluations/api/getreviews/';
+  const url_get_reviews_data = '/evaluations/api/get/reviews/';
   try {
       const data = await fetchAllData(url_get_reviews_data);
       console.log(data);
@@ -164,7 +164,7 @@ $(document).on('click', '.delete-record', async function () {
   const result = await showConfirmationDialog();
   if (result.isConfirmed) {
       const method = 'DELETE';
-      const url = `/evaluations/api/deletereview/${reviewtId}/`;
+      const url = `/evaluations/api/delete/review/${reviewtId}/`;
       const deleteResult = await submitRequest(url, method);
       if (deleteResult.success) {
           showAlert('success', 'تم الحذف!', deleteResult.message, 'btn btn-success');
