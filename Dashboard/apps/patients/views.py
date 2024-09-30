@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .models import Patient
 from rest_framework.views import APIView
 from apps.users.models import CustomUser
-from .serializer import PatientSerializer, UserSerializer
+from .serializers import PatientSerializer, UserSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
@@ -11,7 +11,6 @@ from django.http import JsonResponse
 
 # دوال العرض والانتقال بين الصفحات في الداش بورد
 def index(request):
-
   return render(request, 'patients_list.html')
 def patientProfile(request,id):  
     return render(request, 'patient_profile.html', {"patient_id": id})

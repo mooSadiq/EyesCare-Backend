@@ -62,7 +62,7 @@ class RegisterUserView(APIView):
         else:
             # إذا كان البريد الإلكتروني غير موجود، إنشاء مستخدم جديد
             verification_code = generate_verification_code()
-            expiration_time = timezone.now() + timedelta(minutes=15)
+            expiration_time = timezone.localtime() + timedelta(minutes=15)
             encrypted_verification_code = make_password(str(verification_code))
             CustomUser.objects.create(
                 first_name=first_name,
@@ -93,7 +93,7 @@ class VerifyEmailApiCodeView(APIView):
             email=email,
             is_verified=False,
             verification_code = code,
-            verification_code_expiry__gt=timezone.now()
+            verification_code_expiry__gt=timezone.localtime()
         ).first()
         if not user:
             return Response({

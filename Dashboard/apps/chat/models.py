@@ -4,6 +4,7 @@ from apps.users.models import CustomUser
 class Conversation(models.Model):
     user1 = models.ForeignKey(CustomUser, related_name='user1_conversations', on_delete=models.CASCADE)
     user2 = models.ForeignKey(CustomUser, related_name='user2_conversations', on_delete=models.CASCADE)
+    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -33,7 +34,7 @@ class Message(models.Model):
 
 
 class File(models.Model):
-  message = models.OneToOneField(Message, on_delete=models.CASCADE, related_name='file')
+  message = models.OneToOneField(Message, on_delete=models.CASCADE, related_name='message_file')
   file = models.FileField(upload_to='chat_file')
   
   def __str__(self):

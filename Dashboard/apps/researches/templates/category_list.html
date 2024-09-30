@@ -1,0 +1,129 @@
+{% extends 'master.html' %}
+{% load static %}
+{% block title %}
+      قائمة المجالات 
+{% endblock  %}
+{% block specialCssFiles %}
+<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/css/pages/app-ecommerce.css' %}" />
+{% endblock  %}
+
+{% block content %}
+<!-- Content -->
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h4 class="py-3 mb-4"> قائمة المجالات /<span class="text-muted fw-light"> تفاصيل المستخدم </span></h4>
+  <div class="app-ecommerce-category">
+    <!-- Category List Table -->
+    <div class="card">
+      <div class="card-datatable table-responsive">
+        <table class="datatables-category-list table border-top">
+          <thead>
+            <tr>
+              <th></th>
+              <th>المجال(التصنيف العلمي)</th>
+              <th>تفاصيل</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+    <!-- Offcanvas to add new customer -->
+    <div
+      class="offcanvas offcanvas-end"
+      tabindex="-1"
+      id="offcanvasCategoryList"
+      aria-labelledby="offcanvasCategoryListLabel">
+      <!-- Offcanvas Header -->
+      <div class="offcanvas-header py-4">
+        <h5 id="offcanvasCategoryListLabel" class="offcanvas-title">اضافة مجال</h5>
+        <button
+          type="button"
+          class="btn-close bg-label-secondary text-reset"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"></button>
+      </div>
+      <!-- Offcanvas Body -->
+      <div class="offcanvas-body border-top">
+        <form class="pt-0" id="categoryListForm" onsubmit="return true">
+          <!-- Title -->
+          <div class="mb-3">
+            <label class="form-label" for="category-title">اسم المجال</label>
+            <input
+              type="text"
+              class="form-control"
+              id="category-title"
+              placeholder="Enter category title"
+              name="categoryTitle"
+              aria-label="category title" />
+          </div>
+          <!-- Description -->
+          <div class="mb-3">
+            <label class="form-label" for="category-description">وصف المجال</label>
+            <textarea class="form-control" id="category-description" name='description' rows="3" style="height: 95px;"></textarea>
+          </div>
+          <!-- Submit and reset -->
+          <div class="mb-3">
+            <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">اضافة</button>
+            <button type="reset" class="btn bg-label-danger" data-bs-dismiss="offcanvas">الغاء</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Modals -->
+  <!-- Edit category Modal نافذة منبثقة لتعديل معلومات المجال-->
+  <div class="modal fade" id="editCategory" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered1 modal-simple modal-edit-category">
+      <div class="modal-content p-3 p-md-5 ">
+        <div class="modal-body">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="text-center mb-4">
+            <h3 class="mb-2">تعديل معلومات المجال</h3>
+          </div>
+          <form id="editCategoryForm" enctype="multipart/form-data" class="" onsubmit="return false">
+            <div class="col-12 mb-2">
+              <label class="form-label" for="category-title-edit">اسم المجال</label>
+              <input
+              type="text"
+              name="name"
+              class="form-control"
+              id="category-title-edit"
+              aria-label="category title" />
+            </div>
+            <div class="col-12 mb-4">
+              <label class="form-label" for="category-description-edit">وصف المجال</label>
+              <textarea class="form-control" id="category-description-edit" name='description' rows="3" style="height: 95px;"></textarea>            
+            </div>
+            <input type="hidden" id="category-id" name="id">
+            <div class="col-12 text-center">
+              <button type="submit" class="btn btn-primary me-sm-3 me-1">حفظ التعديلات</button>
+              <button
+                type="reset"
+                class="btn btn-label-secondary"
+                data-bs-dismiss="modal"
+                aria-label="Close">
+                الغاء
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Edit category Modal نافذة منبثقة لتعديل معلومات المجال-->
+</div>
+<!-- / Content -->
+
+{% endblock  %}
+{% block specialJsFiles %}
+<!-- Vendors JS -->
+<script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
+<!-- Page JS -->
+
+<script type="module" src="{% static 'js/app-research-category-list.js' %}"></script>
+
+<script>
+{% endblock  %}
+

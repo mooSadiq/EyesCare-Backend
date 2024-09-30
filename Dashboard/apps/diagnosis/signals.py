@@ -9,5 +9,4 @@ def diagnosisReport_created_notification(sender, instance, created, **kwargs):
     if created:
         admin_users = CustomUser.objects.filter(is_staff=True)
         for admin in admin_users:
-            patient=f'{instance.patient.user.first_name} {instance.patient.user.last_name}'
-            notify.send(instance.patient, recipient=admin, verb=f' قام {patient} بإضافة تشخيص جديد', description=f'نتيجة التشخيص:{instance.diagnosis_result}', action_object=instance,category='DiagnosisReport')
+            notify.send(instance.patient, recipient=admin, verb='تم إضافة تشخيص جديد', description=f'{instance.diagnosis_result}', action_object=instance,category='DiagnosisReport')

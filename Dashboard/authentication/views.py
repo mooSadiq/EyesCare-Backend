@@ -194,9 +194,9 @@ class GoogleLoginView(APIView):
 
         try:
             # تحقق من الرمز المميز مع جوجل
-            id_info = id_token.verify_oauth2_token(
+            id_info = id_token_str.verify_oauth2_token(
                 id_token_str,
-                requests.Request(),
+                request.Request(),
                 'YOUR_CLIENT_ID.apps.googleusercontent.com'
             )
 

@@ -208,7 +208,6 @@ document.getElementById('formAuthentication').addEventListener('submit', async f
                 // إعادة التوجيه إلى الصفحة التالية
                 window.location.href = data.next_url;
             } else {
-                console.error('استجابة غير صحيحة من السيرفر');
                 messageContainer.innerHTML = '<div class="alert alert-danger" role="alert">استجابة غير صحيحة من السيرفر</div>';
                 alert('حدث خطأ في تسجيل الدخول. حاول مرة أخرى.');
             }

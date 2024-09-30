@@ -3,14 +3,17 @@ from .models import Conversation, Message, File
 from apps.users.models import CustomUser
 from django.utils.timesince import timesince
 from django.db.models import Q
+from urllib.parse import urljoin
+
 
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = File
         fields = '__all__'
+        
 class MessageSerializer(serializers.ModelSerializer):
-    file = FileSerializer(read_only=True)
-    time_since = serializers.SerializerMethodField()  # حقل الوقت بصيغة "منذ"
+    file = serializers.FileField(source='message_file.file', read_only=True)
+    time_since = serializers.SerializerMethodField()  # حقل الوقت بصيغة منذ
 
     class Meta:
         model = Message
@@ -19,28 +22,42 @@ class MessageSerializer(serializers.ModelSerializer):
     def get_time_since(self, obj):
         return timesince(obj.timestamp) 
       
+      
 class ConversationSerializer(serializers.ModelSerializer):
-    messages = MessageSerializer(many=True, read_only=True)
     other_user = serializers.SerializerMethodField()  # حقل المستخدم الآخر
     last_message = serializers.SerializerMethodField()  # آخر رسالة
+    unread_messages_count = serializers.SerializerMethodField()  # آخر رسالة
     class Meta:
         model = Conversation
-        fields = ['id', 'user1', 'user2', 'created_at', 'messages','last_message', 'other_user']
+        fields = ['id', 'user1', 'user2', 'created_at','last_message','unread_messages_count', 'other_user']
         
     def get_other_user(self, obj):
-        # تحديد المستخدم الآخر بناءً على من قام بالطلب
         request_user = self.context['request'].user
         other_user = obj.user1 if obj.user1 != request_user else obj.user2
+        domain = self.context.get('request').get_host()
         return {
             'id': other_user.id,
             'email': other_user.email,
             'first_name': other_user.first_name,
             'last_name': other_user.last_name,
-            'profile_picture': other_user.profile_picture.url if other_user.profile_picture else None
+            'profile_picture': urljoin(f'http://{domain}', other_user.profile_picture.url) if other_user.profile_picture else None
         }
+                        
     def get_last_message(self, obj):
         last_message = obj.messages.order_by('-timestamp').first()  # جلب آخر رسالة
-        return MessageSerializer(last_message).data
+        domain = self.context['request'].get_host()
+        file_url = None
+        if hasattr(last_message, 'message_file') and last_message.message_file:
+            file_url = urljoin(f'http://{domain}', last_message.message_file.file.url)
+        message_data = MessageSerializer(last_message).data
+        message_data['file'] = file_url if file_url else None        
+        return message_data
+
+    def get_unread_messages_count(self, obj):
+        request_user = self.context['request'].user
+        other_user = obj.user1 if obj.user1 != request_user else obj.user2
+        unread_count = obj.messages.filter(is_read=False, sender=other_user).count()
+        return unread_count
 
 
 

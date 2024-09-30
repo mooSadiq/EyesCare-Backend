@@ -17,7 +17,7 @@ from django.contrib.auth.hashers import make_password
 class CuurentUserDetailView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
-      profile_serializer = UserProfileSerializer(request.user, many=False)
+      profile_serializer = UserProfileSerializer(request.user, many=False, context={'request': request})
       return Response({
         'status': True,
         'code': status.HTTP_200_OK,
@@ -27,8 +27,9 @@ class CuurentUserDetailView(APIView):
 
 class UpdateProfileView(APIView):
     parser_classes = [MultiPartParser, FormParser]
+    permission_classes = [IsAuthenticated]
     def put(self, request):
-        user = user = request.user
+        user = request.user
         serializer = UserProfileSerializer(user, data=request.data, partial=True)        
         if serializer.is_valid():
             if 'profile_picture' in request.FILES and request.FILES['profile_picture']:
