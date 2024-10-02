@@ -30,13 +30,20 @@ CLIENT = InferenceHTTPClient(
 )
 BASE_DIR = os.path.join(settings.MEDIA_ROOT,"Detect_Eye")
 EYE_Resize_DIR = os.path.join(BASE_DIR, "resizeeye")
+EYE_Dig_DIR = os.path.join(BASE_DIR, "Dign")
+
+
+def makedir(dir,imagepath):
+    os.makedirs(dir, exist_ok=True)
+    image_name = os.path.basename(imagepath)  # استخراج اسم الصورة
+    new_image_path = os.path.join(dir, image_name)
+    return new_image_path
+
 
 def resize_image(image_path):
     n_image = cv2.imread(image_path)
     n_image_resized = cv2.resize(n_image, (640, 640))
-    os.makedirs(EYE_Resize_DIR, exist_ok=True)
-    image_name = os.path.basename(image_path)  # استخراج اسم الصورة
-    resized_image_path = os.path.join(EYE_Resize_DIR, image_name)  # مسار الصورة المعدلة
+    resized_image_path=makedir(EYE_Resize_DIR,image_path)
     cv2.imwrite(resized_image_path, n_image_resized)
     return resized_image_path
 
@@ -63,7 +70,6 @@ def disease_detect(image_path):
 
 def run_model(image):
     response = CLIENT.infer(image, "ccatract/4")
-    
     predictions = response.get('predictions', [])
     
     if predictions:
@@ -83,9 +89,12 @@ def draw_box(image,prediction):
                 text_position = (start_point[0], start_point[1] - 10)
                 formatted_conf = f"{predicted_conf:.1f}"
                 text = f"{label} {formatted_conf}"
-                cv2.rectangle(image, start_point, end_point, (255, 0, 0), 2)
-                cv2.putText(image, text, text_position, cv2.FONT_HERSHEY_SIMPLEX, 1.5, (255,0,0), 2)
-                return image,label,predicted_conf
+                image_read=cv2.imread(image)
+                cv2.rectangle(image_read, start_point, end_point, (255, 0, 0), 2)
+                cv2.putText(image_read, text, text_position, cv2.FONT_HERSHEY_SIMPLEX, 1.5, (255,0,0), 2)
+                dig_image_path=makedir(EYE_Dig_DIR,image)
+                cv2.imwrite(dig_image_path,image_read)
+                return dig_image_path,label,predicted_conf
 
 def classify_internalEye_image(image):
     classification_results = image_classifier(image)
