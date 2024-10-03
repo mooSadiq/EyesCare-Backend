@@ -26,10 +26,10 @@ class MessageSerializer(serializers.ModelSerializer):
 class ConversationSerializer(serializers.ModelSerializer):
     other_user = serializers.SerializerMethodField()  # حقل المستخدم الآخر
     last_message = serializers.SerializerMethodField()  # آخر رسالة
-    unread_messages_count = serializers.SerializerMethodField()  # آخر رسالة
+    unread_messages_count = serializers.SerializerMethodField()  
     class Meta:
         model = Conversation
-        fields = ['id', 'user1', 'user2', 'created_at','last_message','unread_messages_count', 'other_user']
+        fields = ['id', 'user1', 'user2', 'created_at','last_message','unread_messages_count', 'other_user', 'is_active']
         
     def get_other_user(self, obj):
         request_user = self.context['request'].user

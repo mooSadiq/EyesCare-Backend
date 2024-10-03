@@ -36,85 +36,37 @@ async function fetchAndInitializeData() {
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', fetchAndInitializeData);
 
-export async function logoutRequest(url, method) {
-  try {
-      const refreshToken = localStorage.getItem('refresh_token');
-      if (!refreshToken) {
-          throw new Error('No refresh token provided.');
-      }
-
-      const response = await fetch(url, {
-          method: method,
-          headers: {
-              'Authorization': `Bearer ${refreshToken}`,  // تأكد من استخدام Bearer مع التوكن
-              'X-CSRFToken': csrfToken,
-              'Content-Type': 'application/json'
-          },
-      });
-
-      if (!response.ok) {
-          const data = await response.json();
-          throw new Error(data.message || 'Logout failed.');
-      }
-
-      const data = await response.json();
-      console.log(data.message);
-      
-      // حذف التوكنات من الـ Local Storage بعد نجاح عملية تسجيل الخروج
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('refresh_token');
-      
-      return {
-          success: true,
-          message: data.message,
-      };
-  } catch (error) {
-      console.error('Error during logout:', error);
-      return {
-          success: false,
-          message: error.message
-      };
-  }
-}
-
-document.getElementById('form-logout').addEventListener('submit', async function (event) {
-  event.preventDefault();
-  const url = `/auth/logout/`;
-  try {
-    const result = await logoutRequest(url, 'POST');
-    if (result.success) {
-      console.log('Logout successful.');
-      window.location.href = '/login/';
-    } else {
-      console.log('Logout failed.');
-    }
-  } catch (error) {
-    console.error('Error during logout:', error);
-  }
-});
 
 
 
-function logoutUser() {
+document.getElementById('logout-btn').addEventListener('click', function() {
   const refreshToken = localStorage.getItem('refresh_token');
-  fetch('/auth/logout/', {
+
+  if (!refreshToken) {
+      alert("No refresh token found. Please login.");
+      return;
+  }
+  fetch('/auth/logout/', { 
       method: 'POST',
       headers: {
-          'Authorization': `Bearer ${refreshToken}`,
           'Content-Type': 'application/json',
-          'X-CSRFToken': csrfToken 
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}`  
       },
+      body: JSON.stringify({
+          'refresh_token': refreshToken
+      })
   })
   .then(response => response.json())
   .then(data => {
-      console.log('Success:', data);
-      // حذف التوكنات من الـ Local Storage
+    if (data.status === true) {
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
-      // إعادة توجيه المستخدم إلى صفحة تسجيل الدخول بعد تسجيل الخروج
       window.location.href = '/auth/login/';
-  })
-  .catch((error) => {
+    } else {
+        console.log('Logout failed.');
+    }
+  }) 
+  .catch(error => {
       console.error('Error:', error);
   });
-}
+});

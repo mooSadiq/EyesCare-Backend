@@ -44,9 +44,9 @@ class ConversationDetails(APIView):
             return Response({'error': 'Conversation not found or not authorized.'}, status=status.HTTP_404_NOT_FOUND)
 
         other_user = conversation.user1 if conversation.user1 != request.user else conversation.user2
-        conversation.messages.filter(is_read=False, sender=other_user).update(is_read=True)
+        # conversation.messages.filter(is_read=False, sender=other_user).update(is_read=True)
 
-        messages = conversation.messages.all()
+        messages = conversation.messages.filter(is_read=False, sender=other_user)
         serializer = MessageSerializer(messages, many=True, context={'request': request})
         return Response(serializer.data)
       

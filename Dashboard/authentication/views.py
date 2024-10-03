@@ -22,6 +22,9 @@ from django.views.generic import TemplateView
 from rest_framework.views import APIView
 from django.utils import timezone
 from datetime import timedelta
+from rest_framework.permissions import IsAuthenticated
+import json
+
 # Create your views here.
 
 # دالة توليد كود عشوائي
@@ -48,8 +51,9 @@ class LoginView(TemplateView):
         return super().get(request)
 
     def post(self, request):
-        email = request.POST.get("email")
-        password = request.POST.get("password")
+        data = json.loads(request.body)
+        email = data.get("email")
+        password = data.get("password")
 
         if not email or not password:
             return JsonResponse({'message': 'يرجى إدخال البريد الإلكتروني وكلمة المرور.'}, status=400)
@@ -65,9 +69,7 @@ class LoginView(TemplateView):
         access_token = str(refresh.access_token)
         refresh_token = str(refresh)
 
-        # إعداد URL الصفحة التالية
         next_url = request.POST.get("next") or request.GET.get("next") or "/"
-
         # إرسال التوكنات والـ URL كاستجابة JSON
         response_data = {
             'access_token': access_token,
@@ -76,25 +78,26 @@ class LoginView(TemplateView):
         }
         return JsonResponse(response_data)
       
-class LogoutView(View):
-    def post(self, request):
-        logout(request)
-        refresh_token = request.headers.get('refreshToken')
-        if refresh_token:
-            try:
-                # إزالة التوكن من خلال إعداد التوكن على أنه غير صالح
-                token = refresh_token.split(' ')[1] 
-                RefreshToken(token).blacklist()
-                print('Token has been blacklisted successfully.')
-            except Exception as e:
-                print(f'Error blacklisting token: {e}')
-                return JsonResponse({'error': 'خطأ في حذف التوكن.'}, status=400)
-        else:
-            print('No refresh token provided.')
-            return JsonResponse({'error': 'No refresh token provided.'}, status=400)
 
-        return JsonResponse({'success': True}, status=200)
-      
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        try:
+            logout(request)
+            refresh_token = request.data["refresh_token"]            
+            token = RefreshToken(refresh_token)
+            token.blacklist()  
+            return Response({
+                'status': True,
+                'code': status.HTTP_200_OK,
+                'message': 'تم تسجيل الخروج بنجاح'
+              },status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({
+                'status': False,
+                'code': status.HTTP_400_BAD_REQUEST,
+                'message': 'فشل تسجيل الخروج '
+              },status=status.HTTP_400_BAD_REQUEST)     
                 
 class ForgetPasswordView(TemplateView):
     template_name = "auth/forgot_password.html"

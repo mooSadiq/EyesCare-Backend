@@ -11,85 +11,79 @@
 <!-- Content -->
 <div class="container-xxl flex-grow-1 container-p-y">
   <div class="row g-4 mb-4">
-    <div class="col-sm-6 col-xl-3">
-      <div class="card">
-        <div class="card-body">
-          <div class="d-flex align-items-start justify-content-between">
-            <div class="content-left">
-              <span>جلسة</span>
-              <div class="d-flex align-items-center my-2">
-                <h3 class="mb-0 me-2">21,459</h3>
-                <p class="text-success mb-0">(+29%)</p>
-              </div>
-              <p class="mb-0">إجمالي المستخدمين</p>
-            </div>
-            <div class="avatar">
-              <span class="avatar-initial rounded bg-label-primary">
-                <i class="ti ti-user ti-sm"></i>
-              </span>
-            </div>
-          </div>
+    <div class="col-lg-12 mb-1 col-md-12">
+      <div class="card h-100">
+        <div class="card-header d-flex justify-content-between">
+          <h5 class="card-title mb-0">احصائيات الأبحاث</h5>
+          <small class="text-muted">اخر تحديث الان</small>
         </div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xl-3">
-      <div class="card">
-        <div class="card-body">
-          <div class="d-flex align-items-start justify-content-between">
-            <div class="content-left">
-              <span> الأسبوع الماضي</span>
-              <div class="d-flex align-items-center my-2">
-                <h3 class="mb-0 me-2">4,567</h3>
-                <p class="text-success mb-0">(+18%)</p>
+        <div class="card-body pt-2 pb-5">
+          <div class="row gy-4">
+            <div class="col-md-2 col-4">
+              <div class="d-flex align-items-center">
+                <div class="badge rounded-3 bg-label-warning me-3 p-2">
+                  <i class="ti ti-report-search ti-sm"></i>
+                </div>
+                <div class="card-info">
+                  <h5 class="mb-0" id="research-count"></h5>
+                  <small>الدراسات</small>
+                </div>
               </div>
-              <p class="mb-0">تحليلات الأسبوع الماضي</p>
             </div>
-            <div class="avatar">
-              <span class="avatar-initial rounded bg-label-danger">
-                <i class="ti ti-user-plus ti-sm"></i>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xl-3">
-      <div class="card">
-        <div class="card-body">
-          <div class="d-flex align-items-start justify-content-between">
-            <div class="content-left">
-              <span>المستخدمون النشطون</span>
-              <div class="d-flex align-items-center my-2">
-                <h3 class="mb-0 me-2">19,860</h3>
-                <p class="text-danger mb-0">(-14%)</p>
+            <div class="col-md-2 col-6">
+              <div class="d-flex align-items-center">
+                <div class="badge rounded-3 bg-label-danger me-3 p-2">
+                  <i class="ti ti-pdf ti-sm"></i>
+                </div>
+                <div class="card-info">
+                  <h5 class="mb-0" id="pdf-count"></h5>
+                  <small>ملفات</small>
+                </div>
               </div>
-              <p class="mb-0">تحليلات الأسبوع الماضي</p>
             </div>
-            <div class="avatar">
-              <span class="avatar-initial rounded bg-label-success">
-                <i class="ti ti-user-check ti-sm"></i>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xl-3">
-      <div class="card">
-        <div class="card-body">
-          <div class="d-flex align-items-start justify-content-between">
-            <div class="content-left">
-              <span>المستخدمون المعلّقون</span>
-              <div class="d-flex align-items-center my-2">
-                <h3 class="mb-0 me-2">237</h3>
-                <p class="text-success mb-0">(+42%)</p>
+            <div class="col-md-2 col-6">
+              <div class="d-flex align-items-center">
+                <div class="badge rounded-3 bg-label-primary me-3 p-2">
+                  <i class="ti ti-link ti-sm"></i>
+                </div>
+                <div class="card-info">
+                  <h5 class="mb-0" id="no_pdf-count"></h5>
+                  <small>روابط</small>
+                </div>
               </div>
-              <p class="mb-0">تحليلات الأسبوع الماضي</p>
             </div>
-            <div class="avatar">
-              <span class="avatar-initial rounded bg-label-warning">
-                <i class="ti ti-user-exclamation ti-sm"></i>
-              </span>
+            <div class="col-md-2 col-6">
+              <div class="d-flex align-items-center">
+                <div class="badge rounded-3 bg-label-success me-3 p-2">
+                  <i class="ti ti-notes ti-sm"></i>
+                </div>
+                <div class="card-info">
+                  <h5 class="mb-0" id="journal-count"></h5>
+                  <small>المجلات</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2 col-6">
+              <div class="d-flex align-items-center">
+                <div class="badge rounded-3 bg-label-info me-3 p-2">
+                  <i class="ti ti-chart-pie-2 ti-sm"></i>
+                </div>
+                <div class="card-info">
+                  <h5 class="mb-0" id="field-count"></h5>
+                  <small>المجالات</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2 col-6">
+              <div class="d-flex align-items-center">
+                <div class="badge rounded-3 bg-label-github me-3 p-2">
+                  <i class="ti ti-download ti-sm"></i>
+                </div>
+                <div class="card-info">
+                  <h5 class="mb-0" id="total-downloads"></h5>
+                  <small>التحميلات</small>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -101,41 +95,34 @@
     <div class="card-header border-bottom">
       <h5 class="card-title mb-3">فلتر البحث</h5>
       <div class="d-flex justify-content-between align-items-center row pb-2 gap-3 gap-md-0">
-        <div class="col-md-4 user_role">
-          <select id="UserRole" class="form-select text-capitalize">
-            <option value="">اختر الدور</option>
-            <option value="user">مستخدم</option>
-            <option value="patient">مريض</option>
-            <option value="doctor">طبيب</option>
-            <option value="admin">ادمن</option>
-            <option value="support">فريق الدعم</option>
+        <div class="col-md-4 jornal_select">
+          <select id="filter-jornal-select"  class="jornalSelect2 form-select text-capitalize" data-allow-clear="true">
+            <option value="0">اختر المجلة</option>
         </select>
         </div>
-        <div class="col-md-4 user_plan">
-          <select id="Userblue_verified" class="form-select text-capitalize">
-            <option value="">التوثيق</option>
-            <option value="نعم">موثق</option>
-            <option value="لا">غبر موثق</option>
+        <div class="col-md-4 field_select">
+          <select id="filter-field-select" class="fieldSelect2 form-select text-capitalize" data-allow-clear="true">
+            <option value="0">اختر المجال</option>
           </select>
         </div>
         <div class="col-md-4 user_status">
-          <select id="UserStatus" class="form-select text-capitalize">
-            <option value="">اختر الحالة</option>
-            <option value="نشط">نشط</option>
-            <option value="غير نشط">غير نشط</option>
+          <select id="filter-pdf-select" class="form-select text-capitalize">
+            <option value="">اختر المصدر</option>
+            <option value="1">ملف pdf</option>
+            <option value="0">رابط خارجي</option>
           </select>
         </div>
       </div>
     </div>
     <div class="card-datatable table-responsive">
-      <table class="datatables-users table">
+      <table class="datatables-research table">
         <thead class="border-top">
           <tr>
             <th></th>
-            <th>المستخدم</th>
-            <th>نوع المستخدم</th>
-            <th>التوثيق</th>
-            <th>الحالة</th>
+            <th>العنوان</th>
+            <th>المعهد</th>
+            <th>النوع</th>
+            <th>تاريخ النشر</th>
             <th></th>
           </tr>
         </thead>
@@ -145,10 +132,10 @@
     <div
       class="offcanvas offcanvas-end"
       tabindex="-1"
-      id="offcanvasAddUser"
-      aria-labelledby="offcanvasAddUserLabel">
+      id="offcanvasAddResearch"
+      aria-labelledby="offcanvasAddResearchLabel">
       <div class="offcanvas-header">
-        <h5 id="offcanvasAddUserLabel" class="offcanvas-title">اضافة مستخدم</h5>
+        <h5 id="offcanvasAddResearchLabel" class="offcanvas-title">اضافة دراسة</h5>
         <button
           type="button"
           class="btn-close text-reset"
@@ -156,66 +143,103 @@
           aria-label="Close"></button>
       </div>
       <div class="offcanvas-body mx-0 flex-grow-0 pt-0 h-100">
-        <form class="add-new-user pt-0" id="addNewUserForm" onsubmit="return false">
+        <form class="add-new-research pt-0" id="addNewResearchForm" onsubmit="return false">
           <div class="mb-3">
-            <label class="form-label" for="add-user-firstname">الاسم الاول</label>
+            <label class="form-label" for="add-research-title">العنوان</label>
             <input
               type="text"
               class="form-control"
-              id="add-user-firstname"
+              id="add-research-title"
+              placeholder="John Doe"
+              aria-label="John Doe"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="add-research-abstract">الملخص</label>
+            <textarea class="form-control" id="add-research-abstract" name='description' rows="2" ></textarea>            
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="add-research-authors">المؤلف</label>
+            <input
+              type="text"
+              class="form-control"
+              id="add-research-authors"
               placeholder="John Doe"
               name="AddUserFirstname"
               aria-label="John Doe" />
           </div>
           <div class="mb-3">
-            <label class="form-label" for="add-user-lastname">الاسم الثاني</label>
-            <input
-              type="text"
-              class="form-control"
-              id="add-user-lastname"
-              placeholder="John Doe"
-              name="AddUserLastname"
-              aria-label="John Doe" />
+            <label for="add-research-date" class="form-label">تاريخ النشر</label>
+              <input
+                type="date"
+                id="add-research-date"
+                name="publicate-date"
+                placeholder="MM/DD/YYYY"
+                class="form-control" />
           </div>
-          <div class="mb-3">
-            <label class="form-label" for="add-user-email">البريد الالكتروني</label>
-            <input
-              type="text"
-              id="add-user-email"
-              class="form-control"
-              placeholder="john.doe@example.com"
-              aria-label="john.doe@example.com"
-              name="AddUserEmail" />
+          <div class="row  mb-3">
+            <div class="col-9">
+              <label for="add-research-select-journal" class="form-label">المجلة</label>
+              <select id="add-research-select-journal" class="jornalSelect2 form-select form-select-md" data-allow-clear="true">
+              </select>
+            </div>
+            <div class="col-2  mt-4">
+              <button type="button" 
+                      class="add-new btn btn-default waves-effect waves-light"
+                      data-bs-toggle="modal" 
+                      data-bs-target="#addJournalModal">
+                <i class="ti ti-plus me-0 me-sm-1 ti-xs"></i>
+              </button>
+            </div>
           </div>
-          <div class="mb-3">
-            <div class="form-password-toggle">
-              <label class="form-label" for="formValidationPass">كلمة المرور</label>
-              <div class="input-group input-group-merge">
-                <input
-                  class="form-control"
-                  type="password"
-                  id="formValidationPass"
-                  name="addUserPass"
-                  placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                  aria-describedby="multicol-password2" />
-                <span class="input-group-text cursor-pointer" id="multicol-password2"
-                  ><i class="ti ti-eye-off"></i
-                ></span>
-              </div>
+          <div class="row  mb-3">
+            <div class="col-9">
+              <label for="add-research-select-field" class="form-label">المجال</label>
+              <select id="add-research-select-field" class="fieldSelect2 form-select form-select-md" data-allow-clear="true">
+              </select>
+            </div>
+            <div class="col-2  mt-4">
+              <button type="button" 
+                      class="add-new btn btn-default waves-effect waves-light"
+                      data-bs-toggle="modal" 
+                      data-bs-target="#addFieldModal">
+                <i class="ti ti-plus me-0 me-sm-1 ti-xs"></i>
+              </button>
             </div>
           </div>
           <div class="mb-3">
-            <label class="form-label" for="modalEditUserRole">نوع المستخدم</label>
-            <select
-              id="add-user-role"
-              name="addUserType"
-              class="select2 form-select"
-              aria-label="Default select example">
-              <option value="admin">مدير</option>
-              <option value="user">مستخدم عادي</option>
-              <option value="patient">مريض</option>
-              <option value="doctor">طبيب</option>
-            </select>
+            <label class="form-label" for="add-research-institution">المعهد</label>
+            <input
+              type="text"
+              class="form-control"
+              id="add-research-institution"
+              placeholder="John Doe"
+              name="AddUserFirstname"
+              aria-label="John Doe" />
+          </div>
+          <div class="mb-3">
+            <label class="switch">
+              <input type="checkbox" id="add-research-switch" class="switch-input" />
+              <span class="switch-toggle-slider">
+                <span class="switch-on"></span>
+                <span class="switch-off"></span>
+              </span>
+              <span class="switch-label">الدراسة تحتوي على PDF</span>
+            </label>
+          </div>
+          <div class="mb-3" id="url-input">
+            <label class="form-label" for="add-research-url">رابط الدراسة</label>
+            <input
+              type="url"
+              class="form-control"
+              id="add-research-url"
+              placeholder="https://www.ncbi.nlm.nih.gov/pmc/articles"/>
+          </div>
+          <div class="mb-3" id="file-input">
+            <label class="form-label" for="add-research-file">ملف PDF</label>
+            <input 
+            class="form-control" 
+            type="file" 
+            id="add-research-file"/>
           </div>
           <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">اضافة</button>
           <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">الفاء</button>
@@ -223,6 +247,104 @@
       </div>
     </div>
   </div>
+  <!-- Modals -->
+  <!-- Add Journal Modal نافذة منبثقة لاضافة مجلة في حال لم تكن مضافة من قبل-->
+  <div class="modal fade" id="addJournalModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-journal">
+      <div class="modal-content p-3 p-md-5 ">
+        <div class="modal-body">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="text-center mb-4">
+            <h3 class="mb-2">اضافة مجلة جديدة</h3>
+          </div>
+          <form id="addJournalForm" enctype="multipart/form-data" class="" onsubmit="return false">
+            <div class="col-12 mb-2">
+              <label class="form-label" for="add-journal-title">اسم المجلة</label>
+              <input
+              type="text"
+              name="name"
+              class="form-control"
+              id="add-journal-title"
+              aria-label="journal title" />
+            </div>
+            <div class="col-12 mb-2">
+              <label class="form-label" for="add-journal-abbre">الاختصار</label>
+              <input
+              type="text"
+              class="form-control"
+              id="add-journal-abbre"
+              aria-label="journal abbre" />
+            </div>
+            <div class="col-12 mb-2">
+              <label class="form-label" for="add-journal-url">رابط موقع المجلة</label>
+              <input
+              type="url"
+              id="add-journal-url"
+              class="form-control"
+              aria-label="url"
+              name="url-add" />
+            </div>
+            <div class="col-12 mb-2">
+              <label class="form-label" for="add-journal-logo">شعار المجلة</label>
+              <input class="form-control" type="file" id="add-journal-logo" />
+            </div>
+            <input type="hidden" id="journal-id" name="id">
+            <div class="col-12 text-center">
+              <button type="submit" class="btn btn-primary me-sm-3 me-1">حفظ</button>
+              <button
+                type="reset"
+                class="btn btn-label-secondary"
+                data-bs-dismiss="modal"
+                aria-label="Close">
+                الغاء
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Add Journal Modal نافذة منبثقة لاضافة مجلة في حال لم تكن مضافة من قبل-->
+  <!-- Add Field Modal نافذة منبثقة لاضافة مجال في حال لم يكن مضافة من قبل-->
+  <div class="modal fade" id="addFieldModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-field">
+      <div class="modal-content p-3 p-md-5 ">
+        <div class="modal-body">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="text-center mb-4">
+            <h3 class="mb-2">تعديل معلومات المجال</h3>
+          </div>
+          <form id="addFieldForm" enctype="multipart/form-data" class="" onsubmit="return false">
+            <div class="col-12 mb-2">
+              <label class="form-label" for="field-title-add">اسم المجال</label>
+              <input
+              type="text"
+              name="name"
+              class="form-control"
+              id="field-title-add"
+              aria-label="field title" />
+            </div>
+            <div class="col-12 mb-4">
+              <label class="form-label" for="field-description-add">وصف المجال</label>
+              <textarea class="form-control" id="field-description-add" name='description' rows="3" style="height: 95px;"></textarea>            
+            </div>
+            <input type="hidden" id="field-id" name="id">
+            <div class="col-12 text-center">
+              <button type="submit" class="btn btn-primary me-sm-3 me-1">حفظ التعديلات</button>
+              <button
+                type="reset"
+                class="btn btn-label-secondary"
+                data-bs-dismiss="modal"
+                aria-label="Close">
+                الغاء
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Add Field Modal نافذة منبثقة لاضافة مجال في حال لم يكن مضافة من قبل-->
 </div>
 <!-- / Content -->
 {% endblock  %}
@@ -237,10 +359,10 @@
 <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
 <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
 <script>
-  const csrfToken = '{{ csrf_token }}';
   const token = localStorage.getItem('token');
 </script>
 <!-- Page JS -->
-<script type="module" src="{% static 'js/app-user-list.js' %}"></script>
+<script type="module" src="{% static 'js/app-research-list.js' %}"></script>
+<script type="module" src="{% static 'js/forms-selects.js' %}"></script>
 {% endblock  %}
 

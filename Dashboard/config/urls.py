@@ -35,6 +35,7 @@ urlpatterns = [
 
     # doctor
     path("doctors/", include("apps.doctor.urls")),
+    path("api/doctors/", include("apps.doctor.api_urls")),
     # emails
     path("emails/", include("apps.emails.urls")),
     # doctors not important
