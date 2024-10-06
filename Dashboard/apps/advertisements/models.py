@@ -9,7 +9,7 @@ class Advertisement(models.Model):
     phone_number = models.CharField(max_length=15)  # رقم هاتف الجهة المعلنة
     start_date = models.DateField()  # تاريخ بدء عرض الإعلان
     end_date = models.DateField()  # تاريخ انتهاء عرض الإعلان
-    status = models.IntegerField( default=1)  # الحالة لتحديد إذا كان الإعلان نشطاً أو لا 0 قيد الانتظار و1 نشط و2 منتهي
+    status = models.IntegerField(default=1)  # الحالة لتحديد إذا كان الإعلان نشطاً أو لا 0 قيد الانتظار و1 نشط و2 منتهي
     about = models.CharField(max_length=800) # نص الاعلان 
     views_count = models.PositiveIntegerField(default=0)  # عدد مرات مشاهدة الإعلان
     clicks_count = models.PositiveIntegerField(default=0)  #  عدد مرات النقر على الإعلان

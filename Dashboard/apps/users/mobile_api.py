@@ -22,8 +22,8 @@ class CuurentUserDetailView(APIView):
       if user_type == 'user':
         profile_serializer = UserProfileSerializer(request.user, many=False, context={'request': request})
       elif user_type == 'doctor':
-            # استخدم Doctor.objects.get() للحصول على كائن الطبيب
-          doctor = get_object_or_404(Doctor, user=request.user)  # احصل على كائن Doctor المرتبط بالـ User
+            #  Doctor.objects.get() للحصول على كائن الطبيب
+          doctor = get_object_or_404(Doctor, user=request.user)  
           profile_serializer = DoctorProfileSerializer(doctor, many=False, context={'request': request})
         
       return Response({
@@ -71,6 +71,7 @@ class UpdateProfileView(APIView):
         try:
             if user.user_type == 'doctor':
                 doctor = get_object_or_404(Doctor, user=user)
+                print(request.data)
                 doctor_serializer = DoctorUpdateProfileSerializer(doctor, data=request.data, partial=True)
 
                 if user_serializer.is_valid():
@@ -78,7 +79,6 @@ class UpdateProfileView(APIView):
                         self.update_profile_picture(user, request)
                         user_serializer.save()
                         doctor_serializer.save()
-
                         return Response({
                             'status': True,
                             'code': status.HTTP_200_OK,
@@ -131,7 +131,7 @@ class UpdateProfileView(APIView):
 
     def update_profile_picture(self, user, request):
         if 'remove_picture' in request.data and request.data['remove_picture'].lower() == 'true':
-            user.profile_picture = 'profile_pics/default_profile_picture.jpg'
+            user.profile_picture = 'profile_pics/default_profile_picture.png'
         elif 'profile_picture' in request.FILES and request.FILES['profile_picture']:
             user.profile_picture = request.FILES['profile_picture']
         

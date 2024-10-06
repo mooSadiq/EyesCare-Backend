@@ -112,7 +112,6 @@ class MessageList(APIView):
                 message = serializer.instance
                 if file:
                   File.objects.create(message=message, file=file)
-                # إرسال إشعار عبر Pusher
                 pusher_client.trigger(f'conversation-{conversation.id}', 'new-message', {
                     'message': MessageSerializer(message).data
                 })

@@ -32,8 +32,8 @@ class Research(models.Model):
     authors = models.CharField(max_length=255)  
     institution = models.CharField(max_length=255) 
     file = models.FileField(upload_to='research/', null=True)  # ملف PDF
-    url = models.URLField(blank=True, null=True)  # الرابط (اختياري)
-    is_file = models.BooleanField(default=True)  # لتحديد ما إذا كان ملفًا أو رابطًا
+    url = models.URLField(blank=True, null=True)  # الرابط 
+    is_file = models.BooleanField(default=True)  # لتحديد ما إذا  كان يتوفر ملفًا 
     field = models.ForeignKey(Field, on_delete=models.CASCADE)  # معرف المجال (التصنيف العلمي)
     views_count = models.PositiveIntegerField(default=0)  # عدد مرات مشاهدة البحث
     downloads_count = models.PositiveIntegerField(default=0)  # عدد مرات تحميل البحث

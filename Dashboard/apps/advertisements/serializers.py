@@ -11,4 +11,8 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         fields = "__all__"
         
         
-    
+
+class AdvertisementSerializerMobile(serializers.ModelSerializer):
+    class Meta:
+        model = Advertisement
+        fields = ["id","advertiser","phone_number","ad_link","ad_image","about"]

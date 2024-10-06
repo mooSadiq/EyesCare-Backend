@@ -22,7 +22,7 @@ class DoctorProfileSerializer(serializers.ModelSerializer):
     gender = serializers.CharField(source='user.gender')  # تأكد من وجود هذا الحقل في User model
     birth_date = serializers.DateField(source='user.birth_date')
     profile_picture = serializers.ImageField(source='user.profile_picture')
-    phone_number = serializers.CharField(source='user.phone_number')  # الأفضل تحويله إلى CharField
+    phone_number = serializers.IntegerField(source='user.phone_number')  # الأفضل تحويله إلى CharField
     email = serializers.EmailField(source='user.email')
 
     class Meta:

@@ -287,12 +287,10 @@ class ResearchListAPIView(APIView):
                 if researches_serializer.is_valid():
                     research = researches_serializer.save(user=request.user)
 
-                    # تحديث عدد الدراسات في المجال
                     field = research.field
                     field.research_count = F('research_count') + 1
                     field.save(update_fields=['research_count'])
 
-                    # تحديث عدد الدراسات في المجلة
                     journal = research.journal
                     journal.research_count = F('research_count') + 1
                     journal.save(update_fields=['research_count'])

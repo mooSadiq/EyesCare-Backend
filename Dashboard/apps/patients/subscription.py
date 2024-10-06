@@ -21,7 +21,6 @@ class SubscribeToPlan(APIView):
                   'code': status.HTTP_404_NOT_FOUND,
                   'message': "Invalid subscription plan."}, status=status.HTTP_404_NOT_FOUND)
 
-            # تحديد تاريخ الانتهاء بناءً على الباقة المختارة
             if plan.id == 1:
                 end_date = timezone.now() + datetime.timedelta(days=1)
             elif plan.id == 2:
@@ -34,15 +33,13 @@ class SubscribeToPlan(APIView):
                   'code': status.HTTP_400_BAD_REQUEST,
                   'message': "Invalid plan duration."}, status=status.HTTP_400_BAD_REQUEST)
 
-            # التحقق من حالة الاشتراك الحالي
             existing_subscription = PatientSubscription.objects.filter(patient=patient, is_active=True).first()
             if existing_subscription:
                 return Response({
                   'status': False,
                   'code': status.HTTP_400_BAD_REQUEST,
-                  'message': "You already have an active subscription."}, status=status.HTTP_400_BAD_REQUEST)
+                  'message': "أنت مشترك بالفعل في إحدى الباقات"})
 
-            # إنشاء اشتراك جديد للمريض
             patient_subscription = PatientSubscription.objects.create(
                 patient=patient,
                 plan=plan,
@@ -58,14 +55,14 @@ class SubscribeToPlan(APIView):
             return Response({
                 'status': True,
                 'code': status.HTTP_201_CREATED,
-                'message': 'Subscription created successfully!',
-            }, status=status.HTTP_201_CREATED)
+                'message': 'تم الاشتراك بنجاح',
+            })
 
         except Exception as e:
             return Response({
               'status': False,
               'code': status.HTTP_500_INTERNAL_SERVER_ERROR,
-              'message': "Failed to create subscription.", "details": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)      
+              'message': "Failed to create subscription.", "details": str(e)})      
 
 
 def check_and_expire_subscriptions():

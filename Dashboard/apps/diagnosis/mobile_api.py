@@ -25,11 +25,12 @@ class ImageInferenceView(View):
         saved_image_path = my_model_instance.image.path
         # detected_image,label=disease_detect(saved_image_path)
         # {
-        #     image,classfication_label
-        #     None, "No eye detected in the image."
-        #     None, "The model did not find a confident prediction."
-        #     None, "Error during RobowFlow inference hint:'Check Internet'."
-        #     None, "No Diseases detected."
+        #     image,classfication_label,Confidence
+        #     None, "No eye detected in the image.",None
+        #     None, "The model did not find a confident prediction.",None
+        #     None, "Error during RobowFlow inference hint:'Check Internet'.",None
+        #     None, "No Diseases detected.",None
+        #     None, Internal_Disease_classfication_label,Confidence
         # }
         check_eye = Detect_Eye.classify_and_save_image(saved_image_path)
         if check_eye == "Eye":

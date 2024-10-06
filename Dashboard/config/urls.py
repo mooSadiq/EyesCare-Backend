@@ -52,6 +52,7 @@ urlpatterns = [
     path('api/diagnosis/', include("apps.diagnosis.api_urls")),
     # advertisements 
     path('advertisements/', include("apps.advertisements.urls")),
+    path('api/advertisements/', include("apps.advertisements.api_urls")),
     # authentication
     path('auth/', include("authentication.urls")),
     path('api/auth/', include("authentication.api_urls")),
@@ -60,6 +61,7 @@ urlpatterns = [
     path('api/diseases/', include("apps.diseases.api_urls")),
     # evaluations
     path('evaluations/', include("apps.evaluations.urls")),
+    path('api/evaluations/', include("apps.evaluations.api_urls")),
     
     path('api/token/',  TokenObtainPairView.as_view()),
     #chat
