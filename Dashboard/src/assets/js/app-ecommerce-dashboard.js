@@ -5,31 +5,17 @@
 'use strict';
 
 (function () {
-  let cardColor, labelColor, headingColor, borderColor, legendColor;
-
-  if (isDarkStyle) {
-    cardColor = config.colors_dark.cardColor;
-    labelColor = config.colors_dark.textMuted;
-    legendColor = config.colors_dark.bodyColor;
-    headingColor = config.colors_dark.headingColor;
-    borderColor = config.colors_dark.borderColor;
-  } else {
-    cardColor = config.colors.cardColor;
-    labelColor = config.colors.textMuted;
-    legendColor = config.colors.bodyColor;
-    headingColor = config.colors.headingColor;
-    borderColor = config.colors.borderColor;
-  }
-
   // Donut Chart Colors
   const chartColors = {
     donut: {
-      series1: config.colors.success,
-      series2: '#28c76fb3',
-      series3: '#28c76f80',
-      series4: config.colors_label.success
+      series1: '#22A95E',
+      series2: '#24B364',
+      series3: config.colors.success,
+      series4: '#53D28C',
+      series5: '#7EDDA9',
+      series6: '#A9E9C5'
     }
-  };
+  }
 
   // Expenses Radial Bar Chart
   // --------------------------------------------------------------------
@@ -709,7 +695,73 @@
     const budgetChart = new ApexCharts(budgetChartEl, budgetChartOptions);
     budgetChart.render();
   }
-
+    // Radial Bar Chart
+  // --------------------------------------------------------------------
+  const radialBarChartEl = document.querySelector('#radialBarChart'),
+    radialBarChartConfig = {
+      chart: {
+        height: 380,
+        type: 'radialBar'
+      },
+      colors: [chartColors.donut.series1, chartColors.donut.series2, chartColors.donut.series4],
+      plotOptions: {
+        radialBar: {
+          size: 185,
+          hollow: {
+            size: '40%'
+          },
+          track: {
+            margin: 10,
+            background: config.colors_label.secondary
+          },
+          dataLabels: {
+            name: {
+              fontSize: '2rem',
+              fontFamily: 'Public Sans'
+            },
+            value: {
+              fontSize: '1.2rem',
+              color: legendColor,
+              fontFamily: 'Public Sans'
+            },
+            total: {
+              show: true,
+              fontWeight: 400,
+              fontSize: '1.3rem',
+              color: headingColor,
+              label: 'Comments',
+              formatter: function (w) {
+                return '80%';
+              }
+            }
+          }
+        }
+      },
+      grid: {
+        borderColor: borderColor,
+        padding: {
+          top: -25,
+          bottom: -20
+        }
+      },
+      legend: {
+        show: true,
+        position: 'bottom',
+        labels: {
+          colors: legendColor,
+          useSeriesColors: false
+        }
+      },
+      stroke: {
+        lineCap: 'round'
+      },
+      series: [80, 50, 35],
+      labels: ['Comments', 'Replies', 'Shares']
+    };
+  if (typeof radialBarChartEl !== undefined && radialBarChartEl !== null) {
+    const radialChart = new ApexCharts(radialBarChartEl, radialBarChartConfig);
+    radialChart.render();
+  }
   // Earning Reports Bar Chart
   // --------------------------------------------------------------------
   const reportBarChartEl = document.querySelector('#reportBarChart'),
@@ -742,9 +794,9 @@
       },
       colors: [
         config.colors_label.primary,
-        config.colors_label.primary,
-        config.colors_label.primary,
-        config.colors_label.primary,
+        config.colors_label.warning,
+        config.colors_label.danger,
+        config.colors_label.success,
         config.colors.primary,
         config.colors_label.primary,
         config.colors_label.primary
@@ -754,7 +806,7 @@
       },
       series: [
         {
-          data: [40, 95, 60, 45, 90, 50, 75]
+          data: [1000, 95, 60, 45, 90, 50, 75]
         }
       ],
       legend: {
@@ -803,213 +855,4 @@
     const barChart = new ApexCharts(reportBarChartEl, reportBarChartConfig);
     barChart.render();
   }
-
-  // Variable declaration for table
-  var dt_invoice_table = $('.datatable-invoice');
-  // Invoice datatable
-  // --------------------------------------------------------------------
-  if (dt_invoice_table.length) {
-    var dt_invoice = dt_invoice_table.DataTable({
-      ajax: assetsPath + 'json/invoice-list.json', // JSON file to add data
-      columns: [
-        // columns according to JSON
-        { data: '' },
-        { data: 'invoice_id' },
-        { data: 'invoice_status' },
-        { data: 'total' },
-        { data: 'issued_date' },
-        { data: 'invoice_status' },
-        { data: 'action' }
-      ],
-      columnDefs: [
-        {
-          // For Responsive
-          className: 'control',
-          responsivePriority: 2,
-          targets: 0,
-          render: function (data, type, full, meta) {
-            return '';
-          }
-        },
-        {
-          // Invoice ID
-          targets: 1,
-          render: function (data, type, full, meta) {
-            var $invoice_id = full['invoice_id'];
-            // Creates full output for row
-            var $row_output = '<a href="app-invoice-preview.html"><span>#' + $invoice_id + '</span></a>';
-            return $row_output;
-          }
-        },
-        {
-          // Invoice status
-          targets: 2,
-          render: function (data, type, full, meta) {
-            var $invoice_status = full['invoice_status'],
-              $due_date = full['due_date'],
-              $balance = full['balance'];
-            var roleBadgeObj = {
-              Sent: '<span class="badge badge-center rounded-pill bg-label-secondary w-px-30 h-px-30"><i class="ti ti-circle-check ti-sm"></i></span>',
-              Draft:
-                '<span class="badge badge-center rounded-pill bg-label-primary w-px-30 h-px-30"><i class="ti ti-device-floppy ti-sm"></i></span>',
-              'Past Due':
-                '<span class="badge badge-center rounded-pill bg-label-danger w-px-30 h-px-30"><i class="ti ti-info-circle ti-sm"></i></span>',
-              'Partial Payment':
-                '<span class="badge badge-center rounded-pill bg-label-success w-px-30 h-px-30"><i class="ti ti-circle-half-2 ti-sm"></i></span>',
-              Paid: '<span class="badge badge-center rounded-pill bg-label-warning w-px-30 h-px-30"><i class="ti ti-chart-pie ti-sm"></i></span>',
-              Downloaded:
-                '<span class="badge badge-center rounded-pill bg-label-info w-px-30 h-px-30"><i class="ti ti-arrow-down-circle ti-sm"></i></span>'
-            };
-            return (
-              "<span data-bs-toggle='tooltip' data-bs-html='true' title='<span>" +
-              $invoice_status +
-              '<br> <span class="fw-medium">Balance:</span> ' +
-              $balance +
-              '<br> <span class="fw-medium">Due Date:</span> ' +
-              $due_date +
-              "</span>'>" +
-              roleBadgeObj[$invoice_status] +
-              '</span>'
-            );
-          }
-        },
-        {
-          // Total Invoice Amount
-          targets: 3,
-          render: function (data, type, full, meta) {
-            var $total = full['total'];
-            return '$' + $total;
-          }
-        },
-        {
-          // Actions
-          targets: -1,
-          title: 'Actions',
-          orderable: false,
-          render: function (data, type, full, meta) {
-            return (
-              '<div class="d-flex align-items-center">' +
-              '<a href="javascript:;" class="text-body" data-bs-toggle="tooltip" title="Send Mail"><i class="ti ti-mail me-2 ti-sm"></i></a>' +
-              '<a href="app-invoice-preview.html" class="text-body" data-bs-toggle="tooltip" title="Preview"><i class="ti ti-eye mx-2 ti-sm"></i></a>' +
-              '<div class="d-inline-block">' +
-              '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical ti-sm lh-1"></i></a>' +
-              '<div class="dropdown-menu dropdown-menu-end m-0">' +
-              '<a href="javascript:;" class="dropdown-item">Details</a>' +
-              '<a href="javascript:;" class="dropdown-item">Archive</a>' +
-              '<div class="dropdown-divider"></div>' +
-              '<a href="javascript:;" class="dropdown-item text-danger delete-record">Delete</a>' +
-              '</div>' +
-              '</div>' +
-              '</div>'
-            );
-          }
-        },
-        {
-          // Invoice Status
-          targets: -2,
-          visible: false
-        }
-      ],
-      order: [[1, 'asc']],
-      dom:
-        '<"row ms-2 me-3"' +
-        '<"col-12 col-md-6 d-flex align-items-center justify-content-center justify-content-md-start gap-2"l<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start mt-md-0 mt-3"B>>' +
-        '<"col-12 col-md-6 d-flex align-items-center justify-content-end flex-column flex-md-row pe-3 gap-md-2"f<"invoice_status mb-3 mb-md-0">>' +
-        '>t' +
-        '<"row d-flex align-items-center mx-2"' +
-        '<"col-sm-12 col-md-6"i>' +
-        '<"col-sm-12 col-md-6 mt-1"p>' +
-        '>',
-      displayLength: 7,
-      lengthMenu: [7, 10, 25, 50, 75, 100],
-      language: {
-        sLengthMenu: '_MENU_',
-        search: '',
-        searchPlaceholder: 'Search Invoice'
-      },
-      // Buttons
-      buttons: [
-        {
-          text: '<i class="ti ti-plus me-md-2"></i><span class="d-md-inline-block d-none">Create Invoice</span>',
-          className: 'btn btn-primary waves-effect waves-light',
-          action: function (e, dt, button, config) {
-            window.location = 'app-invoice-add.html';
-          }
-        }
-      ],
-      // For responsive popup
-      responsive: {
-        details: {
-          display: $.fn.dataTable.Responsive.display.modal({
-            header: function (row) {
-              var data = row.data();
-              return 'Details of ' + data['full_name'];
-            }
-          }),
-          type: 'column',
-          renderer: function (api, rowIdx, columns) {
-            var data = $.map(columns, function (col, i) {
-              return col.title !== '' // ? Do not show row in modal popup if title is blank (for check box)
-                ? '<tr data-dt-row="' +
-                    col.rowIndex +
-                    '" data-dt-column="' +
-                    col.columnIndex +
-                    '">' +
-                    '<td>' +
-                    col.title +
-                    ':' +
-                    '</td> ' +
-                    '<td>' +
-                    col.data +
-                    '</td>' +
-                    '</tr>'
-                : '';
-            }).join('');
-
-            return data ? $('<table class="table"/><tbody />').append(data) : false;
-          }
-        }
-      },
-      initComplete: function () {
-        // Adding role filter once table initialized
-        this.api()
-          .columns(5)
-          .every(function () {
-            var column = this;
-            var select = $(
-              '<select id="UserRole" class="form-select"><option value=""> Select Status </option></select>'
-            )
-              .appendTo('.invoice_status')
-              .on('change', function () {
-                var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                column.search(val ? '^' + val + '$' : '', true, false).draw();
-              });
-
-            column
-              .data()
-              .unique()
-              .sort()
-              .each(function (d, j) {
-                select.append('<option value="' + d + '" class="text-capitalize">' + d + '</option>');
-              });
-          });
-      }
-    });
-  }
-  // On each datatable draw, initialize tooltip
-  dt_invoice_table.on('draw.dt', function () {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl, {
-        boundary: document.body
-      });
-    });
-  });
-
-  // Filter form control to default size
-  // ? setTimeout used for multilingual table initialization
-  setTimeout(() => {
-    $('.dataTables_filter .form-control').removeClass('form-control-sm');
-    $('.dataTables_length .form-select').removeClass('form-select-sm');
-  }, 300);
 })();
