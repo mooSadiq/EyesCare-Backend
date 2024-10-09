@@ -3,8 +3,161 @@
  */
 
 'use strict';
+function getToken(key) {
+  return localStorage.getItem(key);
+}
 
-(function () {
+function isTokenExpired(token) {
+  if (!token) return true;
+
+  const parts = token.split('.');
+  if (parts.length !== 3) {
+    throw new Error('Invalid token format');
+  }
+  const payload = JSON.parse(atob(parts[1]));
+  const now = Math.floor(Date.now() / 1000); 
+  return payload.exp < now;
+}
+
+async function refreshToken() {
+  const refreshToken = getToken('refresh_token');
+  const response = await fetch('/auth/token/refresh/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ refresh: refreshToken }),
+  });
+  
+  if (response.ok) {
+    const data = await response.json();
+    const newAccessToken = data.access;
+    localStorage.setItem('access_token', newAccessToken);
+    return newAccessToken;
+  } else {
+    await fetch('/auth/logout/', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${refreshToken}`,
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken,
+      },
+      body: JSON.stringify({}),
+    });
+    window.location.href = '/auth/login/'; 
+    throw new Error('Failed to refresh token and logged out');
+  }
+}
+
+async function fetchWithAuth(url, options = {}) {
+  let accessToken = getToken('access_token');
+  if (isTokenExpired(accessToken)) {
+    try {
+      accessToken = await refreshToken();
+    } catch (error) {
+      console.error('Failed to refresh token:', error);
+      return null; 
+    }
+  }
+
+  const headers = {
+    ...options.headers,
+    'Authorization': `Bearer ${accessToken}`,
+  };
+
+  const response = await fetch(url, {
+    ...options,
+    headers,
+  });
+
+  if (response.status === 401) {
+    try {
+      accessToken = await refreshToken();
+      return fetch(url, {
+        ...options,
+        headers: {
+          ...options.headers,
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
+    } catch (error) {
+      console.error('Failed to refresh token:', error);
+      return null; 
+    }
+  }
+
+  return response;
+}
+
+async function submitRequest(url, method, options = {}) {
+  try {
+    const response = await fetchWithAuth(url, {
+      method: method,
+      headers: {
+        'X-CSRFToken': csrfToken,
+        ...options.headers,
+      },
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.message);
+    }
+
+    const data = await response.json();
+    console.log(data.message);
+    return {
+      success: true,
+      message: data.message,
+      data: data,
+    };
+  } catch (error) {
+    console.error('Error:', error);
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+}
+
+async function fetchAllData(url) {
+  try {
+    const response = await fetchWithAuth(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Response was not ok');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return [];
+  }
+}
+
+async function fetchAndInitializeList() {
+  const urlGetDiseasesData = '/statics/';
+  try {
+    const data = await fetchAllData(urlGetDiseasesData);
+    console.log(`Data fetched: ${JSON.stringify(data)}`);
+    let adsString = JSON.stringify(data);
+    let adsArray = JSON.parse(adsString);
+    console.log(`Mellllllk ${typeof adsArray}`) // This gives you a string
+    console.log(`Mellllllk ${adsArray.UserCounts}`) // This gives you a string
+    dochart(adsArray)// Convert it back to an array or object
+  } catch (error) {
+    console.error('Error fetching disease data:', error);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', fetchAndInitializeList);
+function dochart(data) {
   let cardColor, headingColor, labelColor, borderColor, legendColor;
 
     cardColor = config.colors.cardColor;
@@ -88,11 +241,11 @@
       },
       series: [
         {
-          data: [700, 350, 480, 600, 210, 550, 150]
+          data: data.Diagnosis_result
         }
       ],
       xaxis: {
-        categories: ['Stye', 'Normal', 'Catract', 'Conjv', 'Ptregum', 'FRI, 21', 'MON, 23'],
+        categories: ['Stye', 'Normal', 'Catract', 'Conjv', 'Ptregum', 'Diabetic Retinopathy', 'Glaucoma','Retinal Vascular Occlusion'],
         axisBorder: {
           show: false
         },
@@ -157,7 +310,7 @@
               color: headingColor,
               label: 'Comments',
               formatter: function (w) {
-                return '80%';
+                return ;
               }
             }
           }
@@ -181,8 +334,8 @@
       stroke: {
         lineCap: 'round'
       },
-      series: [80, 50, 35,80,70,50],
-      labels: ['Comments', '1', '2',"3","4","5"]
+      series: data.Rating,
+      labels: ['1', '2',"3","4","5",'Comments']
     };
   if (typeof radialBarChartEl !== undefined && radialBarChartEl !== null) {
     const radialChart = new ApexCharts(radialBarChartEl, radialBarChartConfig);
@@ -206,7 +359,7 @@
       },
       series: [
         {
-          data: [80, 70, 20, 50, 10, 5, 9, 0,0, 0, 10, 0]
+          data: data.Posts_date
         }
       ],
       markers: {
@@ -287,8 +440,8 @@
         height: 390,
         type: 'donut'
       },
-      labels: ['Operational', 'Networking'],
-      series: [42, 7],
+      labels: ['لم يتم الرد','تم الرد'],
+      series: data.Cons_status,
       colors: [
         chartColors.donut.series1,
         chartColors.donut.series4,
@@ -339,7 +492,7 @@
                 show: true,
                 fontSize: '1.5rem',
                 color: headingColor,
-                label: 'Operational',
+                label: 'تم الرد',
                 formatter: function (w) {
                   return '42%';
                 }
@@ -425,4 +578,4 @@
     const donutChart = new ApexCharts(donutChartEl, donutChartConfig);
     donutChart.render();
   }
-})();
+}

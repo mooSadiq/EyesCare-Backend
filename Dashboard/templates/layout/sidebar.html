@@ -20,7 +20,7 @@
       </a>
     </li>
     <li class="menu-item">
-      <a href="app-email.html" class="menu-link">
+      <a href="{% url 'index' %}" class="menu-link">
         <i class="menu-icon tf-icons ti ti-chart-bar"></i>
         <div data-i18n="Statistic">احصائيات</div>
       </a>
@@ -99,47 +99,32 @@
     </li>
     <li class="menu-item {% if 'diseases' in request.path %}active{% endif %}">     
       <a href="{% url 'diseases_list' %}" class="menu-link">
-        <i class="menu-icon tf-icons ti ti-users-group"></i>
+        <i class="fa-solid fa-square-virus menu-icon"></i>
         <div data-i18n="diseases List">إدارة الأمراض</div>
       </a>
     </li>
     <li class="menu-item {% if 'evaluations' in request.path %}active{% endif %}">     
       <a href="{% url 'evaluations_page' %}" class="menu-link">
-        <i class="menu-icon tf-icons ti ti-users-group"></i>
+        <i class="fa-duotone fa-solid fa-star-half-stroke menu-icon"></i>
         <div data-i18n="evalautions management">إدارة التقييمات</div>
       </a>
     </li>
     <li class="menu-item">     
       <a href="{% url 'adv_list' %}" class="menu-link">
-        <i class="menu-icon tf-icons ti ti-users-group"></i>
+        <i class="fa-brands fa-buysellads menu-icon"></i>
         <div data-i18n="advertisements list">إدارة الإعلانات</div>
       </a>
     </li>
     <li class="menu-item">     
       <a href="{% url 'consultation_list' %}" class="menu-link">
-        <i class="menu-icon tf-icons ti ti-users-group"></i>
+        <i class="fa-regular fa-comment menu-icon"></i>
         <div data-i18n="consultations list">إدارة الاستشارات</div>
       </a>
     </li>
     <li class="menu-item">
       <a href="{% url 'app_emails' %}" class="menu-link">
         <i class="menu-icon tf-icons ti ti-mail"></i>
-        <div data-i18n="Email">Email</div>
-      </a>
-    </li>
-    <li class="menu-item">
-      <a href="https://pixinvent.ticksy.com/" target="_blank" class="menu-link">
-        <i class="menu-icon tf-icons ti ti-lifebuoy"></i>
-        <div data-i18n="Support">Support</div>
-      </a>
-    </li>
-    <li class="menu-item">
-      <a
-        href="https://demos.pixinvent.com/vuexy-html-admin-template/documentation/"
-        target="_blank"
-        class="menu-link">
-        <i class="menu-icon tf-icons ti ti-file-description"></i>
-        <div data-i18n="Documentation">Documentation</div>
+        <div data-i18n="Email">البريد الألكتروني</div>
       </a>
     </li>
   </ul>
