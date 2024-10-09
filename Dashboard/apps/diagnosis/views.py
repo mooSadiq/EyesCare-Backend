@@ -38,14 +38,35 @@ def diagnosisDetailsPrint(request):
 
 
 # هذي الدالة الي توصل لل module
+ # detected_image,label=disease_detect(saved_image_path)
+        # {
+        #     image,classfication_label,Confidence
+        #     None, "No eye detected in the image.",None
+        #     None, "The model did not find a confident prediction.",None
+        #     None, "Error during RobowFlow inference hint:'Check Internet'.",None
+        #     None, "No Diseases detected.",None
+        #     None, Internal_Disease_classfication_label,Confidence
+        # }
 def detect_Eye(image_path):
     
-     image, label  = Eye_Diseases_Detect.disease_detect(image_path)
-   
+     image, label,confidence  = Eye_Diseases_Detect.disease_detect(image_path)
      if image is not None:  #  أي اذا كانت عين
         return image,label
-     else:
-       return None, "تأكد من التقاط الصورة بشكل مناسب"
+     elif confidence is not None:
+         return image_path, label
+    #  else:
+    #    return None, "تأكد من التقاط الصورة بشكل مناسب"
+     elif image is None:
+       if label == "No eye detected in the image.":
+         label = "يبدو أن الصورة ليست عين! "
+       elif label == "The model did not find a confident prediction.":
+         label = "الصورة غير واضحة، اجلب صورة أوضح"
+       elif label == "Error during RobowFlow inference hint:'Check Internet'.":
+         label = "تحقق من الاتصال بالانترنت!"
+       elif label == "No Diseases detected.":
+         label = "عذراً، لم نتمكن من اكتشاف هذا المرض!"
+       
+       return None, label
     
 
 # result شكل النتائج 
@@ -149,7 +170,8 @@ class ImageUploadView(APIView):
               return JsonResponse({"success":True, "message":' نتيجة التشخيص هي: '+ disease_type,
                                      'disease_type':disease_type})
             else:
-                return JsonResponse({"success":False,'message': 'عذراً، يبدوا أن الصورة التي تم ارسالها ليست صورة عين!'} )
+                # return JsonResponse({"success":False,'message': 'عذراً، يبدوا أن الصورة التي تم ارسالها ليست صورة عين!'} )
+                return JsonResponse({"success":False,'message': label} )
         
         except Exception as e:
             return JsonResponse({'message': str(e)}, status=500)
