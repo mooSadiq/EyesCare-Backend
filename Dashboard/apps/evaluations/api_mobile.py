@@ -19,10 +19,11 @@ class ReviewsListView(APIView):
         else:
             return Response({"status":False,"code":404,"Info":"لا يوجد أي بيانات"},status.HTTP_404_NOT_FOUND)
 
+
 class SetReviewsView(APIView):
     permission_classes = [IsAuthenticated]
     def post(self,request):
-        user_id = request.data.get('user')
+        user_id = request.user.id
         if not user_id:
             return Response({"status": False,"code": 400,"message": "user_id is required."}, status=status.HTTP_400_BAD_REQUEST)
         try:

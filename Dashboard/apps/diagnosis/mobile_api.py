@@ -46,16 +46,9 @@ class ImageInferenceView(View):
                  predictions = result.get('predictions', [])
                  if predictions:
                    class_value = predictions[0].get('class')
-                   x = predictions[0].get('x')
-                   y = predictions[0].get('y')
-                   width = predictions[0].get('width')
-                   height = predictions[0].get('height')
+
                    if class_value == 'normal':
                        diagnosis_data = {
-                             'x': x,
-                             'y': y,
-                             'width': width,
-                             'height': height,
                              'diagnosis_status': 'لا توجد مشاكل ظاهرة',
                              'message': 'تحليل الصورة يظهر أن العين سليمة ولا توجد مشاكل ظاهرة. لكن إذا كنت تشعر بأي ألم أو أعراض، نوصي بزيارة طبيب العيون للاطمئنان. صحتك تهمنا!',
                          }
@@ -67,10 +60,6 @@ class ImageInferenceView(View):
                        })
                    else:
                        diagnosis_data = {
-                             'x': x,
-                             'y': y,
-                             'width': width,
-                             'height': height,
                              'disease_id': 1,
                              'diagnosis_status': class_value,
                              'message': 'يرجى ملاحظة أن هذه النتائج ليست تشخيصًا نهائيًا. نوصي بزيارة طبيب عيون مختص للحصول على تقييم دقيق وموثوق والحصول على الرعاية الصحية اللازمة.',

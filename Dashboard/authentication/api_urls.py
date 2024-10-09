@@ -1,6 +1,7 @@
 from django.urls import path
 from . import mobile_api
 from . import google_auth
+from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
     path('register/', mobile_api.RegisterUserView.as_view(), name='register'),
@@ -10,4 +11,6 @@ urlpatterns = [
     path('password/forgot/', mobile_api.ForgotPasswordView.as_view(), name='password-forgot'),
     path('password/verifycode/', mobile_api.VerifyApiCodeView.as_view(), name='password-verify-code'),
     path('password/reset/', mobile_api.SetNewPasswordView.as_view(), name='set-new-password'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
 ]

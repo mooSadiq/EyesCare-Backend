@@ -70,6 +70,7 @@ urlpatterns = [
     
     #consultations
     path('consultations/', include('apps.consultations.urls')),
+    path('api/consultations/', include('apps.consultations.api_urls')),
     
     
     #notifications

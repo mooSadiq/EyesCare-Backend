@@ -93,7 +93,7 @@ class VerifyEmailApiCodeView(APIView):
             email=email,
             is_verified=False,
             verification_code = code,
-            verification_code_expiry__gt=timezone.localtime()
+            verification_code_expiry__gt=timezone.now()
         ).first()
         if not user:
             return Response({

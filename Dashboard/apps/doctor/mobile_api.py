@@ -96,8 +96,8 @@ class DoctorFilterListAPIView(APIView):
             queryset = doctors_filter.qs
             if not queryset.exists():
                 return Response({
-                  'status': False,
-                  'code': status.HTTP_404_NOT_FOUND,
+                  'status': True,
+                  'code': status.HTTP_200_OK,
                   'message': 'لم يتم العثور على أي نتائج تطابق الفلترة.'
                 })
             doctors_serializer = DoctorListSerializer(queryset, many=True, context={'request': request})
