@@ -10,7 +10,6 @@ from rest_framework.permissions import IsAuthenticated
 
 #عرض التقيمات
 class ReviewsListView(APIView):
-    permission_classes = [IsAuthenticated]
     def get(self,request):
         reviews = Review.objects.all()
         serializer = ReviewSerializer(reviews, many=True,context={'request': request})

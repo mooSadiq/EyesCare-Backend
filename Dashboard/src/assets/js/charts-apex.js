@@ -287,8 +287,8 @@
         height: 390,
         type: 'donut'
       },
-      labels: ['Operational', 'Networking', 'Hiring', 'R&D'],
-      series: [42, 7, 25, 25],
+      labels: ['Operational', 'Networking'],
+      series: [42, 7],
       colors: [
         chartColors.donut.series1,
         chartColors.donut.series4,
