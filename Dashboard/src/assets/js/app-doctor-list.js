@@ -126,8 +126,8 @@ function fetchDataToDatatable(data) {
       {
         targets: 4,
         render: function (data, type, full, meta) {
-          var $consults = 20; // full['consults'] || 0;
-          var $responded_consults = 7;// full['responded_consults'] || 0;
+          var $consults =  full['total_consultations'] || 0;
+          var $responded_consults = full['completed_consultations'] || 0;
           var $non_responded_consults = $consults - $responded_consults;
 
           return (
