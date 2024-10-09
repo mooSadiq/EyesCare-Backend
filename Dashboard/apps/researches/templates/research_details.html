@@ -1,0 +1,251 @@
+{% extends 'master.html' %}
+{% load static %}
+{% block title %}
+      تفاصيل الدراسة
+{% endblock  %}
+{% block specialCssFiles %}
+{% endblock  %}
+
+{% block content %}
+<!-- Content -->
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h4 class="py-3 mb-2"> الدراسات /<span class="text-muted fw-light"> تفاصيل الدراسة </span></h4>
+  <div class="card g-3 mt-0">
+    <div class="card-body row g-3">
+      <div class="col-lg-12">
+        <div class="d-flex justify-content-between align-items-center flex-wrap mb-2 gap-1">
+          <div class="me-1">
+            <h5 class="mb-1" id="research-id"></h5>
+          </div>
+          <div class="d-flex align-items-center">
+            <a href="javascript:;" 
+              type="button" 
+              class="text-body " 
+              data-bs-toggle="modal" 
+              data-bs-target="#editResearchModal"
+              >
+              <i class="ti ti-edit ti-sm mx-2"></i>
+            </a>
+            <a href="javascript:;" 
+              type="button" id="confirm-delete" 
+              class="text-body delete-record"
+              data-bs-toggle="tooltip" 
+              data-bs-placement="top" 
+              data-bs-original-title="حذف">
+              <i class="ti ti-trash ti-sm mx-2"></i>
+            </a>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center flex-wrap mb-2 gap-1">
+          <div class="card-body me-1">
+            <h5 class="mb-2"  id="research-title"></h5>
+            <p class="mb-1"><i class="ti ti-pencil ti-sm me-2 mb-1 "></i>المؤلف: <span class="fw-medium" id="research-author"></span></p>
+          </div>
+        </div>
+        <hr class="my-0">
+        <div class="card-body col-12 shadow-none">
+          <h5 class="mb-1">الملخص</h5>
+            <p id="research-abstract" class="mb-4">
+              
+            </p>
+        </div>
+        <hr class="my-3">
+        <div class="card-body col-12  shadow-none">
+          <div class="pb-0 pt-3 d-flex justify-content-around align-items-center border rounded-3 ">
+            <div class=" justify-content-around align-items-center">
+              <p class="text-nowrap">
+                <i class="ti ti-notes ti-sm me-2 mb-1 "></i>المجلة: <span class="fw-medium" id="research-journal" ></span></p>
+              </p>
+              <p class="text-nowrap">
+                <i class="ti ti-category ti-sm me-2 mb-1"></i>المجال: <span class="fw-medium" id="research-field" ></span></p>
+              </p>
+            </div>
+            <div class=" justify-content-around align-items-center">
+              <p class="text-nowrap">
+                <i class="ti ti-calendar-event me-2 mb-1 ti-sm "></i>تاريخ النشر: <span class="fw-medium" id="research-publicate-date" ></span></p>
+              </p>
+              <p class="text-nowrap">
+                <i class="ti ti-building-pavilion ti-sm me-2 mb-1"></i>المعهد: <span class="fw-medium" id="research-institution" ></span></p>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body col-12 shadow-none">
+          <h6 class="mb-1">طريقة الوصول للدراسة كاملة</h6>
+          <hr class="my-3">
+          <p class="text-nowrap">
+            <i id="icon-type" class="ti-sm me-2 "></i>
+            <a id="research-link" target="_blank" href=""><span class="fw-medium">انقر هنا</span></a></p>
+          </p>
+          <hr class="my-0">
+        </div>
+        <div class="d-flex justify-content-around align-items-center mt-2">
+          <div class="d-flex justify-content-start align-items-center">
+            <div class="avatar-wrapper">
+              <div class="avatar me-2">
+                <img src="" id="user-avatar" alt="Avatar" class="rounded-circle" />
+              </div>
+            </div>
+            <div class="d-flex flex-column">
+                <span id="research-user-name" class="fw-medium"></span>
+            </div>
+          </div>
+          <h6 class="d-flex align-items-center justify-content-center gap-1 mb-0">
+            <span class="text-muted" id="research-views-count">k</span>
+            <span class="text "><i class="ti ti-eye ms-1 me-1 mt-n1"></i></span>
+          </h6>
+          <h6 class="d-flex align-items-center justify-content-center gap-1 mb-0">
+            <span class="text-muted" id="research-downloads-count">k</span>
+            <span ><i class="ti ti-download ms-1 me-1 mt-n1"></i></span>
+          </h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modals -->
+  <!-- Edit Research Modal نافذة منبثقة لتعديل معلومات البحث-->
+  <div class="modal fade" id="editResearchModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-simple modal-edit-research">
+      <div class="modal-content p-1 ">
+        <div class="modal-body">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="text-center mb-4">
+            <h3 class="mb-2">تعديل معلومات البحث</h3>
+          </div>
+          <form id="editResearchForm" enctype="multipart/form-data" class="row g-3" onsubmit="return false">
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="edit-research-title">العنوان</label>
+              <input
+                type="text"
+                class="form-control"
+                id="edit-research-title"/>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="edit-research-authors">المؤلف</label>
+              <input
+                type="text"
+                class="form-control"
+                id="edit-research-authors"
+                placeholder="John Doe"
+                name="AddUserFirstname"
+                aria-label="John Doe" />
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="edit-research-abstract">الملخص</label>
+              <textarea class="form-control" id="edit-research-abstract" name='description' rows="2" ></textarea>
+            </div>
+            <div class="col-12 col-md-6">
+              <label for="edit-research-date" class="form-label">تاريخ النشر</label>
+              <input
+                type="date"
+                id="edit-research-date"
+                name="publicate-date"
+                placeholder="MM/DD/YYYY"
+                class="form-control" />
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="edit-research-institution">المعهد</label>
+              <input
+                type="text"
+                class="form-control"
+                id="edit-research-institution"
+                placeholder="John Doe"
+                name="AddUserFirstname"
+                aria-label="John Doe" />
+            </div>
+            <div class="col-12 col-md-6">
+                <label for="edit-research-select-journal" class="form-label">المجلة</label>
+                <select id="edit-research-select-journal" class="select2 form-select form-select-md" data-allow-clear="true">
+                </select>                
+            </div>
+            <div class="col-12 col-md-6">
+                <label for="edit-research-select-field" class="form-label">المجال</label>
+                <select id="edit-research-select-field" class="select2 form-select form-select-md" data-allow-clear="true">
+                </select>
+            </div>            
+            <div class="col-12 mt-4">
+              <label class="switch">
+                <input type="checkbox" id="edit-research-switch" class="switch-input" />
+                <span class="switch-toggle-slider">
+                  <span class="switch-on"></span>
+                  <span class="switch-off"></span>
+                </span>
+                <span class="switch-label">الدراسة تحتوي على PDF</span>
+              </label>
+            </div>
+            <div class="col-12" id="url-input">
+              <label class="form-label" for="edit-research-url">رابط الدراسة</label>
+              <input
+                type="url"
+                class="form-control"
+                id="edit-research-url"/>
+            </div>
+            <div class="col-12" id="file-input">
+              <label class="form-label" for="edit-research-file">ملف PDF</label>
+              <input 
+              class="form-control" 
+              type="file" 
+              id="edit-research-file"/>
+            </div>
+            <div class="col-12 text-center">
+              <button type="submit" class="btn btn-primary me-sm-3 me-1">حفظ التعديلات</button>
+              <button
+                type="reset"
+                class="btn btn-label-secondary"
+                data-bs-dismiss="modal"
+                aria-label="Close">
+                الغاء
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Edit Research Modal نافذة منبثقة لتعديل معلومات البحث-->
+</div>
+<!-- / Content -->
+{% endblock  %}
+{% block specialJsFiles %}
+<script>
+  const getId = '{{ research_id }}';
+</script>
+<script type="module" src="{% static 'js/app-research-details.js' %}"></script>
+<script type="module" src="{% static 'js/forms-selects.js' %}"></script>
+
+
+<script>
+(function () {
+  // Alert With Functional Confirm Button
+  const confirmText = document.querySelector('#confirm-text');
+  confirmText.onclick = function () {
+    Swal.fire({
+      title: 'هل أنت متأكد؟',
+      text: "لن تستطيع استعادته بعد الحذف!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'نعم، حذف!',
+      CancelButtonText: 'الغاء',
+      customClass: {
+        confirmButton: 'btn btn-primary me-3 ',
+        cancelButton: 'btn btn-label-secondary '
+      },
+      buttonsStyling: false
+    }).then(function (result) {
+      if (result.value) {
+        Swal.fire({
+          icon: 'success',
+          title: 'تم الحذف!',
+          text: 'لقد تم حذف المنشور بنجاح.',
+          customClass: {
+            confirmButton: 'btn btn-success '
+          }
+        });
+      }
+    });
+  };
+})();
+</script>
+
+{% endblock  %}
+

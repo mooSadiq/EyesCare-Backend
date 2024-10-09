@@ -18,7 +18,7 @@ class AdvertisementList(APIView):
 
 
 class AddClick(APIView):
-    def put(self, request, pk):
+    def post(self, request, pk):
         advertisement = Advertisement.objects.filter(id=pk).first() 
         if not advertisement:
             return Response({

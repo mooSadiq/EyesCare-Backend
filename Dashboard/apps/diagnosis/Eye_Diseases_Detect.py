@@ -66,6 +66,7 @@ def disease_detect(image_path):
         return image, label, conf
     elif result == "No detection: No eye detected":
         return None, "No eye detected in the image.", None
+    
     elif result == "No sufficient confidence.":
         return None, "The model did not find a confident prediction.", None
     else:

@@ -7,7 +7,9 @@ export function getToken(key) {
 
 
 export function isTokenExpired(token) {
-  if (!token) return true;
+  if (!token) 
+    window.location.href = '/auth/login/';
+  
 
   const parts = token.split('.');
   if (parts.length !== 3) {
@@ -17,8 +19,6 @@ export function isTokenExpired(token) {
   const now = Math.floor(Date.now() / 1000); 
   return payload.exp < now;
 }
-
-
 
 export async function refreshToken() {
   const refreshToken = getToken('refresh_token');
@@ -33,18 +33,20 @@ export async function refreshToken() {
   if (response.ok) {
       const data = await response.json();
       const newAccessToken = data.access;
+      const newRefreshToken = data.refresh;
       localStorage.setItem('access_token', newAccessToken);
+      localStorage.setItem('refresh_token', newRefreshToken);
       return newAccessToken;
   } else {
-      await fetch('/auth/logout/', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${refreshToken}`,
-          'Content-Type': 'application/json',
-          'X-CSRFToken': csrfToken
-        },
-        body: JSON.stringify({}),
-      });
+      // await fetch('/auth/logout/', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Authorization': `Bearer ${refreshToken}`,
+      //     'Content-Type': 'application/json',
+      //     'X-CSRFToken': csrfToken
+      //   },
+      //   body: JSON.stringify({}),
+      // });
       window.location.href = '/auth/login/'; 
       throw new Error('Failed to refresh token and logged out');
   }

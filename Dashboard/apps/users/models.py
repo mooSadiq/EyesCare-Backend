@@ -27,7 +27,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     gender = models.CharField(max_length=10, choices=[('ذكر', 'ذكر'), ('أنثى', 'أنثى')], blank=True)
     birth_date = models.DateField(null=True, blank=True)
     profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
-    phone_number = models.CharField(max_length=15, blank=True)
+    phone_number = models.IntegerField(null=True, blank=True)
     user_type = models.CharField(max_length=20, choices=[('patient', 'مريض'), ('doctor', 'طبيب'), ('user', 'مستخدم عادي'), ('admin', 'ادمن'), ('support', 'فريق الدعم')])
     is_verified = models.BooleanField(default=False)
     verification_code = models.CharField(max_length=6, null=True)

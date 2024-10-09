@@ -45,7 +45,6 @@ class PostDetailView(APIView):
 class UserPostsView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, *args, **kwargs):
-        # تصفية المنشورات الخاصة بالمستخدم الحالي
         posts = Post.objects.filter(user=request.user).prefetch_related('user')
         serializer = PostListSerializer(posts, many=True, context={'request': request})
         return Response({

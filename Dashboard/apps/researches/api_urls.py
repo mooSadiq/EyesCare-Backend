@@ -1,10 +1,10 @@
 from django.urls import path
-from . import views
+from . import mobile_api
 
 urlpatterns = [
-    path('', views.ResearchListAPIView.as_view(), name='research-list'),
-    path('filters/', views.ResearchFilterListAPIView.as_view(), name='research-filters'),
-    path('<int:pk>/', views.ResearchAPIView.as_view(), name='research-one'),
-    path('journals/', views.JournalListAPIView.as_view(), name='journal-list'),
-    path('fields/', views.FieldListAPIView.as_view(), name='field-list'),
+    path('', mobile_api.ResearchFilterListAPIView.as_view(), name='research-list'),
+    path('filters/', mobile_api.ResearchFilterListAPIView.as_view(), name='research-filters'),
+    path('<int:pk>/', mobile_api.ResearchOneListAPIView.as_view(), name='research-one'),
+    path('journals/', mobile_api.JournalListAPIView.as_view(), name='journal-list'),
+    path('fields/', mobile_api.FieldListAPIView.as_view(), name='field-list'),
 ]

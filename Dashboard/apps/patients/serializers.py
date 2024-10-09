@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from apps.users.models import CustomUser
-from .models import Patient, SubscriptionPlan
+from .models import Patient, SubscriptionPlan, PatientSubscription
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,4 +22,10 @@ class SubscriptionPlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubscriptionPlan
         fields = "__all__"
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PatientSubscription
+        fields = ['patient', 'plan', 'start_date', 'end_date', 'is_active', 'remaining_consultations']
 

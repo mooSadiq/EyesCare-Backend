@@ -27,10 +27,11 @@ SECRET_KEY = 'se13m4407-2o#mt6ogl5ht$8d9_9bigm3tsyo3eq@n#^9_pmmr'
 DEBUG = True
 ALLOWED_HOSTS = ['localhost',
                  '0.0.0.0',
-                 '192.168.149.13',
-                 '192.168.117.104',
+                 '192.168.43.167',
+                 '192.168.97.104',
+                 '192.168.40.104',
                  '192.168.238.104',
-                 '192.168.8.22',
+                 '192.168.12.104',
                  '127.0.0.1',
                  '192.168.0.229'
                  ]
@@ -115,17 +116,18 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticated', 
     ),
 }
 CSRF_COOKIE_SECURE = False
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(hours=12),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=10),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': True,
     'AUTH_HEADER_TYPES': ('Bearer',),
+    'TOKEN_BLACKLIST': True,
     'USER_ID_FIELD': 'id',
     'USER_ID_CLAIM': 'user_id',
     'ALGORITHM': 'HS256',

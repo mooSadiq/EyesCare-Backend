@@ -6,7 +6,8 @@
 
 $(function () {
   const selectPicker = $('.selectpicker'),
-    select2 = $('.select2'),
+    fieldSelect = $('.fieldSelect2'),
+    jornalSelect = $('.jornalSelect2'),
     select2Icons = $('.select2-icons');
 
   // Bootstrap Select
@@ -19,11 +20,21 @@ $(function () {
   // --------------------------------------------------------------------
 
   // Default
-  if (select2.length) {
-    select2.each(function () {
+  if (jornalSelect.length) {
+    jornalSelect.each(function () {
       var $this = $(this);
       $this.wrap('<div class="position-relative"></div>').select2({
-        placeholder: 'Select value',
+        placeholder: 'اختر المجلة',
+        dropdownParent: $this.parent()
+      });
+    });
+  }
+  // Default
+  if (fieldSelect.length) {
+    fieldSelect.each(function () {
+      var $this = $(this);
+      $this.wrap('<div class="position-relative"></div>').select2({
+        placeholder: 'اختر المجال',
         dropdownParent: $this.parent()
       });
     });
