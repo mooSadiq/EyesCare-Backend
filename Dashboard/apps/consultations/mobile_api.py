@@ -13,63 +13,6 @@ from apps.patients.models import Patient
 from django.db import transaction
 
 
-class ConversationList(APIView):
-    permission_classes = [IsAuthenticated]
-    def get(self, request):
-        conversations = Conversation.objects.filter(user1=request.user) | Conversation.objects.filter(user2=request.user)
-        serializer = ConversationSerializer(conversations, many=True, context={'request': request})
-        return Response(serializer.data)
-      
-    def delete(self, request, pk):
-      try:
-          conversation = Conversation.objects.get(id=pk)
-      except Conversation.DoesNotExist:
-          return Response(status=status.HTTP_404_NOT_FOUND)
-      conversation.delete()
-      return Response(status=status.HTTP_204_NO_CONTENT)
-
-class ConversationDetails(APIView):
-    permission_classes = [IsAuthenticated]
-    def get(self, request, pk):
-        try:
-            conversation = Conversation.objects.get(
-                Q(id=pk) & (Q(user1=request.user) | Q(user2=request.user))
-            )
-        except Conversation.DoesNotExist:
-            return Response({'error': 'Conversation not found or not authorized.'}, status=status.HTTP_404_NOT_FOUND)
-
-        other_user = conversation.user1 if conversation.user1 != request.user else conversation.user2
-        # conversation.messages.filter(is_read=False, sender=other_user).update(is_read=True)
-
-        messages = conversation.messages.filter(is_read=False, sender=other_user)
-        serializer = MessageSerializer(messages, many=True, context={'request': request})
-        return Response(serializer.data)
-      
-    #دالة اغلاق المحادثة   
-    def post(self, request, pk):
-        try:
-            conversation = Conversation.objects.get(
-                Q(id=pk) & (Q(user1=request.user) | Q(user2=request.user))
-            )
-        except Conversation.DoesNotExist:
-            return Response({'error': 'Conversation not found or not authorized.'}, status=status.HTTP_404_NOT_FOUND)
-        user_type = request.user.user_type
-        if user_type == 'doctor':
-            conversation.is_active = False
-            conversation.save()
-            return Response({
-                'status': True,
-                'code': status.HTTP_200_OK,
-                'message': 'تم إغلاق المحادثة'
-            }, status=status.HTTP_200_OK)
-        
-        return Response({
-            'status': False,
-            'code': status.HTTP_403_FORBIDDEN,
-            'message': 'ليس لديك صلاحية إغلاق المحادثة'
-        }, status=status.HTTP_403_FORBIDDEN)
-        
-  
 class ConsultationSendAPIView(APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request):
