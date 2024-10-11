@@ -10,6 +10,7 @@ from apps.users.models import CustomUser
 from django.db import transaction
 import pusher
 
+
 pusher_client = pusher.Pusher(
   app_id=settings.PUSHER_APP_ID,
   key=settings.PUSHER_KEY,
@@ -44,9 +45,8 @@ class ConversationDetails(APIView):
             return Response({'error': 'Conversation not found or not authorized.'}, status=status.HTTP_404_NOT_FOUND)
 
         other_user = conversation.user1 if conversation.user1 != request.user else conversation.user2
-        # conversation.messages.filter(is_read=False, sender=other_user).update(is_read=True)
-
-        messages = conversation.messages.filter(is_read=False, sender=other_user)
+        conversation.messages.filter(is_read=False, sender=other_user).update(is_read=True)
+        messages = conversation.messages
         serializer = MessageSerializer(messages, many=True, context={'request': request})
         return Response(serializer.data)
       
@@ -78,6 +78,7 @@ class ConversationDetails(APIView):
 class MessageList(APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request):
+
         content = request.data.get('content', '') 
         receiver_id = request.data.get('receiver')
         file = request.FILES.get('file')
@@ -118,5 +119,7 @@ class MessageList(APIView):
 
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 

@@ -11,15 +11,24 @@ from apps.users.models import CustomUser
 from apps.doctor.models import Doctor
 from apps.patients.models import Patient
 from django.db import transaction
-
+import pusher
+pusher_client = pusher.Pusher(
+  app_id=settings.PUSHER_APP_ID,
+  key=settings.PUSHER_KEY,
+  secret=settings.PUSHER_SECRET,
+  cluster=settings.PUSHER_CLUSTER,
+  ssl=settings.PUSHER_SSL
+)
 
 class ConsultationSendAPIView(APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request):
       try:
+          usersender = request.user
           content = request.data.get('content', '') 
           receiver_id = request.data.get('receiver')
           file = request.FILES.get('file')
+          print(f"reciever is :{usersender}")
           print(f"reciever is :{receiver_id}")
           print(f"content is :{content}")
           if not content and not file:
@@ -64,7 +73,9 @@ class ConsultationSendAPIView(APIView):
                   message = serializer.instance
                   if file:
                     File.objects.create(message=message, file=file)
-
+                  pusher_client.trigger(f'conversation-{conversation.id}', 'new-message', {
+                    'message': MessageSerializer(message).data
+                  })
                   return Response({
                       'status': True,
                       'code': status.HTTP_201_CREATED,

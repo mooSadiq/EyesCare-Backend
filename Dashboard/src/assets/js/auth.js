@@ -36,17 +36,18 @@ export async function refreshToken() {
       const newRefreshToken = data.refresh;
       localStorage.setItem('access_token', newAccessToken);
       localStorage.setItem('refresh_token', newRefreshToken);
+
       return newAccessToken;
   } else {
-      // await fetch('/auth/logout/', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Authorization': `Bearer ${refreshToken}`,
-      //     'Content-Type': 'application/json',
-      //     'X-CSRFToken': csrfToken
-      //   },
-      //   body: JSON.stringify({}),
-      // });
+      const refresh_token = getToken('refresh_token');
+      await fetch('/auth/logout/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify({refresh_token}),
+      });
       window.location.href = '/auth/login/'; 
       throw new Error('Failed to refresh token and logged out');
   }

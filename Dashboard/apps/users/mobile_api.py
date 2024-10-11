@@ -19,12 +19,12 @@ class CuurentUserDetailView(APIView):
     def get(self, request):
       user_type = request.user.user_type
       print(user_type)
-      if user_type == 'user':
-          profile_serializer = UserProfileSerializer(request.user, many=False, context={'request': request})
-      elif user_type == 'doctor':
-            #  Doctor.objects.get() للحصول على كائن الطبيب
+      if user_type == 'doctor':
           doctor = get_object_or_404(Doctor, user=request.user)  
           profile_serializer = DoctorProfileSerializer(doctor, many=False, context={'request': request})
+      else :
+          profile_serializer = UserProfileSerializer(request.user, many=False, context={'request': request})
+
         
       return Response({
         'status': True,

@@ -30,8 +30,8 @@ ALLOWED_HOSTS = ['localhost',
                  '192.168.13.104',
                  '192.168.114.104',
                  '192.168.8.38',
-                 '192.168.238.104',
-                 '192.168.248.104',
+                 '192.168.146.104',
+                 '192.168.8.41',
                  '127.0.0.1',
                  '192.168.0.229'
                  ]
@@ -121,8 +121,8 @@ REST_FRAMEWORK = {
 }
 CSRF_COOKIE_SECURE = False
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=10),
+    'ACCESS_TOKEN_LIFETIME': timedelta(seconds=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=1),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': True,

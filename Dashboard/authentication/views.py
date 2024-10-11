@@ -22,7 +22,7 @@ from django.views.generic import TemplateView
 from rest_framework.views import APIView
 from django.utils import timezone
 from datetime import timedelta
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 import json
 
 # Create your views here.
@@ -80,18 +80,21 @@ class LoginView(TemplateView):
       
 
 class LogoutView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     def post(self, request):
-        try:
-            logout(request)
-            refresh_token = request.data["refresh_token"]            
-            token = RefreshToken(refresh_token)
-            token.blacklist()  
-            return Response({
-                'status': True,
-                'code': status.HTTP_200_OK,
-                'message': 'تم تسجيل الخروج بنجاح'
-              },status=status.HTTP_200_OK)
+        logout(request)
+        try:            
+            refresh_token = request.data["refresh_token"]   
+            if refresh_token:         
+                token = RefreshToken(refresh_token)
+                token.blacklist()
+                return Response({
+                    'status': True,
+                    'code': status.HTTP_200_OK,
+                    'message': 'تم تسجيل الخروج بنجاح'
+                  },status=status.HTTP_200_OK)
+            else:
+              logout(request)
         except Exception as e:
             return Response({
                 'status': False,
