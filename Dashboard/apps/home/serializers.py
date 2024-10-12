@@ -88,7 +88,7 @@ def postActiveDate():
 
 def getdig():
     my_model = apps.get_model('diagnosis', 'DiagnosisReport')
-    label_types = ['catract', 'diabetic retinopathy', 'glaucoma', 'Normal','retinal vascular occlusion','Stye','None','Conjunctivitis','Pterygium']
+    label_types = ['Retinal Vein Occlusion-( انسداد الوريد الشبكي)', 'Diabetic Retinopathy-( اعتلال الشبكية السكري)', 'Glaucoma-(الجلوكوما)','normal-(طبيعي)','Cataracts-(المياة البيضاء)','unkown','Stye-(دمل العين)','Pterygium-(الظفرة)','Conjunctivitis-(  التهاب الملتحمة)']
     label_type_counts = my_model.objects.values('diagnosis_result').annotate(count=Count('diagnosis_result'))
     counts_dict = {label_type: 0 for label_type in label_types}
     for result in label_type_counts:

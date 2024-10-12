@@ -111,6 +111,6 @@ def draw_box(image, prediction):
 def classify_internalEye_image(image):
     classification_results = image_classifier(image)
     best_prediction = max(classification_results, key=lambda x: x["score"])
-    confidence_score = "{:f}".format(best_prediction["score"])
+    confidence_score = "{:f}".format(best_prediction["score"]*100)
     predicted_label = best_prediction["label"]
     return None, predicted_label, confidence_score

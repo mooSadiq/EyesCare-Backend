@@ -1,6 +1,7 @@
 from django.db import models
 from apps.patients.models import Patient
 from apps.diseases.models import Disease
+from apps.users.models import CustomUser
 import uuid
 import time
 
@@ -10,7 +11,7 @@ class DiagnosisReport(models.Model):
     diagnosis_date = models.DateField(auto_now_add=True)  # تاريخ التشخيص
     image = models.ImageField(upload_to='diagnosis_reports/', blank=True, null=True)  # صورة العين
     compeleted = models.BooleanField()
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)  
+    patient = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  
     disease = models.ForeignKey(Disease, on_delete=models.CASCADE, null=True) 
 
     def __str__(self):

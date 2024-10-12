@@ -25,14 +25,10 @@ class DiseaseSerializer(serializers.ModelSerializer):
         fields = "__all__"  #['id', 'name', 'description']  # أضف أو احذف الحقول حسب الحاجة
 
 class DiagnosisSerializer(serializers.ModelSerializer):
-    patient = PatientSerializer()
-    disease = DiseaseSerializer()
-
     class Meta:
         model = DiagnosisReport
-        fields = "__all__"  #['id', 'patient', 'disease', 'diagnosis_date']  # أضف أو احذف الحقول حسب الحاجة
-        
-        
+        fields = ['diagnosis_result','diagnosis_date','image','compeleted']  #['id', 'patient', 'disease', 'diagnosis_date']  # أضف أو احذف الحقول حسب الحاجة
+
 
 
 class ImageUploadSerializer(serializers.Serializer):
