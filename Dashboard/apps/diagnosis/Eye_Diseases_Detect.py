@@ -1,5 +1,5 @@
-from transformers import AutoModelForImageClassification, pipeline
-from transformers import AutoFeatureExtractor
+# from transformers import AutoModelForImageClassification, pipeline
+# from transformers import AutoFeatureExtractor
 from inference_sdk import InferenceHTTPClient
 from config import settings
 from .Detect_Eye import classify_and_save_image

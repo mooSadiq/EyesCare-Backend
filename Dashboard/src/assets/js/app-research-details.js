@@ -87,7 +87,7 @@ async function fetchAndInitializeData() {
     const data = await fetchAllData(url_get_research_details_data);
     showResearchDetails(data);
   } catch (error) {
-    console.error('خطأ في جلب بيانات المريض:', error);
+    console.error('خطأ في جلب بيانات :', error);
   }
 }
 
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function(){
   });
 });
 /**
- * Handles the submission of the edit user form, updating the user data.
+ * Handles the submission of the edit user form, updating the  data.
  */
 document.getElementById('editResearchForm').addEventListener('submit', async function (event) {
   event.preventDefault();

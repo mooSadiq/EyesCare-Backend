@@ -27,11 +27,11 @@ SECRET_KEY = 'se13m4407-2o#mt6ogl5ht$8d9_9bigm3tsyo3eq@n#^9_pmmr'
 DEBUG = True
 ALLOWED_HOSTS = ['localhost',
                  '0.0.0.0',
-                 '192.168.43.167',
-                 '192.168.97.104',
-                 '192.168.40.104',
-                 '192.168.238.104',
-                 '192.168.12.104',
+                 '192.168.13.104',
+                 '192.168.114.104',
+                 '192.168.8.38',
+                 '192.168.146.104',
+                 '192.168.8.41',
                  '127.0.0.1',
                  '192.168.8.64'
                  ]
@@ -121,8 +121,8 @@ REST_FRAMEWORK = {
 }
 CSRF_COOKIE_SECURE = False
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=10),
+    'ACCESS_TOKEN_LIFETIME': timedelta(seconds=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=1),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': True,

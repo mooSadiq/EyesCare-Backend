@@ -13,3 +13,5 @@ class Consultation(models.Model):
 
     def __str__(self):
         return f'Consultation with {self.doctor} on {self.consultation_date}'
+            
+        

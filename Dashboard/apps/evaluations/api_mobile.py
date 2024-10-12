@@ -7,7 +7,8 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework_simplejwt.tokens import UntypedToken
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 #عرض التقيمات
 class ReviewsListView(APIView):
     def get(self,request):
@@ -18,10 +19,14 @@ class ReviewsListView(APIView):
         else:
             return Response({"status":False,"code":404,"Info":"لا يوجد أي بيانات"},status.HTTP_404_NOT_FOUND)
 
+
 class SetReviewsView(APIView):
     permission_classes = [IsAuthenticated]
     def post(self,request):
-        user_id = request.data.get('user')
+        token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI5MDQyMjU5LCJpYXQiOjE3Mjg2MTAyNTksImp0aSI6ImQ0OGVmMjk2ODliMDQ4NWFhOTY1MGNmNzQyOGU1OWE3IiwidXNlcl9pZCI6MX0.VOHmui4mvLB3b-DINWw1MCrmiQlkSbtWQeXrjpnbhOA"
+        decode_jwt(token)
+
+        user_id = request.user.id
         if not user_id:
             return Response({"status": False,"code": 400,"message": "user_id is required."}, status=status.HTTP_400_BAD_REQUEST)
         try:
@@ -77,3 +82,14 @@ class UpdateReviewView(APIView):
             return Response({"code":200,"status":True,"message":"لقد تم التعديل بنجاح"}, status=status.HTTP_200_OK)
         else:
             return Response({"code":400,"status":False,"message":"لم يتم التعديل !"}, status=status.HTTP_400_BAD_REQUEST)
+          
+          
+def decode_jwt(token):
+    try:
+        # فك تشفير التوكن باستخدام UntypedToken
+        decoded_token = UntypedToken(token)
+        print("Decoded JWT Data:", decoded_token.payload)
+    except TokenError as e:
+        print(f"Token error: {e}")
+    except InvalidToken:
+        print("Invalid token")
