@@ -10,6 +10,7 @@ from django.db import models
 class AdvertisementList(APIView):
     def get(self,request):
         advertisement=Advertisement.objects.filter(allowed=True,status=1)
+        advertisement.update(views_count=models.F('views_count') + 1)
         serializer=AdvertisementSerializerMobile(advertisement,many=True,context={'request': request})
         if serializer.data:
             return Response({"status":True,"code":200,"message":"لقد تم جلب البيانات بنجاح","data":serializer.data},status.HTTP_200_OK)

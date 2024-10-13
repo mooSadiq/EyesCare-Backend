@@ -25,9 +25,17 @@ class DiseaseSerializer(serializers.ModelSerializer):
         fields = "__all__"  #['id', 'name', 'description']  # أضف أو احذف الحقول حسب الحاجة
 
 class DiagnosisSerializer(serializers.ModelSerializer):
+    diagnosis_status = serializers.CharField(source='diagnosis_result', read_only=True)
+    image_path = serializers.ImageField(source='image')
+    confidence = serializers.DecimalField(read_only=True, max_digits=4, decimal_places=2)
+    diagnosis_date = serializers.DateField()
+    compeleted = serializers.BooleanField()
+
     class Meta:
         model = DiagnosisReport
-        fields = ['diagnosis_result','diagnosis_date','image','compeleted']  #['id', 'patient', 'disease', 'diagnosis_date']  # أضف أو احذف الحقول حسب الحاجة
+        # Use the custom names as field keys
+        fields = ['diagnosis_status', 'diagnosis_date', 'image_path', 'confidence', 'compeleted']
+
 
 
 

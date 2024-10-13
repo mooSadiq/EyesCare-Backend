@@ -88,6 +88,7 @@ class ImageInferenceView(APIView):
                 DiagnosisReport.objects.create(
                     diagnosis_result=f"{Disease_Id.name_en}-(طبيعي)",
                     image=saved_image_path,
+                    confidence=conf,
                     compeleted=True,
                     patient=request.user,
                 )
@@ -97,6 +98,7 @@ class ImageInferenceView(APIView):
                     diagnosis_result=f"{Disease_Id.name_en}-({Disease_Id.name_ar})",
                     image=saved_image_path,
                     compeleted=True,
+                    confidence=conf,
                     patient=request.user,
                     disease=Disease_Id,
                 )
@@ -119,6 +121,7 @@ class ImageInferenceView(APIView):
                     diagnosis_result=f"{Disease_Id.name_en}-(طبيعي)",
                     image=saved_image_path,
                     compeleted=True,
+                    confidence=conf,
                     patient=request.user,
                 )
             else:
@@ -127,6 +130,7 @@ class ImageInferenceView(APIView):
                     diagnosis_result=f"{Disease_Id.name_en}-({Disease_Id.name_ar})",
                     image=saved_image_path,
                     compeleted=True,
+                    confidence=conf,
                     patient=request.user,
                     disease=Disease_Id,
                 )
@@ -152,7 +156,7 @@ class ImageInferenceView(APIView):
 class DiagnosisReportList(APIView):
         def get(self, request):
                 try:
-                        diagnosisReport = DiagnosisReport.objects.filter(patient=request.user.id)
+                        diagnosisReport = DiagnosisReport.objects.filter(patient=request.user).order_by('-id')
                         serializer = DiagnosisSerializer(
                                 diagnosisReport, context={"request": request}, many=True
                         )
@@ -168,11 +172,11 @@ class DiagnosisReportList(APIView):
                                 )
                         else:
                                 return Response(
-                                {"status": False, "code": 404, "Info": "لا يوجد أي بيانات"},
+                                {"status": False, "code": 404, "message": "لا يوجد أي بيانات"},
                                 status=status.HTTP_404_NOT_FOUND,
                                 )
                 except DiagnosisReport.DoesNotExist:
                         return Response(
-                        {"status": False, "code": 404, "Info": "التقرير غير موجود"},
+                        {"status": False, "code": 404, "message": "التقرير غير موجود"},
                         status=status.HTTP_404_NOT_FOUND,
                         )

@@ -11,6 +11,7 @@ class DiagnosisReport(models.Model):
     diagnosis_date = models.DateField(auto_now_add=True)  # تاريخ التشخيص
     image = models.ImageField(upload_to='diagnosis_reports/', blank=True, null=True)  # صورة العين
     compeleted = models.BooleanField()
+    confidence=models.DecimalField(null=True,max_digits=4,decimal_places=2)
     patient = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  
     disease = models.ForeignKey(Disease, on_delete=models.CASCADE, null=True) 
 
