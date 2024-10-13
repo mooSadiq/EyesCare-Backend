@@ -61,7 +61,7 @@ INSTALLED_APPS = [
     'apps.evaluations',
     'apps.chat',
     'apps.consultations',
-    'apps.researches',    
+    'apps.researches',
     'notifications',
 
 ]
@@ -103,10 +103,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'eyescare_db',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
+        'NAME': 'EyesCareApp$eyescare_db',
+        'USER': 'EyesCareApp',
+        'PASSWORD': '$finaly6project4',
+        'HOST': 'EyesCareApp.mysql.pythonanywhere-services.com',
         'PORT': '3306',
     }
 }
@@ -116,7 +116,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated', 
+        'rest_framework.permissions.IsAuthenticated',
     ),
 }
 CSRF_COOKIE_SECURE = False
@@ -210,15 +210,15 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # عنوان البريد الإلكترو
 
 
 # Pusher API credentials
-PUSHER_APP_ID = '1861904'         
-PUSHER_KEY = '6c5bc3a240a5017e7aac'              
-PUSHER_SECRET = '3c8d562b800fbe10857e'         
-PUSHER_CLUSTER = 'ap1'       
+PUSHER_APP_ID = '1861904'
+PUSHER_KEY = '6c5bc3a240a5017e7aac'
+PUSHER_SECRET = '3c8d562b800fbe10857e'
+PUSHER_CLUSTER = 'ap1'
 
 # Pusher options
-PUSHER_SSL = True   
+PUSHER_SSL = True
 
 
 #اعدادات الموديل
-ROBOFLOW_API_KEY = 'ItXgPAZWt0DYyYfbUnic'  
+ROBOFLOW_API_KEY = 'ItXgPAZWt0DYyYfbUnic'
 ROBOFLOW_API_KEY_For_Detection="BNMaKnfVi9xtFUFmcOFY"
