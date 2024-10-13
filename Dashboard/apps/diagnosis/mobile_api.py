@@ -86,7 +86,7 @@ class ImageInferenceView(APIView):
             }
             if label == "normal":
                 DiagnosisReport.objects.create(
-                    diagnosis_result=f"{Disease_Id.name_en}-(طبيعي)",
+                    diagnosis_result=f"Normal-(طبيعي)",
                     image=saved_image_path,
                     confidence=conf,
                     compeleted=True,
@@ -118,7 +118,7 @@ class ImageInferenceView(APIView):
             }
             if label == "normal":
                 DiagnosisReport.objects.create(
-                    diagnosis_result=f"{Disease_Id.name_en}-(طبيعي)",
+                    diagnosis_result=f"Normal-(طبيعي)",
                     image=saved_image_path,
                     compeleted=True,
                     confidence=conf,
