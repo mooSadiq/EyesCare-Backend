@@ -169,7 +169,7 @@ function initializeDataTable(data){
   initComplete: function () {
     // Adding backage filter once table initialized
     this.api()
-    .columns(6) // Assuming status is in the 5th column (index 4)
+    .columns(3) // Assuming the "status" is in the 6th column (index 5)
     .every(function () {
       var column = this;
       var select = $(
@@ -179,23 +179,25 @@ function initializeDataTable(data){
       )
       .appendTo('.diseases_status')
       .on('change', function () {
-        var val = $.fn.dataTable.util.escapeRegex($(this).val());
-        column.search(val ? val : '', true, false).draw(); 
+        var val = $.fn.dataTable.util.escapeRegex($(this).val().trim());
+        column.search(val ? val : '', true, false).draw();
       });
+  
       var statusOptions = [
         "متاح للتشخيص",
         "ليس متاح للتشخيص"
       ];
-      
-      for (const status in statusOptions) {
+  
+      // Loop through each status option and append it to the select element
+      statusOptions.forEach(function (status) {
         select.append(
           '<option value="' +
-          status +
+            status +
             '" class="text-capitalize">' +
-            status+
+            status +
             '</option>'
         );
-      }
+      });
         });
       }
 });

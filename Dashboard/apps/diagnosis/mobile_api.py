@@ -33,7 +33,6 @@ class ImageInferenceView(APIView):
         my_model_instance.save()
         saved_image_path = my_model_instance.image.path
         saved_image_path_report=my_model_instance.image.url
-        print(f"Malllllek image url{saved_image_path_report}")
         detected_image, label, conf = disease_detect(my_model_instance.image)
         if request.user.user_type != "doctor" and request.user.user_type != "admin":
             patient, created = Patient.objects.get_or_create(user=request.user)

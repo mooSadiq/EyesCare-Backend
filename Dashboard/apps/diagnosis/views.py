@@ -2,169 +2,241 @@ from datetime import datetime
 import os
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, render
-from django.views import View
 from rest_framework.response import Response
-from rest_framework.decorators import api_view,permission_classes
 from rest_framework import status
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-
 from .models import DiagnosisReport, Disease, MyModel
 from apps.patients.models import Patient
-
-from .serializers import DiagnosisSerializerDash, DiseaseSerializer, ImageUploadSerializer
-from config import settings
-
-from apps.doctor.models import Doctor
-from apps.users.models import CustomUser
-
+from .serializers import (
+    DiagnosisSerializer,
+    DiagnosisSerializerDash,
+)
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
-
-from inference_sdk import InferenceHTTPClient
-from . import Detect_Eye
-from . import Eye_Diseases_Detect
+from .Eye_Diseases_Detect import disease_detect
+from urllib.parse import urljoin
 
 
 def index(request):
-  return render(request, 'diagnosis_list.html')
+    return render(request, "diagnosis_list.html")
+
 
 def diagnosisDetails(request, id):
-  return render(request, 'diagnosis_details.html', {"diagnosis_id": id})
+    return render(request, "diagnosis_details.html", {"diagnosis_id": id})
+
 
 def diagnosisDetailsPrint(request):
-  return render(request, 'diagnosis_details_print.html')
+    return render(request, "diagnosis_details_print.html")
 
 
-
-# هذي الدالة الي توصل لل module
-# detected_image,label=disease_detect(saved_image_path)
-        # {
-        #     image,classfication_label,Confidence
-        #     None, "No eye detected in the image.",None
-        #     None, "The model did not find a confident prediction.",None
-        #     None, "Error during RobowFlow inference hint:'Check Internet'.",None
-        #     None, "No Diseases detected.",None
-        #     None, Internal_Disease_classfication_label,Confidence
-        # }
 def detect_Eye(image_path):
-    
-     image, label,confidence  = Eye_Diseases_Detect.disease_detect(image_path)
-     if image is not None:  #  أي اذا كانت عين
-        return image,label
-     elif confidence is not None:
-         return image_path, label
+
+    image, label, confidence = Eye_Diseases_Detect.disease_detect(image_path)
+    if image is not None:  #  أي اذا كانت عين
+        return image, label
+    elif confidence is not None:
+        return image_path, label
+    elif label == "No Diseases detected.":
+        return image_path, label
     #  else:
     #    return None, "تأكد من التقاط الصورة بشكل مناسب"
-     elif image is None:
-       if label == "No eye detected in the image.":
-         label = "يبدو أن الصورة ليست عين! "
-       elif label == "The model did not find a confident prediction.":
-         label = "الصورة غير واضحة، اجلب صورة أوضح"
-       elif label == "Error during RobowFlow inference hint:'Check Internet'.":
-         label = "تحقق من الاتصال بالانترنت!"
-       elif label == "No Diseases detected.":
-         label = "عذراً، لم نتمكن من اكتشاف هذا المرض!"
-       
-       return None, label
-    
+    elif image is None:
+        if label == "No eye detected in the image.":
+            label = "يبدو أن الصورة ليست عين! "
+        elif label == "The model did not find a confident prediction.":
+            label = "الصورة غير واضحة، اجلب صورة أوضح"
+        elif label == "Error during RobowFlow inference hint:'Check Internet'.":
+            label = "تحقق من الاتصال بالانترنت!"
+        elif label == "No Diseases detected.":
+            label = "عذراً، لم نتمكن من اكتشاف هذا المرض!"
 
-# result شكل النتائج 
-# {
-#     "Eye",
-#     "Internal-Eye",
-#     "No detection: No eye detected",
-#     "No sufficient confidence.",
-#      "Error during RobowFlow inference hint:'Check Internet'."
-# }
+        return None, label
 
-#اعداد رابط ارسال الصورة الى المودل
-client = InferenceHTTPClient(
-                api_url="https://detect.roboflow.com",
-                api_key=settings.ROBOFLOW_API_KEY
-            )
-#جلب بيانات التشخيصات
+
 class DisagnosisListView(APIView):
-  def get(self, request):
+    def get(self, request):
         diagnosis = DiagnosisReport.objects.all()
-        diagnosis_serializer = DiagnosisSerializer(diagnosis, many=True)
-        return Response({'diagnosis': diagnosis_serializer.data}, status=status.HTTP_200_OK)
-  def delete(self, request, pk):
-        # جلب التشخيص المحدد باستخدام المعرف (pk)
-        diagnosis = get_object_or_404(DiagnosisReport, pk=pk)
-        
-        # حذف التشخيص
-        diagnosis.delete()
-        
-        # إرجاع استجابة تأكيدية بنجاح الحذف
-        return Response({'success': True, 'message': 'تشخيص تم حذفه بنجاح'}, status=status.HTTP_200_OK)
-# دلة تشخيص صورة
-@method_decorator(csrf_exempt, name='dispatch')
-class ImageUploadView(APIView):
-     def post(self, request, *args, **kwargs):
-        image = request.FILES.get('image')
-        if not image:
-            return JsonResponse({'error': 'لا توجد صورة'}, status=400)
-        new_name = generate_image_name(image.name)
-        image.name = new_name 
-        patient = get_object_or_404(Patient, id=2) #قابل للحذف
-        my_model_instance = MyModel(title="MyImage", image=image)
-        my_model_instance.save()
-        saved_image_path = my_model_instance.image.path
-        print(saved_image_path) #قابل للحذف
-        disease_type = "unknown"
-        completed = False
+        diagnosis_serializer = DiagnosisSerializerDash(diagnosis, many=True)
+        return Response(
+            {"diagnosis": diagnosis_serializer.data}, status=status.HTTP_200_OK
+        )
+
+    def delete(self, request, pk):
         try:
-            img, label = detect_Eye(saved_image_path)
-            if img is not None:
-              if label == "No Diseases detected.": # اذا لم يتم تحديد المرض
-                disease_type= "unknown" # يتم تخزينه على انه غير معرف
-              else: #واذا تم تحديده نأخذ اسمه
-                disease = Disease.objects.get(name_en=label)
-                disease_type =disease.name_ar
-                print("label: ", label) #قابل للحذف
-              if disease_type == "unknown":
-                completed = False
-              else:
-                  completed = True
-                  
-                # حفظ التشخيص في قاعدة البيانات
-              diagnosis_report = DiagnosisReport(
-                  diagnosis_result=disease_type,
-                  image = saved_image_path,
-                  compeleted= completed,
-                  patient= patient,
-                disease = disease
+            diagnoses = DiagnosisReport.objects.filter(pk=pk)[0]
+            if not diagnoses:
+                return Response(
+                    {"success": False, "message": "التشخيص غير موجود"},
+                    status=status.HTTP_404_NOT_FOUND
                 )
-              diagnosis_report.save()
-              #هنا اذا تم التعرف على العين يعيد نتيجة التشخيص اما اسم المرض بالعربي ااو unknown
-              return JsonResponse({"success":True, "message":' نتيجة التشخيص هي: '+ disease_type,
-                                     'disease_type':disease_type})
-            else:
-                # return JsonResponse({"success":False,'message': 'عذراً، يبدوا أن الصورة التي تم ارسالها ليست صورة عين!'} )
-                return JsonResponse({"success":False,'message': label} )
-        
+            diagnoses.delete()
+            return Response(
+                  {"success": True, "message": "تم حذف التشخيص بنجاح"},
+                status=status.HTTP_200_OK,
+            )
         except Exception as e:
-            return JsonResponse({'message': str(e)}, status=500)
-             
+            return Response(
+                {"error": True, "message": f"لم يتم الحذف بسبب مشكلة: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+# # # دلة تشخيص صورة
+@method_decorator(csrf_exempt, name="dispatch")
+class ImageUploadView(APIView):
+    disease_label = {
+        "stey": "Stye",
+        "catract": "Cataracts",
+        "DR": "Diabetic Retinopathy",
+        "Glaucoma": "Glaucoma",
+        "RVO": "Retinal Vein Occlusion",
+        "pterygium": "Pterygium",
+        "conjunctivitis": "Conjunctivitis",
+        "Cataract": "Cataracts",
+    }
+    def post(self, request, *args, **kwargs):
+        image = request.FILES.get("image")
+        if not image:
+            return JsonResponse({"error": "No image provided"}, status=400)
+        my_model_instance = MyModel(title="My Image", image=image)
+        my_model_instance.save()
+        saved_image_path_report=my_model_instance.image.url
+        detected_image, label, conf = disease_detect(my_model_instance.image)
+        if request.user.user_type != "doctor" and request.user.user_type != "admin":
+            patient, created = Patient.objects.get_or_create(user=request.user)
+            if created:
+                request.user.user_type = "patient"
+                request.user.save()
+        if label == "No eye detected in the image.":
+            return JsonResponse(
+                {
+                    "success": False,
+                    "code": status.HTTP_404_NOT_FOUND,
+                    "message": "الصورة ليست صورة عبن",
+                }
+            )
+        elif label == "The model did not find a confident prediction.":
+            return JsonResponse(
+                {
+                    "success": False,
+                    "code": status.HTTP_404_NOT_FOUND,
+                    "message": " قم بإرسال الصورة مرة أخرى لم يتم التعرف عليها",
+                }
+            )
+        elif label == "No Diseases detected.":
+            DiagnosisReport.objects.create(
+                diagnosis_result="unkown",
+                image=saved_image_path_report,
+                compeleted=False,
+                patient=request.user,
+            )
+            return JsonResponse(
+                {
+                    "success": False,
+                    "code": status.HTTP_404_NOT_FOUND,
+                    "message": "تصنيف غير مدرج",
+                }
+            )
+        elif detected_image != None:
+            domain = request.get_host()
+            image_path = urljoin(f"http://{domain}", detected_image)
+            if label == "normal":
+                DiagnosisReport.objects.create(
+                    diagnosis_result="Normal-(طبيعي)",
+                    image=saved_image_path_report,
+                    confidence=conf,
+                    compeleted=True,
+                    patient=request.user,
+                )
+            else:
+                Disease_Id = Disease.objects.get(name_en=self.disease_label[label])
+                DiagnosisReport.objects.create(
+                    diagnosis_result=f"{Disease_Id.name_en}-({Disease_Id.name_ar})",
+                    image=saved_image_path_report,
+                    compeleted=True,
+                    confidence=conf,
+                    patient=request.user,
+                    disease=Disease_Id,
+                )
+            return JsonResponse(
+                {
+                    "success": True,
+                    "code": status.HTTP_200_OK,
+                    "message": "تم العثور على نتيجة",
+                    "disease_type": label,
+                }
+            )
+        elif detected_image == None and conf != None:
+            if label == "normal":
+                DiagnosisReport.objects.create(
+                    diagnosis_result="Normal-(طبيعي)",
+                    image=saved_image_path_report,
+                    compeleted=True,
+                    confidence=conf,
+                    patient=request.user,
+                )
+            else:
+                Disease_Id = Disease.objects.get(name_en=self.disease_label[label])
+                DiagnosisReport.objects.create(
+                    diagnosis_result=f"{Disease_Id.name_en}-({Disease_Id.name_ar})",
+                    image=saved_image_path_report,
+                    compeleted=True,
+                    confidence=conf,
+                    patient=request.user,
+                    disease=Disease_Id,
+                )
+            return JsonResponse(
+                {
+                    "success": True,
+                    "code": status.HTTP_200_OK,
+                    "message": "تم العثور على نتيجة ",
+                    "disease_type": label,
+                }
+            )
+        else:
+            return JsonResponse(
+                {
+                    "label": label,
+                    "success": False,
+                    "code": status.HTTP_404_NOT_FOUND,
+                    "message": "فشل",
+                }
+            )
+
 
 def generate_image_name(original_name):
     # الحصول على الوقت الحالي بصيغة يمكن قراءتها
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
     # الحصول على الامتداد من الاسم الأصلي
     _, extension = os.path.splitext(original_name)
-    
+
     # توليد اسم جديد يتضمن الوقت الحالي
     new_image_name = f'{"image_"}{timestamp}{extension}'
-    
+
     return new_image_name
+
+
 # جلب بيانات التقرير
 class ReportDiagnosisView(APIView):
     def get(self, request, pk):
         try:
+            # الحصول على تقرير التشخيص باستخدام المعرف المقدم
             report = get_object_or_404(DiagnosisReport, id=pk)
-            diagnosis_serializer = DiagnosisSerializerDash(report)
-            return JsonResponse({'diagnosis': diagnosis_serializer.data}, status=status.HTTP_200_OK)
+            diagnosis_serializer = DiagnosisSerializer(report)
+
+            # إرجاع استجابة JSON تحتوي على بيانات التقرير كاملة
+            return JsonResponse(
+                {"diagnosis": diagnosis_serializer.data}, status=status.HTTP_200_OK
+            )
+
+        except Http404:
+            # إرجاع رسالة خطأ عند عدم العثور على التقرير أو المرض
+            return JsonResponse(
+                {"error": "Not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+
         except Exception as e:
-            return JsonResponse({'error': e}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            # إرجاع رسالة خطأ عامة في حالة حدوث استثناء آخر
+            return JsonResponse(
+                {"error": "gggg"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
