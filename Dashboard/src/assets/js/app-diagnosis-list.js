@@ -440,7 +440,6 @@ function fetchDataToDatatable(data) {
 
 
 // اضافة تشخيص
-
 document.getElementById('addNewDiagnoseForm').addEventListener('submit', async function (event) {
   // منع إرسال النموذج الافتراضي
   event.preventDefault();

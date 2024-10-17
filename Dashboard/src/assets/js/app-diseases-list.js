@@ -44,7 +44,7 @@ function initializeDataTable(data){
               render: function (data, type, full, meta) {
                 var name= `${full['name_ar']}`;
                 var diseaseId = full.id;
-                var diseaseProfileUrl = `/diseases/details/${diseaseId}/`; 
+                var diseaseProfileUrl = `/diseases/details/${diseaseId}/`;
                 return `
                   <div class="d-flex justify-content-start align-items-center user-name">
                     <div class="d-flex flex-column">
@@ -157,7 +157,7 @@ function initializeDataTable(data){
         var data = $.map(columns, function (col, i) {
           return col.title !== ''
             ? `<tr data-dt-row="${col.rowIndex}" data-dt-column="${col.columnIndex}">
-                  <td>${col.title}:</td> 
+                  <td>${col.title}:</td>
                   <td>${col.data}</td>
                 </tr>`
             : '';
@@ -182,12 +182,12 @@ function initializeDataTable(data){
         var val = $.fn.dataTable.util.escapeRegex($(this).val().trim());
         column.search(val ? val : '', true, false).draw();
       });
-  
+
       var statusOptions = [
         "متاح للتشخيص",
         "ليس متاح للتشخيص"
       ];
-  
+
       // Loop through each status option and append it to the select element
       statusOptions.forEach(function (status) {
         select.append(
@@ -232,7 +232,7 @@ document.getElementById('diseaseForm').addEventListener('submit', async function
   try {
     const result = await submitRequest(url, method, formData, {
         headers: {
-            'Content-Type': 'application/json' 
+            'Content-Type': 'application/json'
           }
     })
     if (result.success) {
@@ -273,4 +273,3 @@ $(document).on('click', '.delete-record', async function () {
           showAlert('error', 'حدث خطأ!', deleteResult.message, 'btn btn-danger');
       }
   }
-});

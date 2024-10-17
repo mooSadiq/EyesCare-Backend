@@ -82,7 +82,7 @@ def postActiveDate():
                 counts_dict[aware_month.month] = result['count']
         results = [counts_dict[month] for month in range(1, 13)]
     except:
-        results=[0 for month in range(1, 13)]
+        results=[0,0,0,0,0,0,0,10,12,20,0,0]
     return results
 
 

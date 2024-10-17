@@ -7,23 +7,6 @@ import json
 import os
 import cv2
 
-
-# # Load The Internal Eye Model
-# model_id = "smartgmin/Entrnal_5class_agumm_last_newV7_model"
-
-# # تحميل نموذج تصنيف الصور من TensorFlow
-# image_classification_model = AutoModelForImageClassification.from_pretrained(model_id, from_tf=True, cache_dir="apps/diagnosis/Internal_Eye_Model/path")
-
-# # تحميل معالج الميزات الذي يساعد في تجهيز الصور للنموذج
-# feature_extractor = AutoFeatureExtractor.from_pretrained(model_id, cache_dir="apps/diagnosis/Internal_Eye_Model/path")
-
-# image_classifier = pipeline(
-#     "image-classification",
-#     model=image_classification_model,
-#     feature_extractor=feature_extractor,
-# )
-
-# Initialize the inference client For External Eye
 CLIENT = InferenceHTTPClient(
     api_url="https://detect.roboflow.com",
     api_key=settings.ROBOFLOW_API_KEY

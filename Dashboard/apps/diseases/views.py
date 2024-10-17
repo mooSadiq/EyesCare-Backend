@@ -119,4 +119,3 @@ class DiseasesDelete(APIView):
                 return Response({"message":"تم الحذف بنجاح!"},status=status.HTTP_200_OK)
             else:
                 return Response({"message":" لم يتم الحذف "},status=status.HTTP_200_OK)
-
