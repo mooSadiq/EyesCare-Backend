@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import DiagnosisReport, Disease, MyModel
 from apps.patients.models import Patient
 
-from .serializers import c, DiseaseSerializer, ImageUploadSerializer
+from .serializers import DiagnosisSerializerDash, DiseaseSerializer, ImageUploadSerializer
 from config import settings
 
 from apps.doctor.models import Doctor
@@ -89,7 +89,6 @@ class DisagnosisListView(APIView):
         diagnosis = DiagnosisReport.objects.all()
         diagnosis_serializer = DiagnosisSerializer(diagnosis, many=True)
         return Response({'diagnosis': diagnosis_serializer.data}, status=status.HTTP_200_OK)
-      
   def delete(self, request, pk):
         # جلب التشخيص المحدد باستخدام المعرف (pk)
         diagnosis = get_object_or_404(DiagnosisReport, pk=pk)
@@ -107,62 +106,35 @@ class ImageUploadView(APIView):
         if not image:
             return JsonResponse({'error': 'لا توجد صورة'}, status=400)
         new_name = generate_image_name(image.name)
-        
-        print(image.name) #قابل للحذف
         image.name = new_name 
-        print(image.name) #قابل للحذف
-        #جلب كائن المريض من جدول المرضى
         patient = get_object_or_404(Patient, id=2) #قابل للحذف
-        # patient = request.user
-        # حفظ الملف بشكل دائم في قاعدة البيانات
         my_model_instance = MyModel(title="MyImage", image=image)
         my_model_instance.save()
-
-        # مسار الملف المحفوظ بشكل دائم
         saved_image_path = my_model_instance.image.path
         print(saved_image_path) #قابل للحذف
-        
-        # disease = get_object_or_404(Disease, id=1) #قابل للحذف
-        
         disease_type = "unknown"
         completed = False
         try:
-          
-            
-            # تمرير مسار الملف المحفوظ بشكل دائم إلى infer
-            # response = client.infer(saved_image_path, model_id="alltheimaegs/1")
-            # response = client.infer(saved_image_path, model_id="ccatract/4")
-            # هنا يقوم ابستدعاء الدالة لتقوم بالكشف عن العين والتشخيص 
             img, label = detect_Eye(saved_image_path)
             if img is not None:
               if label == "No Diseases detected.": # اذا لم يتم تحديد المرض
-                 disease_type= "unknown" # يتم تخزينه على انه غير معرف
+                disease_type= "unknown" # يتم تخزينه على انه غير معرف
               else: #واذا تم تحديده نأخذ اسمه
                 disease = Disease.objects.get(name_en=label)
                 disease_type =disease.name_ar
                 print("label: ", label) #قابل للحذف
-            
-            
-              
-            
-            # if response:
-            #     predictions = response.get('predictions', [])
-                
-            #     for prediction in predictions:
-            #       disease_type = prediction.get('class')
-                # يتم حذف الكود السابق الاربعة الاسطر والمواصلة من هنا
               if disease_type == "unknown":
-                 completed = False
+                completed = False
               else:
                   completed = True
                   
                 # حفظ التشخيص في قاعدة البيانات
               diagnosis_report = DiagnosisReport(
-                   diagnosis_result=disease_type,
+                  diagnosis_result=disease_type,
                   image = saved_image_path,
                   compeleted= completed,
                   patient= patient,
-                 disease = disease
+                disease = disease
                 )
               diagnosis_report.save()
               #هنا اذا تم التعرف على العين يعيد نتيجة التشخيص اما اسم المرض بالعربي ااو unknown
@@ -191,19 +163,8 @@ def generate_image_name(original_name):
 class ReportDiagnosisView(APIView):
     def get(self, request, pk):
         try:
-            # الحصول على تقرير التشخيص باستخدام المعرف المقدم
             report = get_object_or_404(DiagnosisReport, id=pk)
             diagnosis_serializer = DiagnosisSerializerDash(report)
-            
-        
-            
-            # إرجاع استجابة JSON تحتوي على بيانات التقرير كاملة
             return JsonResponse({'diagnosis': diagnosis_serializer.data}, status=status.HTTP_200_OK)
-
-        # except Http404:
-        #     # إرجاع رسالة خطأ عند عدم العثور على التقرير أو المرض
-        #     return JsonResponse({'error': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
-
         except Exception as e:
-            # إرجاع رسالة خطأ عامة في حالة حدوث استثناء آخر
-            return JsonResponse({'error': 'gggg'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)     
+            return JsonResponse({'error': e}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

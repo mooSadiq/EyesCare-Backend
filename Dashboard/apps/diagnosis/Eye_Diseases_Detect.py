@@ -56,13 +56,13 @@ def resize_image(image_path):
 
 
 def disease_detect(image_path):
-    image = resize_image(image_path)
+    image = resize_image(image_path.path)
     result = classify_and_save_image(image)
     if result == "Eye":
         image, label, conf = run_model(image)
         return image, label, conf
     elif result == "Internal-Eye":
-        image, label, conf = classify_internalEye_image(image)
+        image, label, conf = classify_internalEye_image(image_path.url)
         return image, label, conf
     elif result == "No detection: No eye detected":
         return None, "No eye detected in the image.", None

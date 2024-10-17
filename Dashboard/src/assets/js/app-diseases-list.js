@@ -23,7 +23,7 @@ function initializeDataTable(data){
       {data:'name'},
       {data:'image'},
       {data:'status'},
-      {data:'created_at'},
+      {data:'name_En'},
       {data:null},
     ],
     columnDefs: [
@@ -42,7 +42,7 @@ function initializeDataTable(data){
       targets: 1,
               responsivePriority: 4,
               render: function (data, type, full, meta) {
-                var name=full.name;
+                var name= `${full['name_ar']}`;
                 var diseaseId = full.id;
                 var diseaseProfileUrl = `/diseases/details/${diseaseId}/`; 
                 return `
@@ -64,7 +64,7 @@ function initializeDataTable(data){
         output = `<img src= "${image}" alt="disease Image" class="" style="width: 100%; height: 50px; border-radius: 10px;">`;
       }
       else{
-        var initials = `${full['name'][0]}`;
+        var initials = `${full['name_en']}`;
         var stateNum = Math.floor(Math.random() * 6);
         var states = ['success', 'danger', 'warning', 'info', 'primary', 'secondary'];
         var state = states[stateNum];
@@ -81,18 +81,17 @@ function initializeDataTable(data){
     targets: 3,
     render: function (data, type, full, meta) {
       var status = full.status;
-      if(status='متاحاً للتشخيص')
-        return `<span class="badge bg-label-success">${status}</span>`;
+      if(status==0)
+        return `<span class="badge bg-label-success">متاح للتشخيص</span>`;
       else
-        return `<span class="badge bg-label-danger">${status}</span>`;
+        return `<span class="badge bg-label-danger">ليس متاح للتشخيص</span>`;
       }
   },
   {
     targets: 4,
-    orderable: false,
     render: function (data, type, full, meta) {
-      var $date_of_adding = full.created_at;
-      return '<span class="fw-medium">' + $date_of_adding + '</span>';
+      var name_En = `${full['name_en']}`;
+      return '<span class="fw-medium">' + name_En + '</span>';
       }
   },
   {
@@ -185,19 +184,20 @@ function initializeDataTable(data){
       });
       var statusOptions = [
         "متاح للتشخيص",
-        "ليس متاحاً للتشخيص"
+        "ليس متاح للتشخيص"
       ];
-      for (const status of statusOptions) {
+      
+      for (const status in statusOptions) {
         select.append(
           '<option value="' +
-            status + 
+          status +
             '" class="text-capitalize">' +
-            status +
+            status+
             '</option>'
         );
       }
-  });
-}
+        });
+      }
 });
 }
 
@@ -207,7 +207,7 @@ function initializeDataTable(data){
  * populates the DataTable with the fetched data.
  */
 async function fetchAndInitializeTable() {
-  const url_get_deseases_data = '/disease/api/get/diseases/';
+  const url_get_deseases_data = '/diseases/api/get/diseases/';
   try {
       const data = await fetchAllData(url_get_deseases_data);
       initializeDataTable(data);

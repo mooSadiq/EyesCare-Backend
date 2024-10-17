@@ -33,10 +33,14 @@ class DiagnosisSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DiagnosisReport
-        # Use the custom names as field keys
         fields = ['diagnosis_status', 'diagnosis_date', 'image_path', 'confidence', 'compeleted']
 
-
+class DiagnosisSerializerDash(serializers.ModelSerializer):
+    patient=PatientSerializer()
+    disease=DiseaseSerializer()
+    class Meta:
+        model = DiagnosisReport
+        fields ='__all__'
 
 
 class ImageUploadSerializer(serializers.Serializer):
