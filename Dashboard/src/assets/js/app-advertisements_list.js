@@ -86,7 +86,7 @@ document.querySelector('.save-update').onclick = async function () {
 
 //انتهاء دالة ارسال البيانات بعد التعديل وتحديث الصفحة
 
-// دالة تحديث البيانات وجلبها وعرضها 
+// دالة تحديث البيانات وجلبها وعرضها
 function updateAdvertisementsData(data) {
 
     let adv_count = 0;
@@ -137,7 +137,7 @@ function updateAdvertisementsData(data) {
             // تحديد الصورة اذا تم العثور عليها في قاعدة البيانات والا عرض صورة اعلان عامة
             let adImg = advertisement.ad_image;
             if (adImg == null) {
-                adImg = "/media/ads/advertisement.png";
+                adImg = "/media/ads/000005.png";
             }
 
             // إضافة عنصر "محظور" إذا كان الإعلان غير مسموح له بالظهور

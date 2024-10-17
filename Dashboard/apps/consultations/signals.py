@@ -11,4 +11,4 @@ def consultation_created_notification(sender, instance, created, **kwargs):
         for admin in admin_users:
             patient_name=f'{instance.patient.user.first_name} {instance.patient.user.last_name}'
             doctor_name=f'{instance.doctor.user.first_name} {instance.doctor.user.last_name}'
-            notify.send(instance.patient, recipient=admin, verb='تم طلب إستشارة جديدة', description=f'قام المريض{patient_name} بطلب إستشارة من {doctor_name}', action_object=instance,category='Consultation')
+            notify.send(instance.patient, recipient=admin, verb='تم طلب إستشارة جديدة', description=f'قام المريض {patient_name} بطلب إستشارة من {doctor_name}', action_object=instance,category='Consultation')

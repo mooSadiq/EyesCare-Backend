@@ -27,7 +27,7 @@ async function fetchAndInitializeTable() {
   }
 }
 
-var dt_diagnosis_table = $('.datatables-diagnoses'); //تعريف متغبر للجدول 
+var dt_diagnosis_table = $('.datatables-diagnoses'); //تعريف متغبر للجدول
 // دالة لأخذ البانات ووضعها داخل الجدول
 function fetchDataToDatatable(data) {
 
@@ -45,7 +45,7 @@ function fetchDataToDatatable(data) {
     data: data.diagnosis,
     columns: [
       { data: null },  // Empty column for responsive control
-      { data: 'user.first_name' },
+      { data: 'first_name' },
       { data: 'date' },
       { data: 'image' },
       { data: 'disease_name' },
@@ -67,14 +67,14 @@ function fetchDataToDatatable(data) {
         targets: 1,
         responsivePriority: 4,
         render: function (data, type, full, meta) {
-          var name = `${full['patient'].user.first_name} ${full['patient'].user.last_name}`;
-          var email = full['patient'].user.email;
-          var image = full['patient'].user.profile_picture;
+          var name = `${full['patient'].first_name} ${full['patient'].last_name}`;
+          var email = full['patient'].email;
+          var image = full['patient'].profile_picture;
           var output;
           if (image) {
             output = `<img src="${image}" alt="Avatar" class="rounded-circle">`;
           } else {
-            var initials = `${full['patient'].user.first_name[0]}${full['patient'].user.last_name[0]}`;
+            var initials = `${full['patient'].first_name[0]}${full['patient'].last_name[0]}`;
             var stateNum = Math.floor(Math.random() * 6);
             var states = ['success', 'danger', 'warning', 'info', 'primary', 'secondary'];
             var state = states[stateNum];
@@ -100,7 +100,7 @@ function fetchDataToDatatable(data) {
         }
       },
       {
-        // date 
+        // date
         targets: 2,
         render: function (data, type, full, meta) {
           var $date = full['diagnosis_date'];
@@ -113,14 +113,14 @@ function fetchDataToDatatable(data) {
         searchable: false,
         orderable: false,
         render: function (data, type, full, meta) {
-          var $image = full['image'];
+          var $image = full['image'].replace('/media/media/', '/media/');
           // For  image
           var $output = '<img src="' + $image + '" alt="diagnosis Image" class="" style="width: 100%; height: 50px; border-radius: 10px;">';
           return $output; // Return only the image
         }
       },
       {
-        // diagnoses result 
+        // diagnoses result
         targets: 4,
         orderable: false,
         render: function (data, type, full, meta) {
@@ -439,8 +439,7 @@ function fetchDataToDatatable(data) {
 }
 
 
-// اضافة تشخيص  
-
+// اضافة تشخيص
 
 document.getElementById('addNewDiagnoseForm').addEventListener('submit', async function (event) {
   // منع إرسال النموذج الافتراضي
@@ -458,6 +457,7 @@ document.getElementById('addNewDiagnoseForm').addEventListener('submit', async f
   try {
     const result = await submitRequest(url, method, formData);
 if(result.success){
+      fetchAndInitializeTable();
 if (result.data.success == true) {
   const offcanvasElement = document.getElementById('offcanvasAddDiagnose');
   const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);

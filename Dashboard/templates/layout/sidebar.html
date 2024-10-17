@@ -92,7 +92,7 @@
       </a>
     </li>
     <li class="menu-item {% if 'diagnosis' in request.path %}active{% endif %}">
-      <a href="#" class="menu-link">
+      <a href="{% url 'diagnosis_list' %}" class="menu-link">
         <i class="menu-icon tf-icons ti ti-photo-sensor-2"></i>
         <div data-i18n="diagnosis List">إدارة التشخيصات</div>
       </a>

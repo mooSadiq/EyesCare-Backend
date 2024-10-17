@@ -27,7 +27,7 @@
             <th>اسم المرض</th>
             <th>الصورة</th>
             <th>الحالة</th>
-            <th>تاريخ الإضافة</th>
+            <th>المصطلح العلمي</th>
             <th></th>
           </tr>
         </thead>
@@ -52,40 +52,115 @@
         <form id="diseaseForm" class="mt-2" enctype="multipart/form-data">
           <div class="section">
             <h5 class="section-title title">اسم المرض</h5>
-            <input class="form-control" id="diseaseDescription" rows="3"  placeholder="أدخل اسم المرض" name="name"></input>
-        </div>
+            <input class="form-control" id="diseaseDescription" rows="3"  placeholder="أدخل اسم المرض" name="name_ar"></input>
+          </div>
           <div class="section">
               <h5 class="section-title title">وصف المرض</h5>
-              <textarea class="form-control" id="diseaseDescription" rows="3"  placeholder="أدخل وصف المرض" name="description"></textarea>
+              <textarea class="form-control" id="diseaseDescription" rows="3"  placeholder="أدخل وصف المرض" name="description_ar"></textarea>
           </div>
           <div class="section">
               <h5 class="section-title title">الأعراض</h5>
-              <textarea class="form-control" id="diseaseSymptoms" rows="4"  placeholder="أدخل أعراض المرض" name="symptoms"></textarea>
+              <textarea class="form-control" id="diseaseSymptoms" rows="4"  placeholder="أدخل أعراض المرض" name="symptoms_paragraph_ar"></textarea>
+          </div>
+          <div class="section">
+              <h5 class="section-title title">:نقاط الأعراض</h5>
+              <textarea class="form-control" id="diseaseSymptomspoints" rows="4"  placeholder="أدخل أعراض المرض" name="symptoms_points_ar"></textarea>
           </div>
           <div class="section">
               <h5 class="section-title title">الأسباب</h5>
-              <textarea class="form-control" id="diseaseCauses" rows="4"  placeholder="أدخل أسباب المرض" name="causes"></textarea>
+              <textarea class="form-control" id="diseaseCauses" rows="4"  placeholder="أدخل أسباب المرض" name="causes_paragraph_ar"></textarea>
+          </div>
+          <div class="section">
+              <h5 class="section-title title"> :نقاط الأسباب</h5>
+              <textarea class="form-control" id="diseaseCausespoints" rows="4"  placeholder="أدخل أسباب المرض" name="causes_points_ar"></textarea>
           </div>
           <div class="section">
               <h5 class="section-title title">طرق التشخيص</h5>
-              <textarea class="form-control" id="diseaseDiagnosis" rows="4"  placeholder="أدخل طرق التشخيص" name="diagnosis_methods"></textarea>
+              <textarea class="form-control" id="diseaseDiagnosis" rows="4"  placeholder="أدخل طرق التشخيص" name="diagnosis_methods_paragraph_ar"></textarea>
+          </div>
+          <div class="section">
+              <h5 class="section-title title">: نقاط طرق التشخيص</h5>
+              <textarea class="form-control" id="diseaseDiagnosispoints" rows="4"  placeholder="أدخل طرق التشخيص" name="diagnosis_methods_points_ar"></textarea>
           </div>
           <div class="section">
               <h5 class="section-title title">طرق العلاج</h5>
-              <textarea class="form-control" id="diseaseTreatment" rows="3"  placeholder="أدخل طرق العلاج" name="treatment_options"></textarea>
+              <textarea class="form-control" id="diseaseTreatment" rows="3"  placeholder="أدخل طرق العلاج" name="treatment_options_paragraph_ar"></textarea>
           </div>
           <div class="section">
-              <h5 class="section-title title" >الصور التوضيحية</h5>
-              <input type="file" class="form-control-file" id="diseaseImages"  placeholder="اختر صورة" name="image">
-              <div class="image-preview" id="imagePreview"></div>
+              <h5 class="section-title title">: نقاط طرق العلاج</h5>
+              <textarea class="form-control" id="diseaseTreatmentpoints" rows="3"  placeholder="أدخل طرق العلاج" name="treatment_options_points_ar"></textarea>
           </div>
           <div class="section">
               <h5 class="section-title title">نصائح للوقاية</h5>
-              <textarea class="form-control" id="diseasePrevention" rows="6"  placeholder="أدخل طرق الوقاية" name="prevention_recommendations"></textarea>
+              <textarea class="form-control" id="diseasePrevention" rows="6"  placeholder="أدخل طرق الوقاية" name="prevention_recommendations_paragraph_ar"></textarea>
           </div>
+          <div class="section">
+              <h5 class="section-title title">: نقاط نصائح للوقاية</h5>
+              <textarea class="form-control" id="diseasePreventionpoints" rows="6"  placeholder="أدخل طرق الوقاية" name="prevention_recommendations_points_ar"></textarea>
+          </div>
+          <div class="section">
+            <h5 class="section-title title text-md-end">Diseases Name</h5>
+            <input class="form-control" id="diseaseDescriptionen" rows="3"  placeholder="Enter Diseases Name" name="name_en"></input>
+          </div>
+          <div class="section">
+              <h5 class="section-title title text-md-end">Diseases Description</h5>
+              <textarea class="form-control" id="diseaseDescriptionen" rows="3"  placeholder="Enter Diseases Description" name="description_en"></textarea>
+          </div>
+          <div class="section">
+              <h5 class="section-title title text-md-end">Diseases Symptoms</h5>
+              <textarea class="form-control" id="diseaseSymptomsen" rows="4"  placeholder="Enter Diseases Symptoms" name="symptoms_paragraph_en"></textarea>
+          </div>
+          <div class="section">
+              <h5 class="section-title title text-md-end">Diseases Symptoms Points:</h5>
+              <textarea class="form-control" id="diseaseSymptomsenpoints" rows="4"  placeholder="Enter Diseases Symptoms" name="symptoms_points_en"></textarea>
+          </div>
+          <div class="section">
+              <h5 class="section-title title text-md-end">Diseases Causes</h5>
+              <textarea class="form-control" id="diseaseCausesen" rows="4"  placeholder="Enter Diseases Causes" name="causes_paragraph_en"></textarea>
+          </div>
+          <div class="section">
+              <h5 class="section-title title text-md-end">Diseases Causes Points:</h5>
+              <textarea class="form-control" id="diseaseCausesenpoints" rows="4"  placeholder="Enter Diseases Causes" name="causes_points_en"></textarea>
+          </div>
+          <div class="section">
+              <h5 class="section-title title text-md-end">Disease Diagnosis</h5>
+              <textarea class="form-control" id="diseaseDiagnosisen" rows="4"  placeholder="Enter Diseases Diagnosis" name="diagnosis_methods_paragraph_en"></textarea>
+          </div>
+          <div class="section">
+              <h5 class="section-title title text-md-end">Disease Diagnosis Points:</h5>
+              <textarea class="form-control" id="diseaseDiagnosisenpoints" rows="4"  placeholder="Enter Diseases Diagnosis" name="diagnosis_methods_points_en"></textarea>
+          </div>
+          <div class="section">
+              <h5 class="section-title title text-md-end">Diseases Treatment</h5>
+              <textarea class="form-control" id="diseaseTreatmenten" rows="3"  placeholder="Enter Diseases Treatment" name="treatment_options_paragraph_en"></textarea>
+          </div>
+          <div class="section">
+              <h5 class="section-title title text-md-end">Diseases Treatment Points:</h5>
+              <textarea class="form-control" id="diseaseTreatmentenpoints" rows="3"  placeholder="Enter Diseases Treatment" name="treatment_options_points_en"></textarea>
+          </div>
+          <div class="section">
+              <h5 class="section-title title text-md-end">Diseases Prevention</h5>
+              <textarea class="form-control" id="diseasePreventionen" rows="6"  placeholder="Enter Diseases Preventionen" name="prevention_recommendations_paragraph_en"></textarea>
+          </div>
+          <div class="section">
+              <h5 class="section-title title text-md-end">Diseases Prevention Points:</h5>
+              <textarea class="form-control" id="diseasePreventionenpoints" rows="6"  placeholder="Enter Diseases Preventionen" name="prevention_recommendations_points_en"></textarea>
+          </div>
+          <div class="section">
+            <h5 class="section-title title text-md-end" >الصور التوضيحية</h5>
+            <input type="file" class="form-control-file" id="diseaseImagesen"  placeholder="اختر صورة" name="image">
+            <div class="image-preview" id="imagePreview"></div>
+        </div>
+        <div class="col-12">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="satus" checked="" name="status"/>
+            <label class="form-check-label" for="deliveryAdd">
+              هل المرض قابل لتشخيص
+            </label>
+          </div>
+        </div>
       </form>
       <button class="btn btn-primary btn-save" id="saveButton" style="display: none;"><i class="fas fa-save m-1"></i> حفظ </button>
-
       </div>
     </div>
   </div>

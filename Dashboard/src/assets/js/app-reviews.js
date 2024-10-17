@@ -49,7 +49,7 @@ function initializeDataTable(data){
           }
 
           var userId = full['user_id'];
-          var userProfileUrl = `/users/profile/${userId}/`; 
+          var userProfileUrl = `/users/profile/${userId}/`;
           return `
             <div class="d-flex justify-content-start align-items-center user-name">
               <div class="avatar-wrapper">
@@ -81,7 +81,10 @@ function initializeDataTable(data){
       {
         targets:4,
         render:function(data,type,full,meta){
-          return `<span class="fw-medium">${full['created_at']}</span>`
+                const created_at = new Date(full['created_at']);
+                const datePart = created_at.toDateString();
+                const timePart = created_at.toLocaleTimeString('en-US', { hour12: false });
+                return `<span class="fw-medium">${datePart} -- ${timePart}</span>`;
         }
       },
       {
@@ -135,7 +138,7 @@ function initializeDataTable(data){
           var data = $.map(columns, function (col, i) {
             return col.title !== ''
             ? `<tr data-dt-row="${col.rowIndex}" data-dt-column="${col.columnIndex}">
-                  <td>${col.title}:</td> 
+                  <td>${col.title}:</td>
                   <td>${col.data}</td>
                 </tr>`
             : '';
