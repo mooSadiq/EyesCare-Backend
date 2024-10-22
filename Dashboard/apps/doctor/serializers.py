@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from apps.users.models import CustomUser
 from apps.consultations.models import Consultation
-from .models import Doctor, City
+from .models import Doctor
 
 # Reuse the UserSerializer for the user field in Doctor
 class UserSerializer(serializers.ModelSerializer):
@@ -66,7 +66,4 @@ class DoctorOneSerializer(serializers.ModelSerializer):
     def get_name(self, obj):
         return f"{obj.user.first_name} {obj.user.last_name}"
 
-class CitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = City
-        fields = ['name']
+

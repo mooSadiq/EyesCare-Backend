@@ -30,7 +30,7 @@ function initializeDataTable(data){
           className: 'control',
           searchable: false,
           orderable: false,
-          responsivePriority: 2,
+          responsivePriority: 1,
           targets: 0,
           render: function (data, type, full, meta) {
             return '';
@@ -39,7 +39,7 @@ function initializeDataTable(data){
         // Render research's name, email, and profile picture
         {
           targets: 1,
-          responsivePriority: 4,
+          responsivePriority: 2,
           render: function (data, type, full, meta) {
                 var title = full['title'];
                 var journal = full['journal'];
@@ -48,7 +48,7 @@ function initializeDataTable(data){
                 var userIdProfileUrl = `/users/profile/${userId}/`; 
                 return `
                     <div class="d-flex flex-column">
-                      <span class="my-1 text-body text-truncate">${title}</span>
+                      <span class="my-1 text-body text-wrap">${title}</span>
                       <div class="d-flex justify-content-start  align-items-center">
                         <small class="text-muted">${journal}</small>
                         <span class="fw-medium badge bg-label-success text-center me-2 ms-4 ">${field_name}</span>
@@ -269,7 +269,7 @@ function initializeDataTable(data){
           ]
         },
         {
-          text: '<i class="ti ti-plus me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">اضافة مستخدم جديد</span>',
+          text: '<i class="ti ti-plus me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">اضافة دراسة جديد</span>',
           className: 'add-new btn btn-primary waves-effect waves-light',
           attr: {
             'data-bs-toggle': 'offcanvas',

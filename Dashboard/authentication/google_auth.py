@@ -60,5 +60,5 @@ class GoogleLoginView(APIView):
               'status': False,
               'code': status.HTTP_500_INTERNAL_SERVER_ERROR,
               "message": f"حدث خطأ أثناء  إنشاء الحساب: {str(e)}"
-          })
+          }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
           

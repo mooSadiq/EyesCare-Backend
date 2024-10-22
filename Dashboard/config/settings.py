@@ -27,7 +27,7 @@ SECRET_KEY = 'se13m4407-2o#mt6ogl5ht$8d9_9bigm3tsyo3eq@n#^9_pmmr'
 DEBUG = True
 ALLOWED_HOSTS = ['localhost',
                  '0.0.0.0',
-                 '192.168.13.104',
+                 '192.168.179.104',
                  '192.168.114.104',
                  '192.168.8.38',
                  '192.168.146.104',
@@ -109,6 +109,9 @@ DATABASES = {
         'PASSWORD': '$finaly6project4',
         'HOST': 'EyesCareApp.mysql.pythonanywhere-services.com',
         'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+        },
     }
 }
 
@@ -123,7 +126,7 @@ REST_FRAMEWORK = {
 CSRF_COOKIE_SECURE = False
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=93),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': True,
@@ -216,10 +219,12 @@ PUSHER_APP_ID = '1861904'
 PUSHER_KEY = '6c5bc3a240a5017e7aac'
 PUSHER_SECRET = '3c8d562b800fbe10857e'
 PUSHER_CLUSTER = 'ap1'
-
-# Pusher options
 PUSHER_SSL = True
 
+
+# One Signal Notifications API
+ONESIGNAL_APP_ID = "b172908d-fe88-46b7-82b9-3c01efa4e992"
+ONESIGNAL_API_KEY = 'YTkwOGJkOTctOTA0NS00ZTMyLTg0ZjctM2VlOGJiNjFjNGUy'
 
 #اعدادات الموديل
 ROBOFLOW_API_KEY = 'ItXgPAZWt0DYyYfbUnic'

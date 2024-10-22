@@ -9,20 +9,24 @@ class Disease(models.Model):
     description_en = models.TextField(null=True) 
     
     image = models.ImageField(upload_to='diseases_images/', blank=True, null=True)  # صورة المرض
-    
-    causes_ar = models.JSONField()  # الأسباب 
+    causes_paragraph_ar = models.TextField(null=True, blank=True)
+    causes_points_ar = models.TextField(null=True, blank=True)
+    symptoms_paragraph_ar = models.TextField(null=True, blank=True)
+    symptoms_points_ar = models.TextField(null=True, blank=True)
+    diagnosis_methods_paragraph_ar = models.TextField(null=True, blank=True)
+    diagnosis_methods_points_ar = models.TextField(null=True, blank=True)
+    treatment_options_paragraph_ar = models.TextField(null=True, blank=True)
+    treatment_options_points_ar = models.TextField(null=True, blank=True)
+    prevention_recommendations_paragraph_ar = models.TextField(null=True, blank=True)
+    prevention_recommendations_points_ar = models.TextField(null=True, blank=True)
     causes_en = models.JSONField(null=True) 
     
-    symptoms_ar = models.JSONField()  # الأعراض 
     symptoms_en = models.JSONField(null=True)  
     
-    diagnosis_methods_ar = models.JSONField()  # طرق التشخيص 
     diagnosis_methods_en = models.JSONField(null=True)  
     
-    treatment_options_ar = models.JSONField()  # خيارات العلاج 
     treatment_options_en = models.JSONField(null=True)  
     
-    prevention_recommendations_ar = models.JSONField()  # توصيات الوقاية 
     prevention_recommendations_en = models.JSONField(null=True)  
     status=models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True) 

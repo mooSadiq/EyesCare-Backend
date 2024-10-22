@@ -49,3 +49,32 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
       return f"{self.first_name} {self.last_name}"
 
+
+
+class Address(models.Model):
+    YEMEN_GOVERNORATES = [
+        ('أبين', 'أبين'),
+        ('عدن', 'عدن'),
+        ('البيضاء', 'البيضاء'),
+        ('الضالع', 'الضالع'),
+        ('الحديدة', 'الحديدة'),
+        ('الجوف', 'الجوف'),
+        ('المهرة', 'المهرة'),
+        ('المحويت', 'المحويت'),
+        ('عمران', 'عمران'),
+        ('ذمار', 'ذمار'),
+        ('حضرموت', 'حضرموت'),
+        ('حجة', 'حجة'),
+        ('إب', 'إب'),
+        ('لحج', 'لحج'),
+        ('مأرب', 'مأرب'),
+        ('ريمة', 'ريمة'),
+        ('صعدة', 'صعدة'),
+        ('صنعاء', 'صنعاء'),
+        ('شبوة', 'شبوة'),
+        ('سقطرى', 'سقطرى'),
+        ('تعز', 'تعز'),
+    ]    
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='user_address')
+    country = models.CharField(max_length=100, default="اليمن")
+    governorate = models.CharField(max_length=100, null=True, choices=YEMEN_GOVERNORATES)

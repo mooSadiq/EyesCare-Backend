@@ -23,7 +23,7 @@
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  margin: 0.15rem 0.15rem 0 0;
+  margin: 0.15rem 0.15rem 0.15rem 0.15rem;
 }
 .app-chat .app-chat-contacts {
   position: absolute;

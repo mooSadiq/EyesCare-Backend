@@ -21,9 +21,9 @@
       <div
         class="col app-chat-contacts app-sidebar flex-grow-0 overflow-hidden border-end"
         id="app-chat-contacts">
-        <div class="sidebar-header">
-          <div class="d-flex align-items-center me-3 me-lg-0">
-            <div class="flex-grow-1 input-group input-group-merge rounded-pill">
+        <div class="sidebar-header d-flex">
+          <div class="d-flex align-items-center me-1 me-lg-0">
+            <div class="flex-grow- input-group input-group-merge rounded-3">
               <span class="input-group-text" id="basic-addon-search31"><i class="ti ti-search"></i></span>
               <input
                 type="text"
@@ -33,69 +33,29 @@
                 aria-describedby="basic-addon-search31" />
             </div>
           </div>
-          <i
-            class="ti ti-x cursor-pointer d-lg-none d-block position-absolute mt-2 me-1 top-0 end-0"
+          <div class="d-lg-none d-block mt-2 ">
+            <i
+            class="ti ti-x cursor-pointer"
             data-overlay
             data-bs-toggle="sidebar"
             data-target="#app-chat-contacts"></i>
+          </div>
         </div>
         <hr class="container-m-nx m-0" />
         <div class="sidebar-body">
           <div class="chat-contact-list-item-title">
-            <h5 class="text-primary mb-0 px-4 pt-3 pb-2">Chats</h5>
+            <h5 class="text-primary mb-0 px-4 pt-3 pb-2">المحادثات</h5>
           </div>
           <!-- Chats -->
           <ul class="list-unstyled chat-contact-list" id="chat-list">
             <li class="chat-contact-list-item chat-list-item-0 d-none">
               <h6 class="text-muted mb-0">No Chats Found</h6>
-            </li>
-            <li class="chat-contact-list-item">
-              <a class="d-flex align-items-center">
-                <div class="flex-shrink-0 avatar avatar-online">
-                  <img src="../../assets/img/avatars/13.png" alt="Avatar" class="rounded-circle" />
-                </div>
-                <div class="chat-contact-info flex-grow-1 ms-2">
-                  <h6 class="chat-contact-name text-truncate m-0">Waldemar Mannering</h6>
-                  <p class="chat-contact-status text-muted text-truncate mb-0">
-                    Refer friends. Get rewards.
-                  </p>
-                </div>
-                <small class="text-muted mb-auto">5 Minutes</small>
-              </a>
-            </li>
-            <li class="chat-contact-list-item active">
-              <a class="d-flex align-items-center">
-                <div class="flex-shrink-0 avatar avatar-offline">
-                  <img src="../../assets/img/avatars/2.png" alt="Avatar" class="rounded-circle" />
-                </div>
-                <div class="chat-contact-info flex-grow-1 ms-2">
-                  <h6 class="chat-contact-name text-truncate m-0">Felecia Rower</h6>
-                  <p class="chat-contact-status text-muted text-truncate mb-0">
-                    I will purchase it for sure. 👍
-                  </p>
-                </div>
-                <small class="text-muted mb-auto">30 Minutes</small>
-              </a>
-            </li>
-            <li class="chat-contact-list-item">
-              <a class="d-flex align-items-center">
-                <div class="flex-shrink-0 avatar avatar-busy">
-                  <span class="avatar-initial rounded-circle bg-label-success">CM</span>
-                </div>
-                <div class="chat-contact-info flex-grow-1 ms-2">
-                  <h6 class="chat-contact-name text-truncate m-0">Calvin Moore</h6>
-                  <p class="chat-contact-status text-muted text-truncate mb-0">
-                    If it takes long you can mail inbox user
-                  </p>
-                </div>
-                <small class="text-muted mb-auto">1 Day</small>
-              </a>
-            </li>
+            </li>            
           </ul>
           <!-- Contacts -->
           <ul class="list-unstyled chat-contact-list mb-0" id="contact-list">
             <li class="chat-contact-list-item chat-contact-list-item-title">
-              <h5 class="text-primary mb-0">Contacts</h5>
+              <h5 class="text-primary mb-0">المستخدمين</h5>
             </li>
             <li class="chat-contact-list-item contact-list-item-0 d-none">
               <h6 class="text-muted mb-0">No Contacts Found</h6>
@@ -109,7 +69,7 @@
       <!-- Chat History -->
       <div class="col app-chat-history bg-body">
         <div class="chat-history-wrapper">
-          <div class="chat-history-header d-none border-bottom" id="chat-history-header">
+          <div class="chat-history-header d-block border-bottom" id="chat-history-header">
             <div class="d-flex justify-content-between align-items-center">
               <div class="d-flex overflow-hidden align-items-center">
                 <i
@@ -119,20 +79,20 @@
                   data-target="#app-chat-contacts"></i>
                 <div class="flex-shrink-0 avatar">
                   <img
-                    id="user-avatar"
-                    src="../../assets/img/avatars/2.png"
+                    id="chat-user-avatar"
+                    src=""
                     alt="Avatar"
-                    class="rounded-circle"
+                    class="rounded-circle d-none"
                     data-bs-toggle="sidebar"
                     data-overlay
                     data-target="#app-chat-sidebar-right" />
                 </div>
                 <div class="chat-contact-info flex-grow-1 ms-2">
-                  <h6 id="user-name" class="m-0 "> </h6>
-                  <small id="user-email" class="user-status text-muted"></small>
+                  <h6 id="chat-user-name" class="m-0 "> </h6>
+                  <small id="chat-user-email" class="user-status text-muted"></small>
                 </div>
               </div>
-              <div class="d-flex align-items-center">
+              <div class="d-flex align-items-center d-none" id="dots-header-actions">
                 <i class="ti ti-search cursor-pointer d-sm-block d-none me-3"></i>
                 <div class="dropdown d-flex align-self-center">
                   <button
@@ -155,6 +115,9 @@
           </div>
           <div class="chat-history-body bg-body">
             <ul class="list-unstyled chat-history" id="chat-history">
+              <div class="chat-selection-header d-flex justify-content-around align-items-center border-bottom p-2">
+                <h6 class="m-0">اختر محادثة</h6>
+              </div>
             </ul>
           </div>
           <!-- Chat message form -->

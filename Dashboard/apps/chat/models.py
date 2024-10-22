@@ -30,7 +30,7 @@ class Message(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f"Message from {self.sender.username} in conversation {self.conversation.id}"
+        return f"Message from {self.sender.first_name} in conversation {self.conversation.id}"
 
 
 class File(models.Model):

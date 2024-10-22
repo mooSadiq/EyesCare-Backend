@@ -28,6 +28,7 @@ urlpatterns = [
     # users
     path("users/", include("apps.users.urls")),
     path("api/profile/", include("apps.users.api_urls")),
+    path("api/users/", include("apps.users.api_urls")),
     
     # patients
     path("patients/", include("apps.patients.urls")),

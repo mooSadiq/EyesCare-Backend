@@ -3,9 +3,36 @@ from apps.doctor.models import Doctor
 from .models import CustomUser
 
 class UserSerializer(serializers.ModelSerializer):
+    doctor_id = serializers.SerializerMethodField()
+    patient_id = serializers.SerializerMethodField()
+    user_address = serializers.SerializerMethodField()
+
     class Meta:
         model = CustomUser
-        fields = "__all__"
+        fields = [
+            'id', 
+            'first_name',  
+            'last_name',   
+            'gender', 
+            'birth_date', 
+            'user_address',
+            'profile_picture', 
+            'phone_number', 
+            'email',
+            'user_type',
+            'is_blue_verified',
+            'is_active',
+            'auth_provider',
+            'user_address',
+            'doctor_id', 
+            'patient_id' 
+        ] 
+    def get_doctor_id(self, obj):
+        return obj.doctor.id if hasattr(obj, 'doctor') else None
+    def get_patient_id(self, obj):
+        return obj.patient.id if hasattr(obj, 'patient') else None
+    def get_user_address(self, obj):
+        return obj.user_address.governorate if hasattr(obj, 'user_address') and obj.user_address.governorate else None
 
 class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,11 +46,12 @@ class UserCreateSerializer(serializers.ModelSerializer):
 class DoctorProfileSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source='user.first_name')
     last_name = serializers.CharField(source='user.last_name')
-    gender = serializers.CharField(source='user.gender')  # تأكد من وجود هذا الحقل في User model
+    gender = serializers.CharField(source='user.gender') 
     birth_date = serializers.DateField(source='user.birth_date')
     profile_picture = serializers.ImageField(source='user.profile_picture')
-    phone_number = serializers.IntegerField(source='user.phone_number')  # الأفضل تحويله إلى CharField
+    phone_number = serializers.IntegerField(source='user.phone_number')
     email = serializers.EmailField(source='user.email')
+    user_address = serializers.SerializerMethodField()
 
     class Meta:
         model = Doctor
@@ -33,6 +61,7 @@ class DoctorProfileSerializer(serializers.ModelSerializer):
             'last_name',   
             'gender', 
             'birth_date', 
+            'user_address',
             'profile_picture', 
             'phone_number', 
             'email',
@@ -43,17 +72,22 @@ class DoctorProfileSerializer(serializers.ModelSerializer):
             'start_time_work', 
             'end_time_work'
         ]    
+    def get_user_address(self, obj):
+        user_address = getattr(obj.user, 'user_address', None)
+        return user_address.governorate if user_address and user_address.governorate else None
 
 
   
 class UserProfileSerializer(serializers.ModelSerializer):
+    user_address = serializers.SerializerMethodField()
     class Meta:
         model = CustomUser
         fields = ['id', 'email', 'first_name', 'last_name',
                   'gender', 'birth_date', 'profile_picture',
-                  'phone_number' ]
+                  'phone_number' ,'user_address']
         
-
+    def get_user_address(self, obj):
+        return obj.user_address.governorate if hasattr(obj, 'user_address') and obj.user_address.governorate else None
 
 class DoctorUpdateProfileSerializer(serializers.ModelSerializer):
     user = UserProfileSerializer()

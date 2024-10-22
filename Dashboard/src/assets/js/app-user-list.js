@@ -54,9 +54,22 @@ function initializeDataTable(data){
                   var state = states[stateNum];
                   output = `<span class="avatar-initial rounded-circle bg-label-${state}">${initials}</span>`;
             }
-        
-                var userId = full['id'];
-                var userIdProfileUrl = `/users/profile/${userId}/`; 
+                let userId;
+                let userProfileUrl;
+                const userType = full['user_type'];
+                if (userType === 'doctor') {
+                  userId = full['doctor_id'];
+                  userProfileUrl = `/doctors/profile/${userId}/`;
+                  }
+                else if (userType === 'patient') {
+                  userId = full['patient_id'];
+                  userProfileUrl = `/patients/profile/${userId}/`;
+                  }
+                else {                  
+                  userId = full['id'];
+                  userProfileUrl = `/users/profile/${userId}/`;
+                  }
+
                 return `
                   <div class="d-flex justify-content-start align-items-center user-name">
                     <div class="avatar-wrapper">
@@ -65,7 +78,7 @@ function initializeDataTable(data){
                       </div>
                     </div>
                     <div class="d-flex flex-column">
-                      <a href="${userIdProfileUrl}" class="text-body text-truncate">
+                      <a href="${userProfileUrl}" class="text-body text-truncate">
                         <span class="fw-medium">${name}</span>
                       </a>
                       <small class="text-muted">${email}</small>
@@ -77,20 +90,27 @@ function initializeDataTable(data){
           // Render User Role
           targets: 2,
           render: function (data, type, full, meta) {
-            var $role = full['user_type'];
-            var roleBadgeObj = {
-                  "doctor":
-                    '<span class="badge badge-center rounded-pill bg-label-success w-px-30 h-px-30 me-2"><i class="ti ti-nurse ti-sm"></i></span>', //  
-                  "fondution":
-                '<span class="badge badge-center rounded-pill bg-label-primary w-px-30 h-px-30 me-2"><i class="ti ti-building-hospital ti-sm"></i></span>', // رمز مناسب 
-                  "user":
-                '<span class="badge badge-center rounded-pill bg-label-warning w-px-30 h-px-30 me-2"><i class="ti ti-user ti-sm"></i></span>', // 
-                  "patient":
-                '<span class="badge badge-center rounded-pill bg-label-info w-px-30 h-px-30 me-2"><i class="ti ti-heart ti-sm"></i></span>', // 
-                  "admin":
-                '<span class="badge badge-center rounded-pill bg-label-secondary w-px-30 h-px-30 me-2"><i class="ti ti-device-laptop ti-sm"></i></span>' // 
-            };
-            return "<span class='text-truncate d-flex align-items-center'>" + roleBadgeObj[$role] + $role + '</span>';
+            const userType = full['user_type'];
+            if (userType === 'doctor') {
+              return `<span class="text-truncate d-flex align-items-center">
+                            <span class="badge badge-center rounded-pill bg-label-success w-px-30 h-px-30 me-2">
+                            <i class="ti ti-nurse ti-sm"></i></span>طبيب</span>`;
+            }
+            else if (userType === 'patient'){
+              return `<span class="text-truncate d-flex align-items-center">
+              <span class="badge badge-center rounded-pill bg-label-info w-px-30 h-px-30 me-2">
+              <i class="ti ti-heart ti-sm"></i></span>مريض</span>`;
+            }
+            else if (userType === 'admin'){
+              return `<span class="text-truncate d-flex align-items-center">
+              <span class="badge badge-center rounded-pill bg-label-secondary w-px-30 h-px-30 me-2">
+              <i class="ti ti-device-laptop ti-sm"></i></span>مدير</span>`;
+            }
+            else {
+              return `<span class="text-truncate d-flex align-items-center">
+              <span class="badge badge-center rounded-pill bg-label-warning w-px-30 h-px-30 me-2">
+              <i class="ti ti-user ti-sm"></i></span>مستخدم</span>`;
+            }
           }
         },
         {
@@ -129,9 +149,22 @@ function initializeDataTable(data){
           searchable: false,
           orderable: false,
           render: function (data, type, full, meta) {
-                var userId = full['id'];
-                var userProfileUrl = `/users/profile/${userId}/`;
+                let userId;
+                let userProfileUrl;
                 var userType = full['user_type'];
+                if (userType === 'doctor') {
+                  userId = full['doctor_id'];
+                  userProfileUrl = `/doctors/profile/${userId}/`;
+                  }
+                else if (userType === 'patient') {
+                  userId = full['patient_id'];
+                  userProfileUrl = `/patients/profile/${userId}/`;
+                  }
+                else {                  
+                  userId = full['id'];
+                  userProfileUrl = `/users/profile/${userId}/`;
+                  }
+
                 return `
                   <div class="d-flex align-items-center view-profile">
                     <a href="${userProfileUrl}" class="text-body view-profile" data-id="${userId}" data-type="${userType}">
