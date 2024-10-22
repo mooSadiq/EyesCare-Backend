@@ -42,7 +42,7 @@ function initializeDataTable(data){
       targets: 1,
               responsivePriority: 4,
               render: function (data, type, full, meta) {
-                var name= `${full['name_ar']}`;
+                var name= `${full['name']}`;
                 var diseaseId = full.id;
                 var diseaseProfileUrl = `/diseases/details/${diseaseId}/`;
                 return `
@@ -64,7 +64,7 @@ function initializeDataTable(data){
         output = `<img src= "${image}" alt="disease Image" class="" style="width: 100%; height: 50px; border-radius: 10px;">`;
       }
       else{
-        var initials = `${full['name_en']}`;
+        var initials = `${full['name_en'][0]} ${full['name_en'][1]}`;
         var stateNum = Math.floor(Math.random() * 6);
         var states = ['success', 'danger', 'warning', 'info', 'primary', 'secondary'];
         var state = states[stateNum];
@@ -229,29 +229,37 @@ document.getElementById('diseaseForm').addEventListener('submit', async function
   event.preventDefault();
   const method = 'POST';
   const url = '/diseases/api/set/disease/';
+  const formData = new FormData(this);
+
+  // الحصول على حالة خانة الاختيار
+  const statusCheckbox = document.getElementById('satus');
+  const statusValue = statusCheckbox.checked;
+
+  // إضافة الحالة إلى FormData كقيمة نصية
+  formData.append('status', statusValue ? 'true' : 'false'); // استخدم 'true' أو 'false' كنصوص
+
   try {
+    console.log(`Malllllllek`);
     const result = await submitRequest(url, method, formData, {
-        headers: {
-            'Content-Type': 'application/json'
-          }
-    })
+      // لا حاجة لتحديد Content-Type عند استخدام FormData، يتم تعيينه تلقائيًا
+    });
+
     if (result.success) {
       const offcanvasElement = document.getElementById('offcanvasAdddiseases');
       const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
       if (offcanvas) {
-          offcanvas.hide();
+        offcanvas.hide();
       }
       showAlert('success', 'تم الحفظ!', result.message, 'btn btn-success');
       fetchAndInitializeTable();
       this.reset();
-  } else {
-    showAlert('error', 'فشل الحفظ!', result.message, 'btn btn-error');
+    } else {
+      showAlert('error', 'فشل الحفظ!', result.message, 'btn btn-error');
+    }
+  } catch (error) {
+    console.error('Error adding patient:', error);
   }
-} catch (error) {
-  console.error('Error adding patient:', error);
-}
 });
-
 
 
 /**

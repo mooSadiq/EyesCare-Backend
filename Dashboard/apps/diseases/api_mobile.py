@@ -1,5 +1,5 @@
 from .models import Disease
-from .serializers import DiseasesSerializer, DiseaseArabicSerializer, DiseaseEnglishSerializer, DiseaseTrySerializer
+from .serializers import  DiseaseArabicSerializer, DiseaseEnglishSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -10,7 +10,7 @@ from rest_framework.pagination import PageNumberPagination
 from .filters import DiseaseFilter
 
 class CustomPagination(PageNumberPagination):
-    page_size = 15 
+    page_size = 15
     page_size_query_param = 'page_size'
     max_page_size = 20
 
@@ -21,7 +21,7 @@ class DiseaseListView(APIView):
   pagination_class = CustomPagination
   filterset_class = DiseaseFilter
   permission_classes = [AllowAny]
-  
+
   def get(self, request, *args, **kwargs):
       accept_language = request.headers.get('Accept-Language', 'ar')
       print(accept_language)
@@ -29,15 +29,15 @@ class DiseaseListView(APIView):
       disease_filter  = self.filterset_class(request.query_params, queryset=Diseases)
       if not disease_filter .is_valid():
           return Response({'message': 'معلمات الفلترة غير صحيحة تأكد منها!'}, status=400)
-        
+
       filtered_diseases  = disease_filter.qs.order_by('id')
       paginator = self.pagination_class()
       paginated_diseases = paginator.paginate_queryset(filtered_diseases, request)
       if accept_language == 'en':
           serializer = DiseaseEnglishSerializer(paginated_diseases,many=True, context={'request': request})
       else:
-        serializer = DiseaseTrySerializer(paginated_diseases,many=True, context={'request': request})
-         
+        serializer = DiseaseArabicSerializer(paginated_diseases,many=True, context={'request': request})
+
       return Response({
             'status': True,
             'code': status.HTTP_200_OK,
@@ -56,7 +56,7 @@ class DiseaseListSearchView(APIView):
           serializer = DiseaseEnglishSerializer(Diseases, many=True, context={'request': request})
       else:
         serializer = DiseaseArabicSerializer(Diseases, many=True, context={'request': request})
-         
+
       return Response({
             'status': True,
             'code': status.HTTP_200_OK,

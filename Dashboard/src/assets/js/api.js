@@ -12,10 +12,10 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute
 //         return null; // لا يوجد توكن، إرجاع null
 //       }
 //     } catch (error) {
-      
+
 //       console.error('Failed to refresh token:', error);
 //       await handleLogout();
-//       return null; 
+//       return null;
 //     }
 //   }
 
@@ -46,7 +46,7 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute
 //     } catch (error) {
 //       console.error('Failed to refresh token:', error);
 //       await handleLogout();
-//       return null; 
+//       return null;
 //     }
 //   }
 //   return response;
@@ -153,7 +153,7 @@ export async function submitRequest(url, method, formData, options = {}) {
           method: method,
           headers: {
               'X-CSRFToken': csrfToken,
-              ...options.headers 
+              ...options.headers
           },
           body: formData
       });

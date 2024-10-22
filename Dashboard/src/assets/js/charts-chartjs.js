@@ -14,7 +14,7 @@ function isTokenExpired(token) {
     throw new Error('Invalid token format');
   }
   const payload = JSON.parse(atob(parts[1]));
-  const now = Math.floor(Date.now() / 1000); 
+  const now = Math.floor(Date.now() / 1000);
   return payload.exp < now;
 }
 
@@ -27,7 +27,7 @@ async function refreshToken() {
     },
     body: JSON.stringify({ refresh: refreshToken }),
   });
-  
+
   if (response.ok) {
     const data = await response.json();
     const newAccessToken = data.access;
@@ -43,7 +43,7 @@ async function refreshToken() {
       },
       body: JSON.stringify({}),
     });
-    window.location.href = '/auth/login/'; 
+    window.location.href = '/auth/login/';
     throw new Error('Failed to refresh token and logged out');
   }
 }
@@ -55,7 +55,7 @@ async function fetchWithAuth(url, options = {}) {
       accessToken = await refreshToken();
     } catch (error) {
       console.error('Failed to refresh token:', error);
-      return null; 
+      return null;
     }
   }
 
@@ -81,7 +81,7 @@ async function fetchWithAuth(url, options = {}) {
       });
     } catch (error) {
       console.error('Failed to refresh token:', error);
-      return null; 
+      return null;
     }
   }
 
@@ -235,7 +235,7 @@ function draw(data) {
           },
           y: {
             min: 0,
-            max: 400,
+            max: 100,
             grid: {
               color: borderColor,
               drawBorder: false,

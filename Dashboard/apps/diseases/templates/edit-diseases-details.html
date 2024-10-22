@@ -18,7 +18,7 @@
                 <form id="diseaseForm" class="mt-2" enctype="multipart/form-data">
                     <div class="section">
                         <h5 class="section-title title">اسم المرض</h5>
-                        <input class="form-control" id="diseaseDescription" rows="3" placeholder="أدخل اسم المرض"
+                        <input class="form-control" id="diseasename" rows="3" placeholder="أدخل اسم المرض"
                             name="name_ar"></input>
                     </div>
                     <div class="section">
@@ -78,7 +78,7 @@
                     </div>
                     <div class="section">
                         <h5 class="section-title title text-md-end">Diseases Name</h5>
-                        <input class="form-control" id="diseaseDescriptionen" rows="3" placeholder="Enter Diseases Name"
+                        <input class="form-control" id="diseasenameen" rows="3" placeholder="Enter Diseases Name"
                             name="name_en"></input>
                     </div>
                     <div class="section">
@@ -146,13 +146,14 @@
                     </div>
                     <div class="col-12">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="satus" checked=""
+                            <input class="form-check-input" type="checkbox" value="" id="status" checked=""
                                 name="status" />
                             <label class="form-check-label" for="deliveryAdd">
                                 هل المرض قابل لتشخيص
                             </label>
                         </div>
                     </div>
+                <button class="btn btn-primary btn-save" id="saveButton" style="display: none;"><i class="fas fa-save m-1"></i> حفظ </button>
                 </form>
             </div>
         </div>
@@ -165,6 +166,7 @@
 {% endblock %}
 {% block specialJsFiles %}
 <script>
-    const getId = '{{ desease_id }}';
+    const getId2 = {{desease_id}};
 </script>
 <script type="module" src="{% static 'js/app-diseases-edit.js' %}"></script>
+{% endblock %}

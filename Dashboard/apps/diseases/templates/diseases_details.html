@@ -23,11 +23,13 @@
           <div class="row p-sm-3 p-0">
             <div class="col-xl-6 col-md-12 col-sm-5 col-12 mb-xl-0 mb-md-4 mb-sm-0 mb-4">
               <h6 class="mb-3">الأسباب:</h6>
+              <p class="mb-1" id="couses-p"></p>
               <ul id="couseslist">
               </ul>
             </div>
             <div class="col-xl-6 col-md-12 col-sm-7 col-12">
               <h6 class="mb-4">الأعراض:</h6>
+              <p class="mb-1" id="sympthoms-p"></p>
               <ul id="sympthomslist">
               </ul>
             </div>
@@ -35,16 +37,20 @@
           <div class="mt-2 row p-sm-3 p-0">
             <div class="col-xl-6 col-md-12 col-sm-5 col-12 mb-xl-0 mb-md-4 mb-sm-0 mb-4">
               <h6 class="mb-3">طرق التشخيص:</h6>
+              <p class="mb-1" id="diagnosisMethods-p"></p>
               <ul id="diagnosisMethodslist">
               </ul>
             </div>
             <div class="col-xl-6 col-md-12 col-sm-7 col-12">
               <h6 class="mb-4">طرق العلاج:</h6>
+              <p class="mb-1" id="treatementoptions-p"></p>
               <ul id="treatementoptionslist">
               </ul>
+
             </div>
           </div>
           <h6 class="mb-3">طرق الوقاية:</h6>
+          <p class="mb-1" id="preventionrecommendations-p"></p>
           <ul id="preventionrecommendationslist">
           </ul>
         </div>
@@ -52,7 +58,7 @@
         <h6 class="mb-3">صوره توضيحية:</h6>
           <div class="disease-images row mx-2">
             <div class="col-md-4">
-              <img src="" alt="صورة " id="diseases-image">
+              <img  alt="صورة " id="diseases-image">
             </div>
           </div>
       </div>
@@ -79,15 +85,15 @@
             <span
               class="d-flex align-items-center justify-content-center text-nowrap">
               <i class="ti ti-printer ti-xs me-2"></i>طباعة
-            </span>            
+            </span>
           </a>
           <a href="javascript:;"
             id="confirm-text"
             class="btn btn-label-danger d-grid w-100 mb-2">
             <span
-              class="d-flex align-items-center justify-content-center text-nowrap">
+              class="d-flex align-items-center justify-content-center text-nowrap delete-record" >
               <i class="ti ti-trash ti-xs me-2"></i>حذف
-            </span> 
+            </span>
           </a>
 
         </div>
@@ -165,7 +171,7 @@
 {% endblock  %}
 {% block specialJsFiles %}
 <script>
-  const getId = '{{ desease_id }}';
+  const getId = {{desease_id}};
 </script>
 <script type="module" src="{% static 'js/app-diseases-details.js'%}"></script>
 {% endblock  %}
