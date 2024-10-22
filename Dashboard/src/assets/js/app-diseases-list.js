@@ -273,3 +273,4 @@ $(document).on('click', '.delete-record', async function () {
           showAlert('error', 'حدث خطأ!', deleteResult.message, 'btn btn-danger');
       }
   }
+});
