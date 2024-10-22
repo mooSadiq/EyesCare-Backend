@@ -1,8 +1,9 @@
 import {fetchAllData, submitRequest } from './api.js';
 import { showAlert, showConfirmationDialog } from './general-function.js';
 
-const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
+// Select city
+// --------------------------------------------------------------------
+const citySelect = document.getElementById('modalEditUserAddress');
 /**
  * Displays the user's profile information on the page.
  */
@@ -14,7 +15,7 @@ function showUserProfile(data) {
   if (data.profile_picture) {
       avatarElement.src = data.profile_picture;
   } else {
-      avatarElement.src = '/static/img/avatars/avatar-unknown.jpg';
+      avatarElement.src = '/static/img/avatars/default_profile_picture.png';
   }
   document.getElementById('userType').innerText = data.user_type;
   const userTypeElement = document.getElementById('userType');
@@ -25,7 +26,7 @@ function showUserProfile(data) {
   } else if (userType === 'doctor') {
       userTypeElement.innerText = 'طبيب';
   } else if (userType === 'admin') {
-      userTypeElement.innerText = 'أدمن';
+      userTypeElement.innerText = 'مدير';
   } else if (userType === 'support') {
       userTypeElement.innerText = 'فريق الدعم';
   } else {
@@ -38,6 +39,7 @@ function showUserProfile(data) {
   document.getElementById('user-email').innerText = data.email;
   document.getElementById('user-phone').innerText = data.phone_number;
   document.getElementById('user-gender').innerText = data.gender;
+  document.getElementById('user-address').innerText = data.user_address;
   document.getElementById('user-birthdate').innerText = data.birth_date;
   document.getElementById('user-status').innerText = data.is_active? 'نشط' : 'غير نشط';
   document.getElementById('user-status').className = data.is_active ? 'badge bg-label-success' : 'badge bg-label-danger';
@@ -60,6 +62,8 @@ function showUserProfile(data) {
   document.getElementById('modalEditUserEmail').value = data.email;
   document.getElementById('modalEditUserPhone').value = data.phone_number;
   document.getElementById('modalEditUsergender').value = data.gender;
+  document.getElementById('modalEditUserAddress').value = data.user_address;
+  document.getElementById('modalEditUserAddress').textContent = data.user_address;
   document.getElementById('bs-datepicker-autoclose-birthdate').value = data.birth_date;
   document.getElementById('modalEditUserRole').value = data.user_type;
 
@@ -72,14 +76,28 @@ function showUserProfile(data) {
  */
 async function fetchAndInitializeData() {
   const url_get_user_profile_data = `/users/api/get/users/${getId}/`;
+  const url_get_cities_data = `/api/users/cities/`;
   try {
     const data = await fetchAllData(url_get_user_profile_data);
+    const cities_data = await fetchAllData(url_get_cities_data);
     showUserProfile(data);
+    initializeSelectData(cities_data.data, citySelect);
   } catch (error) {
-    console.error('خطأ في جلب بيانات المستخدم:', error);
+    console.error('خطأ في جلب البيانات :', error);
   }
 }
 
+function initializeSelectData(data, element){
+  element.innerHTML = ''; // Clear existing options to avoid duplication
+  
+  data.forEach(city => {
+    console.log("citi: ",city.name);
+      const option = document.createElement('option');
+      option.value = city.name;
+      option.textContent = city.name;
+      element.appendChild(option);      
+  });
+}
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', fetchAndInitializeData);
 
@@ -93,6 +111,7 @@ document.getElementById('editUserForm').addEventListener('submit', async functio
       formData.append('last_name', document.getElementById('modalEditUserLastName').value);
       formData.append('phone_number', document.getElementById('modalEditUserPhone').value);
       formData.append('gender', document.getElementById('modalEditUsergender').value);
+      formData.append('user_address', document.getElementById('modalEditUserAddress').value);
       formData.append('birth_date', document.getElementById('bs-datepicker-autoclose-birthdate').value);
       formData.append('user_type', document.getElementById('modalEditUserRole').value);
       

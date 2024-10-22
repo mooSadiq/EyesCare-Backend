@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import CustomUser
+from .models import CustomUser, Address
 from apps.patients.models import Patient
 from apps.doctor.models import Doctor
 from rest_framework.views import APIView
@@ -13,14 +13,18 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.contrib.auth.hashers import make_password
+from django.db import transaction
 
 # دوال العرض والانتقال بين الصفحات في الداش بورد
 @login_required
 def index(request):
   return render(request, 'user_list.html')
+
+@login_required
 def my_account_settings(request):
   return render(request, 'my_account_settings.html')
 
+@login_required
 def userProfile(request, id):
   return render(request, 'user_profile.html', {"user_id": id})
 
@@ -50,17 +54,33 @@ class UpdateUserView(APIView):
     parser_classes = [MultiPartParser, FormParser]
     def put(self, request, pk):
         user = get_object_or_404(CustomUser, id=pk)
-        serializer = UserSerializer(user, data=request.data, partial=True)        
-        if serializer.is_valid():
-            if 'profile_picture' in request.FILES and request.FILES['profile_picture']:
-                user.profile_picture = request.FILES['profile_picture']
-            serializer.save()
+        governorate = request.data.get('user_address')
+        try:
+          with transaction.atomic():
+            if governorate:
+                address, created = Address.objects.get_or_create(user=user)
+                address.governorate = governorate
+                address.save()
+            serializer = UserSerializer(user, data=request.data, partial=True)        
+            if serializer.is_valid():
+                if 'profile_picture' in request.FILES and request.FILES['profile_picture']:
+                    user.profile_picture = request.FILES['profile_picture']
+                serializer.save()
+                return Response({
+                    "message": "تم تعديل بيانات المستخدم بنجاح",
+                    "data": serializer.data
+                }, status=status.HTTP_200_OK)
+            else:
+              return Response({
+                    "message": f"فشل التعديل تعديل البيانات : {serializer.errors}",
+                    "data": serializer.data
+                }, status=status.HTTP_200_OK)  
+        except Exception as e:
             return Response({
-                "message": "تم تعديل بيانات المستخدم بنجاح",
-                "data": serializer.data
-            }, status=status.HTTP_200_OK)
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                'status': False,
+                'code': status.HTTP_500_INTERNAL_SERVER_ERROR,
+                "message": f"حدث خطأ أثناء تحديث البيانات: {str(e)}"
+            })
 
 class CreateUserView(APIView):
     permission_classes = [IsAuthenticated]
@@ -96,6 +116,8 @@ class UserActivationView(APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request, pk):
         user = get_object_or_404(CustomUser, id=pk)
+        if user == request.user:
+            return Response({"message": "عذرا لا يمكنك الغاء تنشيط حسابك!"}, status=status.HTTP_403_FORBIDDEN)
         user.is_active = not user.is_active
         user.save()
         message = 'تم تنشيط الحساب بنجاح' if user.is_active else 'تم إلغاء تنشيط الحساب بنجاح'
@@ -105,7 +127,9 @@ class UserActivationView(APIView):
 class DeleteUserView(APIView):
     permission_classes = [IsAuthenticated]
     def delete(self, request, pk):
-        user = get_object_or_404(CustomUser, id=pk)        
+        user = get_object_or_404(CustomUser, id=pk)
+        if user == request.user:
+            return Response({"message": "عذرا لا يمكنك حذف حسابك!"}, status=status.HTTP_403_FORBIDDEN)
         delete_result = user.delete()
         if delete_result[0] > 0:
             return Response({"message": "تم الحذف بنجاح!"}, status=status.HTTP_200_OK)

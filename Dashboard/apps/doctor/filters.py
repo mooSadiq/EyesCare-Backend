@@ -1,6 +1,6 @@
 from django.db.models import Q
 import django_filters as filters
-from .models import Doctor, City
+from .models import Doctor
 
 class DoctorFilter(filters.FilterSet):
     search = filters.CharFilter(method='filter_by_search')

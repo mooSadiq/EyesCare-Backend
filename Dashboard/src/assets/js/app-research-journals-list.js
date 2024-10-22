@@ -115,7 +115,7 @@ function initializeDataTable(data){
           // Button for offcanvas
           buttons: [
             {
-              text: '<i class="ti ti-plus ti-xs me-0 me-sm-2"></i><span class="d-none d-sm-inline-block">اضافة مجال</span>',
+              text: '<i class="ti ti-plus ti-xs me-0 me-sm-2"></i><span class="d-none d-sm-inline-block">اضافة مجلة</span>',
               className: 'add-new btn btn-primary ms-2 waves-effect waves-light',
               attr: {
                 'data-bs-toggle': 'offcanvas',

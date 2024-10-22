@@ -1,15 +1,16 @@
+import requests
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Q
 from config import settings
 from .models import Conversation, Message, File
-from .serializers import ConversationSerializer, MessageSerializer,ContactsSerializer
+from .serializers import ConversationSerializer, MessageSerializer
 from rest_framework.permissions import IsAuthenticated
 from apps.users.models import CustomUser
 from django.db import transaction
 import pusher
-
+from .service import send_notification
 
 pusher_client = pusher.Pusher(
   app_id=settings.PUSHER_APP_ID,
@@ -116,6 +117,10 @@ class MessageList(APIView):
                 pusher_client.trigger(f'conversation-{conversation.id}', 'new-message', {
                     'message': MessageSerializer(message).data
                 })
+                sender_name = request.user.first_name + request.user.last_name
+                receiver_chat = receiver.id
+                print(receiver_chat)
+                send_notification(receiver_chat, sender_name, content, conversation.id)
 
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

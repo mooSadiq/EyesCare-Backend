@@ -1,40 +1,36 @@
-import {fetchAllData, submitRequest } from './api.js';
 'use strict';
 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-async function updateNavbar(data) {
-  const accessToken = localStorage.getItem('access_token');
 
-  document.getElementById('user-name').innerText = `${data.first_name} ${data.last_name}`;
-  document.getElementById('user-role').innerText = data.user_type
-  const avatarUrl = data.profile_picture;
-  const image = new Image();
-  image.onload = function() {
-    document.getElementById('user-avatar1').src = avatarUrl;
-    document.getElementById('user-avatar2').src = avatarUrl;
-  };
-  image.onerror = function() {
-    document.getElementById('user-avatar1').src = '{% static "img/avatars/1.png" %}';
-    document.getElementById('user-avatar2').src = '{% static "img/avatars/1.png" %}';
-  };
-  image.src = avatarUrl;
+document.addEventListener('DOMContentLoaded', function () {
+  const firstName = localStorage.getItem('user_first_name');
+  const lastName = localStorage.getItem('user_last_name');
+  const profileImage = localStorage.getItem('user_profile_picture');
+  const email = localStorage.getItem('user_email');
+  const user_type = localStorage.getItem('user_type'); 
 
-} 
-
-/**
- * Fetches patient profile data and initializes the profile display.
- */
-async function fetchAndInitializeData() {
-  const url_get_user_profile_data = `/users/api/profile/`;
-  try {
-    const data = await fetchAllData(url_get_user_profile_data);
-    updateNavbar(data);
-  } catch (error) {
-    console.error('خطأ في جلب بيانات المستخدم:', error);
+  if (profileImage) {
+    document.getElementById('user-avatar1').src = profileImage;
+    document.getElementById('user-avatar2').src = profileImage;
   }
-}
 
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', fetchAndInitializeData);
+  if (firstName && lastName) {
+    document.getElementById('user-name').textContent = `${firstName} ${lastName}`;
+  }
+  let userTypeInArabic = '';
+  if (user_type === 'doctor') {
+    userTypeInArabic = 'طبيب';
+  } else if (user_type === 'admin') {
+    userTypeInArabic = 'مدير';
+  } else if (user_type === 'patient') {
+    userTypeInArabic = 'مريض';
+  } else if (user_type === 'user') {
+    userTypeInArabic = 'مستخدم';
+  } else {
+    userTypeInArabic = 'غير معروف'; 
+  }
+
+  document.getElementById('user-role').textContent = userTypeInArabic;
+});
 
 
 
@@ -61,6 +57,11 @@ document.getElementById('logout-btn').addEventListener('click', function() {
     if (data.status === true) {
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
+      localStorage.removeItem('user_first_name');
+      localStorage.removeItem('user_last_name');
+      localStorage.removeItem('user_profile_picture');
+      localStorage.removeItem('user_email');
+      localStorage.removeItem('user_type');
       window.location.href = '/auth/login/';
     } else {
         console.log('Logout failed.');

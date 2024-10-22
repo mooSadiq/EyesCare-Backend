@@ -1,0 +1,77 @@
+<form id="disease-form">
+  <input type="text" name="name_ar" placeholder="Name (Arabic)" required>
+  <input type="text" name="name_en" placeholder="Name (English)" required>
+  <textarea name="description_ar" placeholder="Description (Arabic)" required></textarea>
+  <textarea name="description_en" placeholder="Description (English)" required></textarea>
+  
+  <!-- أسباب المرض -->
+  <textarea name="causes_ar" placeholder="Causes (Arabic)" required>{ "paragraph": "تشمل الأسباب:", "points": ["العدوى البكتيرية.", "العدوى الفيروسية.", "الحساسية."] }</textarea>
+  <textarea name="causes_en" placeholder="Causes (English)" required>{ "paragraph": "Common causes include:", "points": ["Bacterial infection.", "Viral infection.", "Allergies."] }</textarea>
+
+  <!-- أعراض المرض -->
+  <textarea name="symptoms_ar" placeholder="Symptoms (Arabic)" required>{ "paragraph": "الأعراض تشمل:", "points": ["احمرار العين.", "إفرازات من العين.", "حكة وتهيج."] }</textarea>
+  <textarea name="symptoms_en" placeholder="Symptoms (English)" required>{ "paragraph": "Symptoms include:", "points": ["Redness of the eye.", "Discharge from the eye.", "Itching and irritation."] }</textarea>
+
+  <!-- طرق التشخيص -->
+  <textarea name="diagnosis_methods_ar" placeholder="Diagnosis Methods (Arabic)" required>{ "paragraph": "طرق التشخيص تشمل:", "points": ["فحص العين.", "اختبار العين.", "تحليل الإفرازات."] }</textarea>
+  <textarea name="diagnosis_methods_en" placeholder="Diagnosis Methods (English)" required>{ "paragraph": "Diagnosis methods include:", "points": ["Eye examination.", "Eye test.", "Discharge analysis."] }</textarea>
+
+  <!-- خيارات العلاج -->
+  <textarea name="treatment_options_ar" placeholder="Treatment Options (Arabic)" required>{ "paragraph": "تشمل خيارات العلاج:", "points": ["القطرات المضادة للبكتيريا.", "المضادات الحيوية في الحالات البكتيرية.", "مضادات الهيستامين في الحالات التحسسية."] }</textarea>
+  <textarea name="treatment_options_en" placeholder="Treatment Options (English)" required>{ "paragraph": "Treatment options include:", "points": ["Antibacterial eye drops.", "Antibiotics in bacterial cases.", "Antihistamines in allergic cases."] }</textarea>
+
+  <!-- توصيات الوقاية -->
+  <textarea name="prevention_recommendations_ar" placeholder="Prevention Recommendations (Arabic)" required>{ "paragraph": "الوقاية:", "points": ["غسل اليدين بانتظام.", "تجنب لمس العينين.", "استخدام أدوات نظيفة."] }</textarea>
+  <textarea name="prevention_recommendations_en" placeholder="Prevention Recommendations (English)" required>{ "paragraph": "Prevention recommendations include:", "points": ["Regular hand washing.", "Avoid touching the eyes.", "Use clean utensils."] }</textarea>
+
+  <!-- حالة المرض -->
+  <select name="status" required>
+      <option value="1">Active</option>
+      <option value="0">Inactive</option>
+  </select>
+
+  <input type="submit" value="Submit">
+</form>
+
+<script>
+  document.getElementById('disease-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // تجميع البيانات من النموذج
+      let formData = {
+          name_ar: document.querySelector('input[name="name_ar"]').value,
+          name_en: document.querySelector('input[name="name_en"]').value,
+          description_ar: document.querySelector('textarea[name="description_ar"]').value,
+          description_en: document.querySelector('textarea[name="description_en"]').value,
+          causes_ar: JSON.parse(document.querySelector('textarea[name="causes_ar"]').value), // تحويل النص إلى JSON
+          causes_en: JSON.parse(document.querySelector('textarea[name="causes_en"]').value),
+          symptoms_ar: JSON.parse(document.querySelector('textarea[name="symptoms_ar"]').value),
+          symptoms_en: JSON.parse(document.querySelector('textarea[name="symptoms_en"]').value),
+          diagnosis_methods_ar: JSON.parse(document.querySelector('textarea[name="diagnosis_methods_ar"]').value),
+          diagnosis_methods_en: JSON.parse(document.querySelector('textarea[name="diagnosis_methods_en"]').value),
+          treatment_options_ar: JSON.parse(document.querySelector('textarea[name="treatment_options_ar"]').value),
+          treatment_options_en: JSON.parse(document.querySelector('textarea[name="treatment_options_en"]').value),
+          prevention_recommendations_ar: JSON.parse(document.querySelector('textarea[name="prevention_recommendations_ar"]').value),
+          prevention_recommendations_en: JSON.parse(document.querySelector('textarea[name="prevention_recommendations_en"]').value),
+          status: document.querySelector('select[name="status"]').value  // حالة المرض
+      };
+
+      fetch('/diseases/api/try/add/', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json;charset=utf-8',
+              'X-CSRFToken': '{{ csrf_token }}'  // إذا كنت تستخدم CSRF
+          },
+          body: JSON.stringify(formData)
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.errors) {
+              console.log("Errors: ", data.errors);
+          } else {
+              alert("Disease created successfully!");
+          }
+      })
+      .catch(error => console.error("Error:", error));
+  });
+</script>

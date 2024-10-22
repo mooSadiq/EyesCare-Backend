@@ -1,10 +1,14 @@
 from django.shortcuts import render,get_object_or_404
 from rest_framework.decorators import api_view
 from .models import Disease
-from .serializers import DiseasesSerializer
+from .serializers import DiseasesSerializer, DiseaseTrySerializer
 from rest_framework.response import Response
 from rest_framework import status
 import os
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.views import APIView
+import json
+
 # Create your views here.
 
 def diseases_list(request):
@@ -15,6 +19,8 @@ def diseases_details(request,pk):
 
 def edit_diseases_details(request,pk):
     return render(request, 'edit-diseases-details.html',{{'desease_id ':pk}})
+def try_diseases(request):
+    return render(request, 'try.html')
 
 #Return All Diseases From DB
 @api_view(['GET'])
@@ -101,3 +107,61 @@ def delete_diseases(request,pk):
         else:
             return Response({"message":" لم يتم الحذف "},status=status.HTTP_200_OK)
 
+class DiseaseCreateView(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        data = request.data
+        print(data)
+        # التأكد من أن الحقول JSON تُمرر كقواميس
+        # لا حاجة لاستخدام json.loads هنا إذا كانت الحقول بالفعل قواميس
+        # فقط تأكد من أن الحقول موجودة
+        causes_ar = data.get('causes_ar', {})
+        causes_en = data.get('causes_en', {})
+        symptoms_ar = data.get('symptoms_ar', {})
+        symptoms_en = data.get('symptoms_en', {})
+        diagnosis_methods_ar = data.get('diagnosis_methods_ar', {})
+        diagnosis_methods_en = data.get('diagnosis_methods_en', {})
+        treatment_options_ar = data.get('treatment_options_ar', {})
+        treatment_options_en = data.get('treatment_options_en', {})
+        prevention_recommendations_ar = data.get('prevention_recommendations_ar', {})
+        prevention_recommendations_en = data.get('prevention_recommendations_en', {})
+        
+        # إدخال البيانات في النموذج
+        try:
+            disease = Disease(
+                name_ar=data['name_ar'],
+                name_en=data['name_en'],
+                description_ar=data['description_ar'],
+                description_en=data['description_en'],
+                causes_ar=causes_ar,  # استخدم القاموس مباشرة
+                causes_en=causes_en,
+                symptoms_ar=symptoms_ar,
+                symptoms_en=symptoms_en,
+                diagnosis_methods_ar=diagnosis_methods_ar,
+                diagnosis_methods_en=diagnosis_methods_en,
+                treatment_options_ar=treatment_options_ar,
+                treatment_options_en=treatment_options_en,
+                prevention_recommendations_ar=prevention_recommendations_ar,
+                prevention_recommendations_en=prevention_recommendations_en,
+                status=data['status']
+            )
+            disease.save()
+            return Response({"message": "تم إدخال البيانات بنجاح", "data": data}, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+          
+class DiseaseTryListView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        diseases = Disease.objects.all()
+        serializer = DiseaseTrySerializer(diseases, many=True, context={'request': request})
+        
+        response_data = {
+            "status": True,
+            "code": 200,
+            "message": "ok",
+            "data": serializer.data
+        }
+
+        return Response(response_data)

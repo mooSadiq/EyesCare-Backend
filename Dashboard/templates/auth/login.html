@@ -122,12 +122,14 @@
 </div>
 <script>
   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
   document.getElementById('formAuthentication').addEventListener('submit', async function(event) {
       event.preventDefault();
   
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
       const messageContainer = document.getElementById('message-container');
+  
       try {
           const response = await fetch('/auth/login/', {
               method: 'POST',
@@ -137,18 +139,27 @@
               },
               body: JSON.stringify({ email, password })
           });
+  
+          const data = await response.json();
+          console.log(data.data)
+  
           if (response.ok) {
-              const data = await response.json();
-              if (data.access_token && data.refresh_token && data.next_url) {
-                  // تخزين التوكنات في localStorage
-                  localStorage.setItem('access_token', data.access_token);
-                  localStorage.setItem('refresh_token', data.refresh_token);
-                  window.location.href = data.next_url;
+              if (data.data.access_token && data.data.refresh_token && data.data.next_url && data.data.user) {
+                  localStorage.setItem('access_token', data.data.access_token);
+                  localStorage.setItem('refresh_token', data.data.refresh_token);
+                  localStorage.setItem('user_id', data.data.user.user_id);
+                  localStorage.setItem('user_first_name', data.data.user.first_name);
+                  localStorage.setItem('user_last_name', data.data.user.last_name);
+                  localStorage.setItem('user_email', data.data.user.email);
+                  localStorage.setItem('user_type', data.data.user.user_type);
+                  localStorage.setItem('user_profile_picture', data.data.user.profile_picture); 
+  
+                  // الانتقال إلى الصفحة التالية
+                  window.location.href = data.data.next_url;
               } else {
-                  messageContainer.innerHTML = '<div class="alert alert-danger" role="alert">استجابة غير صحيحة من السيرفر</div>';
+                  messageContainer.innerHTML = '<div class="alert alert-danger" role="alert">استجابة غير صحيحة من السيرفر.</div>';
               }
           } else {
-              console.error('خطأ في تسجيل الدخول');
               messageContainer.innerHTML = `<div class="alert alert-danger" role="alert">${data.message}</div>`;
           }
       } catch (error) {
@@ -156,6 +167,7 @@
           messageContainer.innerHTML = '<div class="alert alert-danger" role="alert">حدث خطأ. يرجى المحاولة مرة أخرى لاحقاً.</div>';
       }
   });
+  
   </script>
 </body>
 </html>

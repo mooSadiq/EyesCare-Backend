@@ -7,10 +7,10 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
-from apps.doctor.models import Doctor, City
+from apps.doctor.models import Doctor
 from apps.users.models import CustomUser  
 from .filters import DoctorFilter
-from .serializers import DoctorListSerializer, DoctorOneSerializer, CitySerializer
+from .serializers import DoctorListSerializer, DoctorOneSerializer
 from rest_framework.exceptions import ValidationError
 
 
@@ -114,28 +114,7 @@ class DoctorFilterListAPIView(APIView):
                 'code': status.HTTP_500_INTERNAL_SERVER_ERROR,
                 'message': f'حدث خطأ غير متوقع: {str(e)}',
               })            
-
-
-class CityListAPIView(APIView):
-    permission_classes = [IsAuthenticated]
-    def get(self, request):
-        try:
-            cities = City.objects.all()
-            cities_serializer = CitySerializer(cities, many=True, context={'request': request})
-            
-            return Response({
-              'status': True,
-              'code': status.HTTP_200_OK,
-              'message': 'تم جلب البيانات بنجاح',
-              'data': cities_serializer.data
-            })
-        except Exception as e:
-            return Response({
-                'status': False,
-                'code': status.HTTP_500_INTERNAL_SERVER_ERROR,
-                'message': f'حدث خطأ غير متوقع: {str(e)}',
-              })
-    
+  
 class DoctorOneListAPIView(APIView):
     permission_classes = [AllowAny]
     def get(self, request, pk):
@@ -169,7 +148,6 @@ class DoctorsListView(APIView):
 
     def get(self, request):
         try:
-            # جلب جميع الأطباء
             doctors = Doctor.objects.all()
             doctor_list = []
 

@@ -89,6 +89,7 @@ class JournalOneListAPIView(APIView):
                     'code': status.HTTP_404_NOT_FOUND,
                     'message': 'المجلة غير موجودة',
                 }, status=status.HTTP_404_NOT_FOUND)
+            print(request.data)
             journal_serializer = JournalSerializer(journal, data=request.data, partial=True)
             if journal_serializer.is_valid():
                 journal_serializer.save()
@@ -387,36 +388,32 @@ class ResearchOneListAPIView(APIView):
                   # حفظ القيم السابقة للمجلة والمجال وذلك من أجل التحقق هل تم تعديلهم 
           previous_journal = research.journal
           previous_field = research.field
-          with transaction.atomic():
-              research_serializer = ResearchOneSerializer(research, data=request.data, partial=True)
-              if research_serializer.is_valid():
-                  updated_research = research_serializer.save(user=request.user)
-                  
-                  # التحقق من تغيير المجال بحيث يتم انقاص واحد من المجال السابق             
-                  # وزيادة المجال الجديد وكذلك نفس الشي بالنسبة للمجلة            
-                  if previous_journal != updated_research.journal:
-                    previous_journal.research_count = F('research_count') - 1
-                    previous_journal.save(update_fields=['research_count'])
-                    updated_research.journal.research_count = F('research_count') + 1
-                    updated_research.journal.save(update_fields=['research_count'])
-                    
-                  if previous_field != updated_research.field:
-                    previous_field.research_count = F('research_count') - 1
-                    previous_field.save(update_fields=['research_count'])                    
-                    updated_research.field.research_count = F('research_count') + 1
-                    updated_research.field.save(update_fields=['research_count'])
-
-                  return Response({
-                      'status': True,
-                      'code': status.HTTP_200_OK,
-                      'message': 'تم تعديل الدراسة بنجاح',
-                  }, status=status.HTTP_201_CREATED)
-              else:
-                  return Response({
-                      'status': False,
-                      'code': status.HTTP_400_BAD_REQUEST,
-                      'message': f'فشل تعديل الدراسة : {research_serializer.errors}',
-                  }, status=status.HTTP_400_BAD_REQUEST)
+          print(request.data)
+          research_serializer = ResearchCreateSerializer(research, data=request.data, partial=True)
+          if research_serializer.is_valid():
+              updated_research = research_serializer.save(user=request.user)         
+              if previous_journal != updated_research.journal:
+                previous_journal.research_count = F('research_count') - 1
+                previous_journal.save(update_fields=['research_count'])
+                updated_research.journal.research_count = F('research_count') + 1
+                updated_research.journal.save(update_fields=['research_count'])
+                
+              if previous_field != updated_research.field:
+                previous_field.research_count = F('research_count') - 1
+                previous_field.save(update_fields=['research_count'])                    
+                updated_research.field.research_count = F('research_count') + 1
+                updated_research.field.save(update_fields=['research_count'])
+              return Response({
+                  'status': True,
+                  'code': status.HTTP_200_OK,
+                  'message': 'تم تعديل الدراسة بنجاح',
+              }, status=status.HTTP_201_CREATED)
+          else:
+              return Response({
+                  'status': False,
+                  'code': status.HTTP_400_BAD_REQUEST,
+                  'message': f'فشل تعديل الدراسة : {research_serializer.errors}',
+              }, status=status.HTTP_400_BAD_REQUEST)
       
         except Exception as e:
             return Response({

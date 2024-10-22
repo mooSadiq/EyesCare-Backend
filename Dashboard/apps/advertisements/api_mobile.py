@@ -4,10 +4,11 @@ from .serializers import AdvertisementSerializerMobile
 from rest_framework import status
 from rest_framework.response import Response
 from django.db import models
-
+from rest_framework.permissions import AllowAny
 
 
 class AdvertisementList(APIView):
+    permission_classes = [AllowAny]
     def get(self,request):
         advertisement=Advertisement.objects.filter(allowed=True,status=1)
         serializer=AdvertisementSerializerMobile(advertisement,many=True,context={'request': request})
@@ -18,6 +19,7 @@ class AdvertisementList(APIView):
 
 
 class AddClick(APIView):
+    permission_classes = [AllowAny]
     def post(self, request, pk):
         advertisement = Advertisement.objects.filter(id=pk).first() 
         if not advertisement:
@@ -35,6 +37,7 @@ class AddClick(APIView):
         })
 
 class AddViews(APIView):
+    permission_classes = [AllowAny]
     def put(self, request):
         advertisements = Advertisement.objects.filter(allowed=True,status=1)
         if not advertisements.exists():

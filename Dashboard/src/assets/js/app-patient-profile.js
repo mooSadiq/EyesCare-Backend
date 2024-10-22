@@ -1,7 +1,9 @@
 import {fetchAllData, submitRequest } from './api.js';
 import { showAlert, showConfirmationDialog } from './general-function.js';
 
-
+// Select city
+// --------------------------------------------------------------------
+const citySelect = document.getElementById('modalEditUserAddress');
 /**
  * Displays the patient's profile information on the page.
  */
@@ -37,6 +39,7 @@ function showPatientProfile(data) {
   document.getElementById('user-email').innerText = data.user.email;
   document.getElementById('user-phone').innerText = data.user.phone_number;
   document.getElementById('user-gender').innerText = data.user.gender;
+  document.getElementById('user-address').innerText = data.user.user_address;
   document.getElementById('user-birthdate').innerText = data.user.birth_date;
   document.getElementById('user-status').innerText = data.user.is_active? 'نشط' : 'غير نشط';
   document.getElementById('user-status').className = data.user.is_active ? 'badge bg-label-success' : 'badge bg-label-danger';
@@ -59,6 +62,8 @@ function showPatientProfile(data) {
   document.getElementById('modalEditUserEmail').value = data.user.email;
   document.getElementById('modalEditUserPhone').value = data.user.phone_number;
   document.getElementById('modalEditUsergender').value = data.user.gender;
+  document.getElementById('modalEditUserAddress').value = data.user.user_address;
+  document.getElementById('modalEditUserAddress').textContent = data.user.user_address;
   document.getElementById('bs-datepicker-autoclose-birthdate').value = data.user.birth_date;
   document.getElementById('modalEditUserRole').value = data.user.user_type;
 
@@ -71,14 +76,28 @@ function showPatientProfile(data) {
  */
 async function fetchAndInitializeData() {
   const url_get_patient_profile_data = `/patients/api/get/patients/${getId}/`;
+  const url_get_cities_data = `/api/users/cities/`;
   try {
     const data = await fetchAllData(url_get_patient_profile_data);
+    const cities_data = await fetchAllData(url_get_cities_data);
     showPatientProfile(data);
+    initializeSelectData(cities_data.data, citySelect);
   } catch (error) {
     console.error('خطأ في جلب بيانات المريض:', error);
   }
 }
 
+function initializeSelectData(data, element){
+  element.innerHTML = ''; // Clear existing options to avoid duplication
+  
+  data.forEach(city => {
+    console.log("citi: ",city.name);
+      const option = document.createElement('option');
+      option.value = city.name;
+      option.textContent = city.name;
+      element.appendChild(option);      
+  });
+}
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', fetchAndInitializeData);
 
@@ -92,6 +111,7 @@ document.getElementById('editUserForm').addEventListener('submit', async functio
       formData.append('last_name', document.getElementById('modalEditUserLastName').value);
       formData.append('phone_number', document.getElementById('modalEditUserPhone').value);
       formData.append('gender', document.getElementById('modalEditUsergender').value);
+      formData.append('user_address', document.getElementById('modalEditUserAddress').value);
       formData.append('birth_date', document.getElementById('bs-datepicker-autoclose-birthdate').value);
       formData.append('user_type', document.getElementById('modalEditUserRole').value);
       

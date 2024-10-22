@@ -1,45 +1,128 @@
-import { getToken, isTokenExpired, refreshToken } from './auth.js';
+import { getToken, isTokenExpired, handleLogout, refreshToken } from './auth.js';
 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+// export async function fetchWithAuth(url, options = {}) {
+//   let accessToken = getToken('access_token');
+
+//   if (!accessToken || isTokenExpired(accessToken)) {
+//     try {
+//       accessToken = await refreshToken();
+//       if (!accessToken) {
+//         await handleLogout();
+//         return null; // لا يوجد توكن، إرجاع null
+//       }
+//     } catch (error) {
+      
+//       console.error('Failed to refresh token:', error);
+//       await handleLogout();
+//       return null; 
+//     }
+//   }
+
+//   const headers = {
+//     ...options.headers,
+//     'Authorization': `Bearer ${accessToken}`,
+//   };
+
+//   const response = await fetch(url, {
+//     ...options,
+//     headers,
+//   });
+
+//   if (response.status === 401) {
+//     try {
+//       accessToken = await refreshToken();
+//       if (!accessToken) {
+//         await handleLogout();
+//         return null; // لا يوجد توكن، إرجاع null
+//       }
+//       return fetch(url, {
+//         ...options,
+//         headers: {
+//           ...options.headers,
+//           'Authorization': `Bearer ${accessToken}`,
+//         },
+//       });
+//     } catch (error) {
+//       console.error('Failed to refresh token:', error);
+//       await handleLogout();
+//       return null; 
+//     }
+//   }
+//   return response;
+// }
 
 export async function fetchWithAuth(url, options = {}) {
   let accessToken = getToken('access_token');
 
-  if (isTokenExpired(accessToken)) {
-      try {
-          accessToken = await refreshToken();
-      } catch (error) {
-          console.error('Failed to refresh token:', error);
-          return null; 
+  // الخطوة 1: التحقق من وجود الـ access_token وصلاحيته
+  if (!accessToken || isTokenExpired(accessToken)) {
+    const refreshToken = getToken('refresh_token');
+
+    // الخطوة 2: التحقق من وجود الـ refresh_token
+    if (!refreshToken) {
+      await handleLogout(); // تسجيل الخروج إذا لم يكن هناك refresh_token
+      return null;
+    }
+
+    // الخطوة 3: التحقق من صلاحية الـ refresh_token
+    if (isTokenExpired(refreshToken)) {
+      await handleLogout(); // تسجيل الخروج إذا كان الـ refresh_token منتهي
+      return null;
+    }
+
+    // الخطوة 4: محاولة تجديد الـ access_token باستخدام الـ refresh_token
+    try {
+      accessToken = await refreshToken();
+      if (!accessToken) { // في حال فشل التجديد
+        await handleLogout();
+        return null;
       }
+    } catch (error) {
+      console.error('Failed to refresh token:', error);
+      await handleLogout(); // تسجيل الخروج في حال فشل عملية التجديد
+      return null;
+    }
   }
 
+  // الخطوة 5: إعداد الطلب مع الـ access_token المجدد أو الحالي
   const headers = {
-      ...options.headers,
-      'Authorization': `Bearer ${accessToken}`,
+    ...options.headers,
+    'Authorization': `Bearer ${accessToken}`,
   };
+
   const response = await fetch(url, {
-      ...options,
-      headers,
+    ...options,
+    headers,
   });
 
+  // إذا كانت الاستجابة 401 (Unauthorized)، حاول تجديد التوكن مرة أخرى
   if (response.status === 401) {
-      try {
-          accessToken = await refreshToken();
-          return fetch(url, {
-              ...options,
-              headers: {
-                  ...options.headers,
-                  'Authorization': `Bearer ${accessToken}`,
-              },
-          });
-      } catch (error) {
-          console.error('Failed to refresh token:', error);
-          return null; 
+    try {
+      accessToken = await refreshToken();
+      if (!accessToken) { // إذا فشل التجديد مرة أخرى
+        await handleLogout();
+        return null;
       }
+
+      // إعادة محاولة الطلب مع الـ access_token المجدد
+      return fetch(url, {
+        ...options,
+        headers: {
+          ...options.headers,
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
+    } catch (error) {
+      console.error('Failed to refresh token after 401:', error);
+      await handleLogout(); // تسجيل الخروج في حال فشل التجديد بعد 401
+      return null;
+    }
   }
-  return response;
+
+  return response; // إعادة الاستجابة النهائية
 }
+
 
 
 

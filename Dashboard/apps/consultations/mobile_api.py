@@ -5,7 +5,7 @@ from django.db.models import Q
 from config import settings
 from apps.chat.models import Conversation, Message, File
 from .models import Consultation
-from apps.chat.serializers import ConversationSerializer, MessageSerializer,ContactsSerializer
+from apps.chat.serializers import ConversationSerializer, MessageSerializer
 from rest_framework.permissions import IsAuthenticated
 from apps.users.models import CustomUser
 from apps.doctor.models import Doctor

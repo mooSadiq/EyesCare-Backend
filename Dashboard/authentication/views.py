@@ -1,5 +1,5 @@
 import random
-from django.conf import settings
+from config import settings
 from django.shortcuts import render,redirect
 from django.urls import reverse
 from rest_framework import status
@@ -16,23 +16,19 @@ from apps.users.models import CustomUser
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
-# from google.oauth2 import id_token
-# from google.auth.transport import requests
 from django.views.generic import TemplateView
 from rest_framework.views import APIView
 from django.utils import timezone
 from datetime import timedelta
 from rest_framework.permissions import IsAuthenticated, AllowAny
 import json
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
-# دالة توليد كود عشوائي
 def generate_verification_code():
-    # توليد رقم عشوائي من ست خانات.
     return random.randint(100000, 999999)
 
-# دالة ارسال الكود
 def send_verification_email(email, verification_code):
     subject = 'رمز التحقق الخاص بك'
     message = f'رمز التحقق الخاص بك هو: {verification_code}'
@@ -40,7 +36,7 @@ def send_verification_email(email, verification_code):
     recipient_list = [email]    
     
     num_sent = send_mail(subject, message, email_from, recipient_list)
-    return num_sent > 0  # تحقق من نجاح الإرسال
+    return num_sent > 0  
 
 
 class LoginView(TemplateView):
@@ -51,56 +47,86 @@ class LoginView(TemplateView):
         return super().get(request)
 
     def post(self, request):
-        data = json.loads(request.body)
+        if request.method != 'POST':
+            return JsonResponse({'message': 'يجب استخدام  POST فقط.'}, status=405)
+
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'message': 'بيانات غير صالحة.'}, status=400)
+
         email = data.get("email")
         password = data.get("password")
 
         if not email or not password:
             return JsonResponse({'message': 'يرجى إدخال البريد الإلكتروني وكلمة المرور.'}, status=400)
+
         user = CustomUser.objects.filter(email=email).first()
+
         if user is None or not user.check_password(password):
-            return JsonResponse({'message': 'البريد الإلكتروني أو كلمة المرور غير صحيحة.'}, status=400)
+            return JsonResponse({'message': 'البريد الإلكتروني أو كلمة المرور غير صحيحة.'}, status=401)
+        if user.user_type != 'admin':
+            return JsonResponse({'message': 'عذرا ليس لديك حق الوصول.'}, status=401)
 
-        # تسجيل الدخول
-        login(request, user)
+        try:
+            login(request, user)
+        except Exception as e:
+            return JsonResponse({'message': 'حدث خطأ أثناء تسجيل الدخول.'}, status=500)
 
-        # إنشاء توكنات JWT
-        refresh = RefreshToken.for_user(user)
-        access_token = str(refresh.access_token)
-        refresh_token = str(refresh)
+        try:
+            refresh = RefreshToken.for_user(user)
+            access_token = str(refresh.access_token)
+            refresh_token = str(refresh)
+        except Exception as e:
+            return JsonResponse({'message': 'خطأ أثناء إنشاء التوكنات.'}, status=500)
 
         next_url = request.POST.get("next") or request.GET.get("next") or "/"
-        # إرسال التوكنات والـ URL كاستجابة JSON
+        domain = request.get_host()
+        profile_picture =  f"http://{domain}{user.profile_picture.url}"
+        user_data = {
+            'user_id': user.id,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'email': user.email,
+            'user_type': user.user_type,
+            'profile_picture': profile_picture if profile_picture else None, 
+        }
+
         response_data = {
             'access_token': access_token,
             'refresh_token': refresh_token,
             'next_url': next_url,
+            'user': user_data
         }
-        return JsonResponse(response_data)
-      
+
+        return JsonResponse({
+                        'status': status.HTTP_200_OK,
+                        'message': "تم تسجيل الدخول بنجاح",
+                        'data': response_data,
+                        }, status=status.HTTP_200_OK)
+    
 
 class LogoutView(APIView):
     permission_classes = [AllowAny]
+    authentication_classes = []
     def post(self, request):
-        logout(request)
-        try:            
-            refresh_token = request.data["refresh_token"]   
-            if refresh_token:         
+        logout(request)  
+        refresh_token = request.data.get("refresh", None)
+
+        if refresh_token:
+            try:
                 token = RefreshToken(refresh_token)
                 token.blacklist()
-                return Response({
-                    'status': True,
-                    'code': status.HTTP_200_OK,
-                    'message': 'تم تسجيل الخروج بنجاح'
-                  },status=status.HTTP_200_OK)
-            else:
-              logout(request)
-        except Exception as e:
-            return Response({
-                'status': False,
-                'code': status.HTTP_400_BAD_REQUEST,
-                'message': 'فشل تسجيل الخروج '
-              },status=status.HTTP_400_BAD_REQUEST)     
+            except Exception as e:
+                pass  
+        
+        return Response({
+            'status': True,
+            'code': status.HTTP_200_OK,
+            'message': 'تم تسجيل الخروج بنجاح'
+        }, status=status.HTTP_200_OK)
+        
+    
                 
 class ForgetPasswordView(TemplateView):
     template_name = "auth/forgot_password.html"
@@ -109,7 +135,6 @@ class ForgetPasswordView(TemplateView):
             return redirect("index") 
 
         return super().get(request)
-
     def post(self, request):
         if request.method == "POST":
             email = request.POST.get("email")
@@ -120,8 +145,7 @@ class ForgetPasswordView(TemplateView):
                 return redirect("forgot-password")
 
             verification_code = generate_verification_code()            
-            expiration_time = timezone.now() + timedelta(minutes=15)
-            # إرسال البريد الإلكتروني
+            expiration_time = timezone.now() + timedelta(minutes=3)
             user.verification_code = verification_code
             user.verification_code_expiry = expiration_time
             user.save()
@@ -145,14 +169,13 @@ class VerifytCodeView(TemplateView):
         if request.method == "POST":
             verify_code = request.POST.get("verification_code")
             email = request.session.get('email')
-                    # التحقق من وجود المستخدم مع الرمز والتحقق من انتهاء الصلاحية
             user = CustomUser.objects.filter(
                 email=email,
                 verification_code=verify_code,
                 verification_code_expiry__gt=timezone.now()
             ).first()            
             if not user:
-                messages.error(request, "الكود غير صحيح")
+                messages.error(request, 'الكود خطا او انتهت صلاحيته')
                 return redirect("verification-coding")
             return redirect('reset-password')
               
@@ -173,15 +196,20 @@ class ResetPasswordView(TemplateView):
                   email=email,
                   verification_code_expiry__gt=timezone.now()
               ).first()
-              if not user:
-                  messages.error(request, "انتهت صلاحية الكود")
-                  return redirect("forgot-password")
+              if user:
+                  extended_expiry_time = user.verification_code_expiry + timedelta(minutes=5)
+                  if extended_expiry_time < timezone.now():
+                      messages.error(request, "انتهت صلاحية الكود")
+                      return redirect("forgot-password")
                 
-              user.password = make_password(new_password)
-              user.save()
-              request.session['email'] = None
-              return redirect('login')
-              
+                  user.set_password(new_password)
+                  user.verification_code = None 
+                  user.verification_code_expiry = None
+                  user.save()
+                  request.session['email'] = None
+                  return redirect('login')
+              messages.error(request, " خطا! المستحدم غير موجود ")
+              return redirect("forgot-password")
           return redirect("reset-password")
 
 def forgotPassword(request):
@@ -191,79 +219,7 @@ def send_code_by_email(request):
   return render(request, "email_message.html")
 
 
-class GoogleLoginView(APIView):
-    def post(self, request):
-        id_token_str = request.data.get('id_token')
 
-        if not id_token_str:
-            return Response({'error': 'No id_token provided'}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            # تحقق من الرمز المميز مع جوجل
-            id_info = id_token_str.verify_oauth2_token(
-                id_token_str,
-                request.Request(),
-                'YOUR_CLIENT_ID.apps.googleusercontent.com'
-            )
-
-            # استخراج المعلومات من id_info
-            email = id_info.get('email')
-            first_name = id_info.get('given_name')
-            last_name = id_info.get('family_name')
-            google_id = id_info.get('sub')
-            picture = id_info.get('picture')
-            provider='google'
-
-            if not email:
-                return Response({'error': 'Email not available'}, status=status.HTTP_400_BAD_REQUEST)
-
-            # البحث عن المستخدم أو إنشاؤه
-            user, created = CustomUser.objects.get_or_create(
-                email=email,
-                defaults={
-                    'email': email,
-                    'first_name': first_name,
-                    'last_name': last_name,
-                    'profile_picture': picture,
-                    'password': CustomUser.objects.make_random_password(),
-                    'auth_provider':provider,
-                    'is_verified':True
-                }
-            )
-
-            # تحديث معلومات المستخدم إذا لزم الأمر
-            if not created:
-                user.first_name = first_name
-                user.last_name = last_name
-                user.auth_provider = provider
-                user.profile_picture = picture
-                user.is_verified = True
-                user.save()
-
-            # توليد رموز JWT
-            refresh = RefreshToken.for_user(user)
-            access_token = str(refresh.access_token)
-            refresh_token = str(refresh)
-
-            return Response({
-                'access_token': access_token,
-                'refresh_token': refresh_token,
-                'user': {
-                    'id': user.id,
-                    'email': user.email,
-                    'first_name': user.first_name,
-                    'last_name': user.last_name,
-                    'profile_picture': user.profile_picture,
-                }
-            }, status=status.HTTP_200_OK)
-
-        except ValueError:
-            return Response({'error': 'Invalid id_token'}, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
-          
-          
-          
           
 def googlepage(request):
   return render(request, "auth/trygoogle.html")

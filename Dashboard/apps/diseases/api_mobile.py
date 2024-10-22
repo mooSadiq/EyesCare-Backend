@@ -1,5 +1,5 @@
 from .models import Disease
-from .serializers import DiseasesSerializer, DiseaseArabicSerializer, DiseaseEnglishSerializer
+from .serializers import DiseasesSerializer, DiseaseArabicSerializer, DiseaseEnglishSerializer, DiseaseTrySerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -36,7 +36,7 @@ class DiseaseListView(APIView):
       if accept_language == 'en':
           serializer = DiseaseEnglishSerializer(paginated_diseases,many=True, context={'request': request})
       else:
-        serializer = DiseaseArabicSerializer(paginated_diseases,many=True, context={'request': request})
+        serializer = DiseaseTrySerializer(paginated_diseases,many=True, context={'request': request})
          
       return Response({
             'status': True,

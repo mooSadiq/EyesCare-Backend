@@ -54,6 +54,10 @@
                 <span id="user-gender"></span>
               </li>
               <li class="mb-2 pt-1">
+                <span class="fw-medium me-1"> العنوان:</span>
+                <span id="user-address"></span>
+              </li>
+              <li class="mb-2 pt-1">
                 <span class="fw-medium me-1"> تاريخ الميلاد:</span>
                 <span id="user-birthdate"></span>
               </li>
@@ -236,7 +240,7 @@
               name="profile_picture" />
             </div>
             <div class="col-12 col-md-6">
-              <label class="form-label" for="modalEditUserPhone">Phone Number</label>
+              <label class="form-label" for="modalEditUserPhone">رقم الهاتف</label>
               <div class="input-group">
                 <input
                   type="text"
@@ -275,8 +279,11 @@
                 aria-label="Default select example">
                 <option value="admin">مدير</option>
                 <option value="user">مستخدم عادي</option>
-                <option value="patient">مريض</option>
-                <option value="doctor">طبيب</option>
+              </select>
+            </div>
+            <div class="col-12 col-md-6">
+              <label for="modalEditUserAddress" class="form-label">المدينة</label>
+              <select id="modalEditUserAddress" class="select2 form-select">
               </select>
             </div>
             <div class="col-12">
