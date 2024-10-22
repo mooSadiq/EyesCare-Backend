@@ -245,7 +245,7 @@ function dochart(data) {
         }
       ],
       xaxis: {
-        categories: ['Stye', 'Normal', 'Catract', 'Conjv', 'Ptregum', 'Diabetic Retinopathy', 'Glaucoma','Retinal Vascular Occlusion'],
+        categories: ['Retinal Vascular Occlusion','Diabetic Retinopathy', 'Glaucoma','Normal', 'Catract','Other','Stye','pterygium','Conjunctivitis'],
         axisBorder: {
           show: false
         },

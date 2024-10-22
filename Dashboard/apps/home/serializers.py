@@ -82,13 +82,13 @@ def postActiveDate():
                 counts_dict[aware_month.month] = result['count']
         results = [counts_dict[month] for month in range(1, 13)]
     except:
-        results=[0 for month in range(1, 13)]
+        results=[0,0,0,0,0,0,0,10,12,20,0,0]
     return results
 
 
 def getdig():
     my_model = apps.get_model('diagnosis', 'DiagnosisReport')
-    label_types = ['catract', 'diabetic retinopathy', 'glaucoma', 'Normal','retinal vascular occlusion','Stye','None','Conjunctivitis','Pterygium']
+    label_types = ['Retinal Vein Occlusion-( انسداد الوريد الشبكي)', 'Diabetic Retinopathy-( اعتلال الشبكية السكري)', 'Glaucoma-(الجلوكوما)','normal-(طبيعي)','Cataracts-(المياة البيضاء)','unkown','Stye-(دمل العين)','Pterygium-(الظفرة)','Conjunctivitis-(  التهاب الملتحمة)']
     label_type_counts = my_model.objects.values('diagnosis_result').annotate(count=Count('diagnosis_result'))
     counts_dict = {label_type: 0 for label_type in label_types}
     for result in label_type_counts:

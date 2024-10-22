@@ -12,7 +12,7 @@ class PostListView(APIView):
     def get(self, request, *args, **kwargs):
         accept_language = request.headers.get('Accept-Language', None)
         print("Accept-Language:", accept_language)
-        posts = Post.objects.all()
+        posts = Post.objects.all().order_by('-created_at')
         serializer = PostListSerializer(posts, many=True, context={'request': request})
         return Response({
             'status': True,

@@ -31,9 +31,9 @@ ALLOWED_HOSTS = ['localhost',
                  '192.168.114.104',
                  '192.168.8.38',
                  '192.168.146.104',
-                 '192.168.8.41',
+                 '192.168.1.37',
                  '127.0.0.1',
-                 '192.168.0.229'
+                 '192.168.8.47'
                  ]
 
 # Application definition
@@ -204,7 +204,8 @@ EMAIL_HOST_PASSWORD = 'nykcqzciwgptybhf'  # كلمة مرور بريدك الإ�
 # EMAIL_HOST_USER = 'eyescareapp@gmail.com'  # عنوان بريدك الإلكتروني
 # EMAIL_HOST_PASSWORD = 'eyescareapp846#'  # كلمة مرور بريدك الإلكتروني
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # عنوان البريد الإلكتروني الافتراضي للمرسل
-
+#  hostpassword:-- Jdv8&:BTW4(=siR
+# databasepassword : $finaly6project4
 # اعدادات رسائل SMS
 
 # TWILIO_ACCOUNT_SID = 'AC1636dfaebe8c3ac7481c6e9b95958771'

@@ -22,17 +22,30 @@ class PatientSerializer(serializers.ModelSerializer):
 class DiseaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Disease
-        fields = "__all__"  #['id', 'name', 'description']  # أضف أو احذف الحقول حسب الحاجة
+        fields = "__all__"  #['id', 'name_en']  # أضف أو احذف الحقول حسب الحاجة
 
-class DiagnosisSerializer(serializers.ModelSerializer):
-    patient = PatientSerializer()
+class DiagnosisSerializerDash(serializers.ModelSerializer):
+    patient = UserSerializer()
     disease = DiseaseSerializer()
-
     class Meta:
         model = DiagnosisReport
         fields = "__all__"  #['id', 'patient', 'disease', 'diagnosis_date']  # أضف أو احذف الحقول حسب الحاجة
         
-        
+
+
+class DiagnosisSerializer(serializers.ModelSerializer):
+    diagnosis_status = serializers.CharField(source='diagnosis_result', read_only=True)
+    image_path = serializers.ImageField(source='image')
+    confidence = serializers.DecimalField(read_only=True, max_digits=4, decimal_places=2)
+    diagnosis_date = serializers.DateField()
+    compeleted = serializers.BooleanField()
+
+    class Meta:
+        model = DiagnosisReport
+        # Use the custom names as field keys
+        fields = ['diagnosis_status', 'diagnosis_date', 'image_path', 'confidence', 'compeleted']
+
+
 
 
 class ImageUploadSerializer(serializers.Serializer):

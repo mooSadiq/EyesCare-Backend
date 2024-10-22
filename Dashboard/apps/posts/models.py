@@ -6,7 +6,7 @@ class Post(models.Model):
     text = models.TextField(null=True)  # نص المنشور
     likes_count = models.IntegerField(default=0)  # عدد الإعجابات
     views_count = models.PositiveIntegerField(default=0)  # عدد مرات مشاهدة المنشور
-    created_at = models.DateTimeField(auto_now_add=True)  # تاريخ إنشاء المنشور
+    created_at =  models.DateTimeField(auto_now_add=True)  # تاريخ إنشاء المنشور
 
     def __str__(self):
         return f"{self.user},{self.created_at}"

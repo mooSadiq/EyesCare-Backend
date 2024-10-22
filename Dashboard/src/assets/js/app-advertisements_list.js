@@ -137,7 +137,7 @@ function updateAdvertisementsData(data) {
             // تحديد الصورة اذا تم العثور عليها في قاعدة البيانات والا عرض صورة اعلان عامة
             let adImg = advertisement.ad_image;
             if (adImg == null) {
-                adImg = "/media/ads/advertisement.png";
+                adImg = "/media/ads/00005.png";
             }
 
             // إضافة عنصر "محظور" إذا كان الإعلان غير مسموح له بالظهور
@@ -235,7 +235,7 @@ document.getElementById('addNewAdvertidementForm').addEventListener('submit', as
     const advertisement_text = document.getElementById('advertisement-text').value;
     const start_date = document.getElementById('start-date').value;
     const end_date = document.getElementById('end-date').value;
-
+    console.log(`${imageInput}`)
     const formData = new FormData();
     formData.append('advertiser', advertiser);
     formData.append('ad_link', ad_link);
@@ -255,7 +255,6 @@ document.getElementById('addNewAdvertidementForm').addEventListener('submit', as
 
     try {
         const result = await submitRequest(url, method, formData, {});
-
         if (result.success) {
             const offcanvasElement = document.getElementById('offcanvasAddAdvertisement');
             const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);

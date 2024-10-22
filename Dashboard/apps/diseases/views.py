@@ -4,6 +4,8 @@ from .models import Disease
 from .serializers import DiseasesSerializer, DiseaseTrySerializer
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 import os
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
@@ -23,89 +25,107 @@ def try_diseases(request):
     return render(request, 'try.html')
 
 #Return All Diseases From DB
-@api_view(['GET'])
-def get_all_diseases(request):
-    diseases=Disease.objects.all()
-    serializer=DiseasesSerializer(diseases,many=True)
-    if serializer.data:
-        return Response({"Diseases":serializer.data},status=status.HTTP_200_OK)
-    else :
-        return Response({"Info":"There is not any deases"},status=status.HTTP_404_NOT_FOUND)
+class DiseasesList(APIView):
+    def get(self,request):
+        permission_classes=[IsAuthenticated]
+        diseases=Disease.objects.all()
+        serializer=DiseasesSerializer(diseases,many=True)
+        if serializer.data:
+            return Response({"Diseases":serializer.data},status=status.HTTP_200_OK)
+        else :
+            return Response({"Info":"There is not any deases"},status=status.HTTP_404_NOT_FOUND)
 
 #Return one Disease From DB by id
-@api_view(['GET'])
-def get_disease_by_id(request,pk):
-    disease=get_object_or_404(Disease,id=pk)
-    serializer=DiseasesSerializer(disease,many=False)
-    if serializer.data:
-        return Response({"Diseases":serializer.data},status=status.HTTP_200_OK)
-    else :
-        return Response({"Info":"There is not any deases"},status=status.HTTP_404_NOT_FOUND)
+class DiseasList(APIView):
+    def get(self,request,pk):
+        permission_classes=[IsAuthenticated]
+        disease=get_object_or_404(Disease,id=pk)
+        serializer=DiseasesSerializer(disease,many=False)
+        if serializer.data:
+            return Response({"Diseases":serializer.data},status=status.HTTP_200_OK)
+        else :
+            return Response({"Info":"There is not any deases"},status=status.HTTP_404_NOT_FOUND)
 
-#جلب مرض عن طريق الأسم
-@api_view(['GET'])
-def get_all_diseases_byname(request,nameresartch):
-    nameresartch = nameresartch.strip()
-    disease=Disease.objects.filter(name=nameresartch)
-    serializer=DiseasesSerializer(disease,many=False)
-    if serializer.data:
-        return Response({"Diseases":serializer.data},status=status.HTTP_200_OK)
-    else :
-        return Response({"Info":"There is not any deases"},status=status.HTTP_404_NOT_FOUND)
 
-@api_view(['POST'])
-def set_diseas(request):
-    disease=Disease.objects.filter(name=request.data['name'])
-    if disease.exists():
-        return Response({"Info":"This Diseas is already exists"})
-    else:
-        data=request.data
-        print(data)
-        Disease.objects.create(
-            name_ar=data["name"],
-            description_ar=data["description"],
-            image=data["image"],
-            causes_ar=data["causes"],
-            symptoms_ar=data["symptoms"],
-            diagnosis_methods_ar=data["diagnosis_methods"],
-            treatment_options_ar=data["treatment_options"],
-            prevention_recommendations_ar=data["prevention_recommendations"]
-        )
-        return Response({"message":"تم إضافة المرض بنجاح"},status=status.HTTP_201_CREATED)
-
-@api_view(['PUT'])
-def update_disease(request, pk):
-    disease = get_object_or_404(Disease, id=pk)
-    serializer = DiseasesSerializer(disease, many=False)
-    if not serializer.data:
-        return Response({"message": "لايوجد اي مرض"}, status=status.HTTP_404_NOT_FOUND)
-    disease.name = request.data.get("name", disease.name)
-    disease.description = request.data.get("description", disease.description)
-    disease.causes = request.data.get("causes", disease.causes)
-    disease.symptoms = request.data.get("symptoms", disease.symptoms)
-    disease.diagnosis_methods = request.data.get("diagnosis_methods", disease.diagnosis_methods)
-    disease.treatment_options = request.data.get("treatment_options", disease.treatment_options)
-    disease.prevention_recommendations = request.data.get("prevention_recommendations", disease.prevention_recommendations)
-    if "image" in request.FILES:
-        old_image_path = disease.image.path if disease.image else None
-        disease.image = request.FILES["image"]
-        if old_image_path and os.path.isfile(old_image_path):
-            os.remove(old_image_path)
-    disease.save()
-    return Response({"message": "تم تحديث المرض بنجاح"}, status=status.HTTP_200_OK)
-
-@api_view(["DELETE"])
-def delete_diseases(request,pk):
-    disease=get_object_or_404(Disease,id=pk)
-    serializer=DiseasesSerializer(disease,many=False)
-    if not serializer.data:
-        return Response({"message":"لم يتم إيجاد المرض"},status=status.HTTP_404_NOT_FOUND)
-    else:
-        result=disease.delete()
-        if result:
-            return Response({"message":"تم الحذف بنجاح!"},status=status.HTTP_200_OK)
+class DiseasesSet(APIView):
+    def post(self,request):
+        disease=Disease.objects.filter(name_en=request.data['name_en'])
+        if disease.exists():
+            return Response({"Info":"This Diseas is already exists"})
         else:
-            return Response({"message":" لم يتم الحذف "},status=status.HTTP_200_OK)
+            data=request.data
+            Disease.objects.create(
+                name_ar=data["name_ar"],
+                name_en=data["name_en"],
+                description_ar=data["description_ar"],
+                description_en=data["description_en"],
+                image=data["image"],
+                causes_paragraph_ar=data["causes_paragraph_ar"],
+                causes_points_ar=data["causes_points_ar"],
+                causes_paragraph_en=data["causes_paragraph_en"],
+                causes_points_en=data["causes_points_en"],
+                symptoms_paragraph_ar=data["symptoms_paragraph_ar"],
+                symptoms_points_ar=data["symptoms_points_ar"],
+                symptoms_paragraph_en=data["symptoms_paragraph_en"],
+                symptoms_points_en=data["symptoms_points_en"],
+                diagnosis_methods_paragraph_ar=data["diagnosis_methods_paragraph_ar"],
+                diagnosis_methods_points_ar=data["diagnosis_methods_points_ar"],
+                diagnosis_methods_paragraph_en=data["diagnosis_methods_paragraph_en"],
+                diagnosis_methods_points_en=data["diagnosis_methods_points_en"],
+                treatment_options_paragraph_ar=data["treatment_options_paragraph_ar"],
+                treatment_options_points_ar=data["treatment_options_points_ar"],
+                treatment_options_paragraph_en=data["treatment_options_paragraph_en"],
+                treatment_options_points_en=data["treatment_options_points_en"],
+                prevention_recommendations_paragraph_ar=data["prevention_recommendations_paragraph_ar"],
+                prevention_recommendations_points_ar=data["prevention_recommendations_points_ar"],
+                prevention_recommendations_paragraph_en=data["prevention_recommendations_paragraph_en"],
+                prevention_recommendations_points_en=data["prevention_recommendations_points_en"],
+                status=data["status"]
+            )
+            return Response({"message":"تم إضافة المرض بنجاح"},status=status.HTTP_201_CREATED)
+
+class DiseaseUpdate(APIView):
+    def put(self,request, pk):
+        disease = get_object_or_404(Disease, id=pk)
+        serializer = DiseasesSerializer(disease, many=False)
+        if not serializer.data:
+            return Response({"message": "لايوجد اي مرض"}, status=status.HTTP_404_NOT_FOUND)
+        disease.name_ar = request.data.get("name_ar", disease.name_ar)
+        disease.name_en = request.data.get("name_en", disease.name_en)
+        disease.description_ar = request.data.get("description_ar", disease.description_ar)
+        disease.description_en = request.data.get("description_en", disease.description_en)
+        disease.causes_ar = request.data.get("causes_ar", disease.causes_ar)
+        disease.causes_en = request.data.get("causes_en", disease.causes_en)
+        disease.symptoms_ar = request.data.get("symptoms_ar", disease.symptoms_ar)
+        disease.symptoms_en = request.data.get("symptoms_en", disease.symptoms_en)
+        disease.diagnosis_methods_ar = request.data.get("diagnosis_methods_ar", disease.diagnosis_methods_ar)
+        disease.diagnosis_methods_en = request.data.get("diagnosis_methods_en", disease.diagnosis_methods_en)
+        disease.treatment_options_ar = request.data.get("treatment_options_ar", disease.treatment_options_ar)
+        disease.treatment_options_en = request.data.get("treatment_options_en", disease.treatment_options_en)
+        disease.prevention_recommendations_ar = request.data.get("prevention_recommendations_ar", disease.prevention_recommendations_ar)
+        disease.prevention_recommendations_en = request.data.get("prevention_recommendations_en", disease.prevention_recommendations_en)
+        disease.status = request.data.get("status", disease.status)
+        if "image" in request.FILES:
+            old_image_path = disease.image.path if disease.image else None
+            disease.image = request.FILES["image"]
+            if old_image_path and os.path.isfile(old_image_path):
+                os.remove(old_image_path)
+        disease.save()
+        return Response({"message": "تم تحديث المرض بنجاح"}, status=status.HTTP_200_OK)
+
+class DiseasesDelete(APIView):
+    permission_classes=[IsAuthenticated]
+    def delete(self,request,pk):
+        disease=get_object_or_404(Disease,id=pk)
+        serializer=DiseasesSerializer(disease,many=False)
+        if not serializer.data:
+            return Response({"message":"لم يتم إيجاد المرض"},status=status.HTTP_404_NOT_FOUND)
+        else:
+            result=disease.delete()
+            if result:
+                return Response({"message":"تم الحذف بنجاح!"},status=status.HTTP_200_OK)
+            else:
+                return Response({"message":" لم يتم الحذف "},status=status.HTTP_200_OK)
 
 class DiseaseCreateView(APIView):
     permission_classes = [AllowAny]
