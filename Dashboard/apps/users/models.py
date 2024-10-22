@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
-
+from datetime import date
 # Create your models here.
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -24,8 +24,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
-    gender = models.CharField(max_length=10, choices=[('ذكر', 'ذكر'), ('أنثى', 'أنثى')], blank=True)
-    birth_date = models.DateField(null=True, blank=True)
+    gender = models.CharField(max_length=10, choices=[('ذكر', 'ذكر'), ('أنثى', 'أنثى')], blank=True, default='ذكر')
+    birth_date = models.DateField(null=True, blank=True, default=date(2007, 1, 1))
     profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
     phone_number = models.IntegerField(null=True, blank=True)
     user_type = models.CharField(max_length=20, choices=[('patient', 'مريض'), ('doctor', 'طبيب'), ('user', 'مستخدم عادي'), ('admin', 'ادمن'), ('support', 'فريق الدعم')])

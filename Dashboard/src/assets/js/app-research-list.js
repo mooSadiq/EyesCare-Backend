@@ -391,8 +391,9 @@ async function fetchAndInitializeTable() {
     const data = await fetchAllData(url_get_researrch_data);
     const statistics = await fetchAllData(url_get_Statistics_data);
     initializeDataTable(data);
+    console.log(statistics.data);
     showResearchStatistics(statistics.data);
-    console.log(statistics);
+    console.log(statistics.data);
   } catch (error) {
     console.error('خطأ في جلب البيانات :', error);
   }

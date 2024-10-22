@@ -73,6 +73,7 @@ class RegisterUserView(APIView):
                   password=make_password(password),
                   profile_picture = 'profile_pics/default_profile_picture.png',
                   user_type='user',
+                  gender='ذكر',
                   verification_code=verification_code,
                   verification_code_expiry=expiration_time
               )

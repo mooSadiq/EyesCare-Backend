@@ -58,6 +58,7 @@ class DiseaseEnglishSerializer(serializers.ModelSerializer):
       
 class DiseaseTrySerializer(serializers.ModelSerializer):
     name = serializers.CharField(source='name_en')
+    description = serializers.CharField(source='description_ar')
     causes = serializers.SerializerMethodField()
     symptoms = serializers.SerializerMethodField()
     diagnosis_methods = serializers.SerializerMethodField()
@@ -70,7 +71,7 @@ class DiseaseTrySerializer(serializers.ModelSerializer):
             'id', 
             'name', 
             'name_en', 
-            'description_ar', 
+            'description', 
             'status', 
             'image',
             'created_at','causes', 
