@@ -86,6 +86,7 @@ class DiseaseEnglishSerializer(serializers.ModelSerializer):
 
 
 
+
 class DiseaseArabicSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source='name_ar')
     causes = serializers.SerializerMethodField()

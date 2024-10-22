@@ -120,3 +120,21 @@ def classify_internalEye_image(image):
 
 
 
+
+
+def run_model(image):
+    response = CLIENT.infer(image, "ccatract/4")
+    predictions = response.get('predictions', [])
+
+    if predictions:
+        for prediction in predictions:
+            image, label, conf = draw_box(image, prediction)
+            if conf >= 65:
+                return image, label, conf
+            else:
+                return image, "No Diseases detected.", None
+    else:
+        return image, "No Diseases detected.", None
+
+
+

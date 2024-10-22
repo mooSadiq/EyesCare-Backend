@@ -5,53 +5,28 @@ from django.utils.timesince import timesince
 from django.db.models import Q
 from urllib.parse import urljoin
 
-class CustomUserSerializer(serializers.ModelSerializer):
-    profile_picture = serializers.SerializerMethodField()
-    class Meta:
-        model = CustomUser
-        fields = ['id', 'first_name', 'last_name', 'email', 'profile_picture']
-        
-    def get_profile_picture(self, obj):
-        request = self.context.get('request')        
-        if request is not None:
-            domain = request.get_host()
-            if obj.profile_picture:
-                return f"http://{domain}{obj.profile_picture.url}"
-        return None        
+      
 
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = File
         fields = '__all__'
     
-class MessageSendSerializer(serializers.ModelSerializer):
-        class Meta:
-              model = Message
-              fields = '__all__'
-        
+      
+# الرسائل 
 class MessageSerializer(serializers.ModelSerializer):
     file = serializers.FileField(source='message_file.file', read_only=True)
-    time_since = serializers.SerializerMethodField()  # حقل الوقت بصيغة منذ
-    sender = CustomUserSerializer()
+    time_since = serializers.SerializerMethodField() 
     class Meta:
         model = Message
         fields = ['id', 'conversation', 'sender', 'content', 'is_read', 'is_received', 'timestamp', 'time_since', 'file']
 
     def get_time_since(self, obj):
         return timesince(obj.timestamp) 
-      
-class MessageDashSerializer(serializers.ModelSerializer):
-    file = serializers.FileField(source='message_file.file', read_only=True)
-    time_since = serializers.SerializerMethodField()  
-
-    class Meta:
-        model = Message
-        fields = ['id', 'conversation', 'sender', 'content', 'is_read', 'is_received', 'timestamp', 'time_since', 'file']
-
-    def get_time_since(self, obj):
-        return timesince(obj.timestamp) 
-      
-      
+        
+        
+        
+# المحادثات للتطبيق
 class ConversationSerializer(serializers.ModelSerializer):
     other_user = serializers.SerializerMethodField() 
     last_message = serializers.SerializerMethodField() 
@@ -90,8 +65,27 @@ class ConversationSerializer(serializers.ModelSerializer):
 
 
 
+
+
+# --------------------الداش بورد-----------------------------------------------------------------
+class CustomUserSerializer(serializers.ModelSerializer):
+    profile_picture = serializers.SerializerMethodField()
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'first_name', 'last_name', 'email', 'profile_picture']
+        
+    def get_profile_picture(self, obj):
+        request = self.context.get('request')        
+        if request is not None:
+            domain = request.get_host()
+            if obj.profile_picture:
+                return f"http://{domain}{obj.profile_picture.url}"
+        return None  
+      
+      
+
 class ConversationDetailSerializer(serializers.ModelSerializer):
-    messages = MessageDashSerializer(many=True)  
+    messages = MessageSerializer(many=True)  
     other_user = serializers.SerializerMethodField()
 
     class Meta:
@@ -103,15 +97,8 @@ class ConversationDetailSerializer(serializers.ModelSerializer):
         other_user = obj.user2 if obj.user1 == request_user else obj.user1
         return CustomUserSerializer(other_user, context={'request': self.context['request']}).data 
 
-
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomUser
-        fields = ['id', 'email', 'first_name', 'last_name', 'profile_picture']
         
-
-class ContactsTrySerializer(serializers.ModelSerializer):
+class ContactsAndConversationsSerializer(serializers.ModelSerializer):
     last_message = serializers.SerializerMethodField()
     class Meta:
         model = CustomUser
@@ -138,3 +125,6 @@ class ContactsTrySerializer(serializers.ModelSerializer):
         return None   
     def get_time_since(self, obj):
         return timesince(obj.timestamp)
+
+
+

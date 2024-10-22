@@ -12,6 +12,7 @@ from rest_framework.views import APIView
 from .serializers import DiagnosisSerializer
 
 
+
 @method_decorator(csrf_exempt, name="dispatch")
 class ImageInferenceView(APIView):
     disease_label = {
@@ -146,6 +147,7 @@ class ImageInferenceView(APIView):
                     "message": "فشل",
                 }
             )
+
 
 
 class DiagnosisReportList(APIView):

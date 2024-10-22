@@ -11,6 +11,5 @@ urlpatterns = [
     path('api/report/details/<int:pk>/', views.ReportDiagnosisView.as_view(), name="get_report"), # جلب بيانات التقرير
     path('api/delete/<int:pk>/', views.DisagnosisListView.as_view(), name="delete_Diagnosis"), # جلب بيانات التقرير
 
-
 ]
 

@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from config import settings
 from .models import Conversation, Message, File
-from .serializers import MessageSendSerializer, MessageSerializer,ContactsTrySerializer, UserSerializer, ConversationDetailSerializer
+from .serializers import  MessageSerializer,ContactsAndConversationsSerializer, ConversationDetailSerializer
 from rest_framework.permissions import IsAuthenticated
 from apps.users.models import CustomUser
 from django.db import transaction
@@ -23,13 +23,7 @@ pusher_client = pusher.Pusher(
 def chatview(request):
   return render(request, 'chat.html')
 
-class UsersListView(APIView):
-    permission_classes = [IsAuthenticated]
-    def get(self, request):
-        users = CustomUser.objects.all()
-        users_serializer = UserSerializer(users, many=True)  
-        return Response({'users':users_serializer.data,}, status=status.HTTP_200_OK)
-
+# المحادثات والمستخدمين للداش بورد
 class ContactsListView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -37,10 +31,13 @@ class ContactsListView(APIView):
         users = CustomUser.objects.all()        
         users_with_conversations = []
         for user in users:
-            user_data = ContactsTrySerializer(user, context={'request': request}).data
+            user_data = ContactsAndConversationsSerializer(user, context={'request': request}).data
             users_with_conversations.append(user_data)
         return Response({'users': users_with_conversations}, status=status.HTTP_200_OK)
       
+      
+
+# تفاصبل المحادثة
 class ConversationDetailAPIView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, pk):
@@ -53,6 +50,7 @@ class ConversationDetailAPIView(APIView):
         serializer = ConversationDetailSerializer(conversation, context={'request': request})
         return Response(serializer.data)
       
+      # ارسال الرسائل للداش بورد
 class MessageList(APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request):
@@ -85,7 +83,7 @@ class MessageList(APIView):
             
             if content:
               message_data['content'] = content
-            serializer = MessageSendSerializer(data=message_data, context={'request': request})
+            serializer = MessageSerializer(data=message_data, context={'request': request})
             print('seril')
             if serializer.is_valid():
                 serializer.save(sender=request.user)
