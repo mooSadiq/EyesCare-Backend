@@ -46,8 +46,8 @@ urlpatterns = [
     # posts
     path('posts/', include("apps.posts.urls")),
     path('api/posts/', include("apps.posts.api_urls")),
-    # doctors
-    path('doc/', include("doctors.urls")),
+    
+    
     # diagnosis history
     path('diagnosis/', include("apps.diagnosis.urls")),
     path('api/diagnosis/', include("apps.diagnosis.api_urls")),
