@@ -229,7 +229,7 @@ document.getElementById('addNewAdvertidementForm').addEventListener('submit', as
 
     // الحصول على القيم من الحقول المدخلة
     const phone_number = document.getElementById('add-advertiser-phoneNumber').value;
-    const imageInput = document.getElementById('modalEditUserFile');
+    const imageInput = document.getElementById('formValidationFile');
     const advertiser = document.getElementById('add-advertiser-fullname').value;
     const ad_link = document.getElementById('add-link').value;
     const advertisement_text = document.getElementById('advertisement-text').value;
