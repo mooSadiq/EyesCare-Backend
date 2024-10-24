@@ -5,6 +5,8 @@ from rest_framework.views import APIView
 from .models import Post
 from .serializers import PostSerializer, PostListSerializer
 from .filters import PostFilter
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
 
 # Create your views here.
 class CustomPagination(PageNumberPagination):
@@ -26,11 +28,12 @@ class CustomPagination(PageNumberPagination):
 
 
 class PostListView(APIView):
+    permission_classes = [IsAuthenticated]
     pagination_class = CustomPagination
     filterset_class = PostFilter
 
     def get(self, request):
-        posts = Post.objects.all()
+        posts = Post.objects.all().order_by('-created_at')
 
         filterset = self.filterset_class(request.query_params, queryset=posts)
         if not filterset.is_valid():
@@ -48,7 +51,28 @@ class PostListView(APIView):
             'posts': serializer.data,
             'total_posts_count': total_posts_count  
         })
-        
+  
+  
+  
+class PostDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, pk, *args, **kwargs):
+        try:
+            post = Post.objects.get(pk=pk)
+        except Post.DoesNotExist:
+            return Response({
+                'status': False,
+                'code': status.HTTP_404_NOT_FOUND,
+                'message': 'المنشور غير موجود',
+            })
+
+        serializer = PostListSerializer(post, context={'request': request})
+        return Response({
+            'status': True,
+            'code': status.HTTP_200_OK,
+            'message': 'تم جلب المنشور بنجاح',
+            'data': serializer.data,
+        })        
 def index(request):
   return render(request, 'posts_list.html')
 

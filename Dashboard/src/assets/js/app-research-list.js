@@ -30,7 +30,7 @@ function initializeDataTable(data){
           className: 'control',
           searchable: false,
           orderable: false,
-          responsivePriority: 1,
+          responsivePriority: 2,
           targets: 0,
           render: function (data, type, full, meta) {
             return '';
@@ -44,8 +44,6 @@ function initializeDataTable(data){
                 var title = full['title'];
                 var journal = full['journal'];
                 var field_name = full['field_name'];
-                var userId = full['id'];
-                var userIdProfileUrl = `/users/profile/${userId}/`; 
                 return `
                     <div class="d-flex flex-column">
                       <span class="my-1 text-body text-wrap">${title}</span>
@@ -283,7 +281,7 @@ function initializeDataTable(data){
           display: $.fn.dataTable.Responsive.display.modal({
             header: function (row) {
               var data = row.data();
-                  return 'تفاصيل ل  ' + data['first_name'];
+                  return 'تفاصيل الدراسة  ';
             }
           }),
           type: 'column',
@@ -509,11 +507,11 @@ document.getElementById('addNewResearchForm').addEventListener('submit', async f
  */
 
 $(document).on('click', '.delete-record', async function () {
-    const userId = $(this).data('id');
+    const researchId = $(this).data('id');
     const result = await showConfirmationDialog();
     if (result.isConfirmed) {
       const method = 'DELETE';
-      const url = `/users/api/delete/${userId}/`;
+      const url = `/researches/list/${researchId}/`;
       const deleteResult = await submitRequest(url, method, null);
 
       if (deleteResult.success) {

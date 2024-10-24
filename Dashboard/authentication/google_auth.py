@@ -44,6 +44,7 @@ class GoogleLoginView(APIView):
               'email': user.email,
               'first_name': user.first_name,
               'user_type': user.user_type,
+              'profile_picture': profile_picture,
               'refresh': str(refresh),
               'access_token': str(refresh.access_token),
           }

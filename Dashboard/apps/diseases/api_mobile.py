@@ -48,14 +48,13 @@ class DiseaseListView(APIView):
 
 class DiseaseListSearchView(APIView):
   permission_classes = [AllowAny]
-
   def get(self, request, *args, **kwargs):
       accept_language = request.headers.get('Accept-Language', 'ar')
       Diseases = Disease.objects.all().order_by('id')
       if accept_language == 'en':
           serializer = DiseaseEnglishSerializer(Diseases, many=True, context={'request': request})
       else:
-        serializer = DiseaseArabicSerializer(Diseases, many=True, context={'request': request})
+        serializer = DiseaseTrySerializer(Diseases, many=True, context={'request': request})
          
       return Response({
             'status': True,

@@ -123,9 +123,9 @@ class JournalOneListAPIView(APIView):
             journal.delete()
             return Response({
                 'status': True,
-                'code': status.HTTP_204_NO_CONTENT,
+                'code': status.HTTP_200_OK,
                 'message': 'تم حذف المجلة بنجاح',
-            }, status=status.HTTP_204_NO_CONTENT)
+            }, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({
                 'status': False,
@@ -243,9 +243,9 @@ class FieldOneListAPIView(APIView):
             field.delete()
             return Response({
                 'status': True,
-                'code': status.HTTP_204_NO_CONTENT,
+                'code': status.HTTP_200_OK,
                 'message': 'تم حذف المجال بنجاح',
-              }, status=status.HTTP_204_NO_CONTENT)
+              }, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({
                 'status': False,
@@ -298,9 +298,9 @@ class ResearchListAPIView(APIView):
 
                     return Response({
                         'status': True,
-                        'code': status.HTTP_201_CREATED,
+                        'code': status.HTTP_200_OK,
                         'message': 'تم إضافة الدراسة بنجاح',
-                    }, status=status.HTTP_201_CREATED)
+                    }, status=status.HTTP_200_OK)
                 else:
                     return Response({
                         'status': False,
@@ -407,7 +407,7 @@ class ResearchOneListAPIView(APIView):
                   'status': True,
                   'code': status.HTTP_200_OK,
                   'message': 'تم تعديل الدراسة بنجاح',
-              }, status=status.HTTP_201_CREATED)
+              }, status=status.HTTP_200_OK)
           else:
               return Response({
                   'status': False,
@@ -437,7 +437,7 @@ class ResearchOneListAPIView(APIView):
                 'status': True,
                 'code': status.HTTP_200_OK,
                 'message': 'تم حذف الدراسة بنجاح',
-            }) 
+            }, status=status.HTTP_200_OK) 
         except Exception as e:
             return Response({
                 'status': False,

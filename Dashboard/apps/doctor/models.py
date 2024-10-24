@@ -7,7 +7,7 @@ class Doctor(models.Model):
     hospital = models.CharField(max_length=255) # اسم المستشفى او العيادة
     specialization = models.CharField(max_length=255) # التخصص
     about = models.TextField(null=True)
-    start_time_work = models.TimeField(null=True) 
+    start_time_work = models.TimeField(null=True)     
     end_time_work = models.TimeField(null=True)
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"
