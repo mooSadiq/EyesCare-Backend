@@ -9,6 +9,7 @@ const confirmActiveAlert = document.querySelector('#confirm-active-alert');
 
 // دالة لجلب بيانات المريض من api
 async function fetchdoctorData(getId) {
+
     const url_get_doctor_profile_data = `/doctors/api/getDoctors/${getId}/`;
     try {
       const data = await fetchAllData(url_get_doctor_profile_data);
@@ -20,11 +21,13 @@ async function fetchdoctorData(getId) {
 
 let userId;
 let doctor_Id;
+
 // دالة لتحديث واجهة بي ببيانات المريض التي تم ارجاعها في الدالة السابقة 
 function updatedoctorProfile(data) {
+  
   userId = data.user.id;
+  
   doctor_Id = data.id;
- 
   const avatarElement = document.getElementById('doctor-avatar');
   // التحقق من وجود صورة للمستخدم أو تعيين الصورة الافتراضيةة
   if (data.user.profile_picture) {
@@ -168,6 +171,7 @@ async function updateUserData(event) {
 
 // الدالة الرئيسية التي يتم استعداؤها عند فتح الصفحة
 $(function () {
+   
   fetchdoctorData(getId);
   document.getElementById('editUserForm').addEventListener('submit', updateUserData);
 
@@ -191,54 +195,18 @@ $(function () {
 
 
 // Alert With Functional Confirm Button لتنشيط أو إلغاء تنشيط المستخدم
-confirmActiveAlert.onclick = function () {
-  Swal.fire({
-      title: 'هل أنت متأكد؟',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'نعم!',
-      cancelButtonText: 'إلغاء',
-      customClass: {
-          confirmButton: 'btn btn-primary me-3',
-          cancelButton: 'btn btn-label-secondary'
-      },
-      buttonsStyling: false
-  }).then(function (result) {
-      if (result.value) {
-          fetch(`/users/api/user/active/${userId}/`, {
-              method: 'POST',
-              headers: {
-                  'X-CSRFToken': csrfToken
-              }
-          })
-          .then(response => {
-              if (!response.ok) {
-                  throw new Error(`HTTP error! status: ${response.status}`);
-              }
-              return response.json();
-          })
-          .then(data => {
-            fetchdoctorData(getId);
-              Swal.fire({
-                  icon: 'success',
-                  title: data.is_active ? 'تم التنشيط!' : 'تم إلغاء التنشيط!',
-                  text: data.message,
-                  customClass: {
-                      confirmButton: 'btn btn-success'
-                  }
-              });
-          })
-          .catch(error => {
-              console.error('Error:', error);
-              Swal.fire({
-                  icon: 'error',
-                  title: 'حدث خطأ!',
-                  text: 'لم يتم تنفيذ العملية بنجاح. حاول مرة أخرى.',
-                  customClass: {
-                      confirmButton: 'btn btn-danger'
-                  }
-              });
-          });
-      }
-  });
-};
+$(document).on('click', '#confirm-active-alert', async function () {
+  const result = await showConfirmationDialog();
+  if (result.isConfirmed) {
+    const method = 'POST';
+    const url = `/users/api/activation/${userId}/`;
+    const activeResult = await submitRequest(url, method);
+    if(activeResult.success) {
+      fetchdoctorData(getId);
+      showAlert('success',  activeResult.data.is_active ? 'تم التنشيط!' : 'تم إلغاء التنشيط!', activeResult.message, 'btn btn-success');
+    }
+    else {
+      showAlert('error', 'حدث خطأ!', activeResult.message, 'btn btn-danger');
+    }
+  }
+});

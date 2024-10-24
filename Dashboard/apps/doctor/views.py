@@ -16,7 +16,8 @@ def doctors_list(request):
     return render(request, 'doctors_list.html')
 
 def doctorProfile(request, id):
-  return render(request, 'doctor_profile.html',  {"doctor_id": id})
+  
+  return render(request, 'doctor_profile.html', {"doctor_id":id})
 
 class DoctorDetailView(APIView):
     permission_classes = [IsAuthenticated]

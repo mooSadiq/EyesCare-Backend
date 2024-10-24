@@ -2,19 +2,19 @@ from datetime import datetime
 import os
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, render
-# from rest_framework.response import Response
-# from rest_framework import status
-# from django.utils.decorators import method_decorator
-# from django.views.decorators.csrf import csrf_exempt
-# from .models import DiagnosisReport, Disease, MyModel
-# from apps.patients.models import Patient
-# from .serializers import (
-#     DiagnosisSerializer,
-#     DiagnosisSerializerDash,
-# )
-# from rest_framework.views import APIView
-# from .Eye_Diseases_Detect import disease_detect
-# from urllib.parse import urljoin
+from rest_framework.response import Response
+from rest_framework import status
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from .models import DiagnosisReport, Disease, MyModel
+from apps.patients.models import Patient
+from .serializers import (
+    DiagnosisSerializer,
+    DiagnosisSerializerDash,
+)
+from rest_framework.views import APIView
+from .Eye_Diseases_Detect import disease_detect
+from urllib.parse import urljoin
 
 
 def index(request):

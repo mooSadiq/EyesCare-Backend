@@ -21,20 +21,6 @@ class AdvertisementListView(APIView):
         
         return Response({'advertisement': advertisement_serializer.data}, status=status.HTTP_200_OK)
       
-# جلب البيانات
-# @api_view(['GET'])
-# def get_advertisements():
-#     # جلب جميع الإعلانات من قاعدة البيانات
-#     advertisements = Advertisement.objects.all()
-#     # advertisements = Advertisement.objects #.filter(status=True)  # جلب الإعلانات النشطة فقط
-    
-#     # return render(request, 'advertisements_list.html',{'advertisements': advertisements})
-    
-#     # تسلسل البيانات باستخدام AdvertisementSerializer
-#     serializer = AdvertisementSerializer(advertisements, many=True)
-    
-#     # إعادة الاستجابة كـ JSON
-#     return Response({'advertisement':"hellllllllllllo"}, status=status.HTTP_200_OK)
 
 #اضافة اعلان
 class AdvertisementImageUploadView(APIView):
@@ -47,7 +33,7 @@ class AdvertisementImageUploadView(APIView):
             # حفظ البيانات باستخدام السيراليزر لضمان تطبيق كافة التحقق
             newA = serializer.save()
             advert = AdvertisementSerializer(newA, many=False)
-            return Response({"success": "تم حفظ البيانات بنجاح", "message": advert.data}, status=status.HTTP_201_CREATED)
+            return Response({"success": "تم حفظ البيانات بنجاح", "message": "شكراً"}, status=status.HTTP_201_CREATED)
         else:
             # إعادة أخطاء التحقق في الرد
             return Response({"message": "البيانات غير صحيحة", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
