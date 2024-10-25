@@ -45,14 +45,12 @@ def save_image_with_boxes(image_path, prediction, folder):
     end_point = (int(x + width / 2), int(y + height / 2))
     thickness = 2
     image_with_boxes = cv2.rectangle(image, start_point, end_point, color, thickness)
-
     # Add class name above the rectangle
     font = cv2.FONT_HERSHEY_SIMPLEX
     font_scale = 1.5
     font_thickness = 2
     text_position = (start_point[0], start_point[1] + 50)
     image_with_text = cv2.putText(image_with_boxes, text, text_position, font, font_scale, color, font_thickness, cv2.LINE_AA)
-
     image_name = os.path.basename(image_path)
     cv2.imwrite(os.path.join(folder, image_name), image_with_text)
 
@@ -72,12 +70,12 @@ def classify_and_save_image(image_path, model_id="all_eye_detect/2", confidence_
                 save_image_with_boxes(image_path, prediction, EYE_DETECT_DIR)
                 predicted_class = prediction['class']
                 return predicted_class
-
         save_image(image_path, NO_EYE_DETECT_DIR)
         return "No sufficient confidence."
     except Exception as e:
         save_image(image_path, NO_EYE_DETECT_DIR)
         return "Error during RobowFlow inference hint:'Check Internet'."
+
 
 def save_image_with_boxes(image_path, prediction, folder):
     """Draw bounding boxes and save the image with predictions in the specified folder."""
@@ -128,5 +126,6 @@ def classify_and_save_image(image_path, model_id="all_eye_detect/2", confidence_
     except Exception as e:
         save_image(image_path, NO_EYE_DETECT_DIR)
         return "Error during RobowFlow inference hint:'Check Internet'."
+
 
 

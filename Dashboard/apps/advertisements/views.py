@@ -23,6 +23,8 @@ class AdvertisementListView(APIView):
 
 
 
+=
+
 #اضافة اعلان
 class AdvertisementImageUploadView(APIView):
     def post(self, request):
@@ -31,7 +33,7 @@ class AdvertisementImageUploadView(APIView):
             # حفظ البيانات باستخدام السيراليزر لضمان تطبيق كافة التحقق
             newA = serializer.save()
             advert = AdvertisementSerializer(newA, many=False)
-            return Response({"success": "تم حفظ البيانات بنجاح", "message": advert.data}, status=status.HTTP_201_CREATED)
+            return Response({"success": "تم حفظ البيانات بنجاح", "message": "شكراً"}, status=status.HTTP_201_CREATED)
         else:
             # إعادة أخطاء التحقق في الرد
             return Response({"message": "البيانات غير صحيحة", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)

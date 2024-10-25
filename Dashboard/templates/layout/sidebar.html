@@ -2,7 +2,7 @@
 <!-- Menu -->
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
   <div class="app-brand demo">
-    <a href="index.html" class="app-brand-link">
+    <a href="{% url 'index' %}" class="app-brand-link">
       <img src="{% static 'img/branding/logo1.png' %}" class="app-brand-logo demo" alt="">
       <span class="app-brand-text demo menu-text fw-bold">EyesCare</span>
     </a>
@@ -60,11 +60,11 @@
     </li>
     <li class="menu-item {% if 'researches' in request.path %}active open{% endif %}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons ti ti-users-group"></i>
+        <i class="menu-icon tf-icons ti ti-report-search"></i>
         <div data-i18n="Research And Studies"> الدراسات والأبحاث</div>
       </a>
       <ul class="menu-sub">
-        <li class="menu-item {% if 'researches/page/' in request.path or 'researches/page/details/' %}active{% endif %}">
+        <li class="menu-item {% if 'researches/page/' in request.path or 'researches/page/details/' in request.path %}active{% endif %}">
           <a href="{% url 'research-view' %}" class="menu-link">
             <i class="menu-icon tf-icons ti ti-users-group"></i>
             <div data-i18n="Research List">إدارة الدراسات </div>

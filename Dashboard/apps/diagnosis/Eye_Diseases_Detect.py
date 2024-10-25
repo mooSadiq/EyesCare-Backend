@@ -48,6 +48,7 @@ def disease_detect(image_path):
     elif result == "Internal-Eye":
         image, label, conf = classify_internalEye_image(image_path.url)
         return image, label, conf
+
     elif result == "No detection: No eye detected":
         return None, "No eye detected in the image.", None
 
@@ -57,19 +58,7 @@ def disease_detect(image_path):
         return None, "Error during RobowFlow inference hint:'Check Internet'.", None
 
 
-def run_model(image):
-    response = CLIENT.infer(image, "ccatract/4")
-    predictions = response.get('predictions', [])
 
-    if predictions:
-        for prediction in predictions:
-            image, label, conf = draw_box(image, prediction)
-            if conf >= 65:
-                return image, label, conf
-            else:
-                return image, "No Diseases detected.", None
-    else:
-        return image, "No Diseases detected.", None
 
 
 def draw_box(image, prediction):
@@ -90,6 +79,7 @@ def draw_box(image, prediction):
     relative_path = os.path.relpath(dig_image_path, settings.MEDIA_ROOT)
     dig_image_url = get_full_media_url(relative_path)
     return dig_image_url, label, predicted_conf
+
 
 
 def fix_media_path(image_path):
@@ -135,6 +125,4 @@ def run_model(image):
                 return image, "No Diseases detected.", None
     else:
         return image, "No Diseases detected.", None
-
-
 

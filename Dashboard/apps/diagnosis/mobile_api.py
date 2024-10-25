@@ -12,7 +12,6 @@ from rest_framework.views import APIView
 from .serializers import DiagnosisSerializer
 
 
-
 @method_decorator(csrf_exempt, name="dispatch")
 class ImageInferenceView(APIView):
     disease_label = {
@@ -26,7 +25,6 @@ class ImageInferenceView(APIView):
         "Cataract": "Cataracts",
         "normal":"Normal",
     }
-
     def post(self, request, *args, **kwargs):
         image = request.FILES.get("image")
         if not image:
@@ -147,6 +145,7 @@ class ImageInferenceView(APIView):
                     "message": "فشل",
                 }
             )
+
 
 
 
