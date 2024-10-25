@@ -1,225 +1,191 @@
 {% extends 'master.html' %}
 {% load static %}
 {% block title %}
-      تفاصيل التشخيص
-{% endblock  %}
+تفاصيل التشخيص
+{% endblock %}
 {% block specialCssFiles %}
-{% endblock  %}
+{% endblock %}
 
 {% block content %}
 <!-- Content -->
 <div class="container-xxl flex-grow-1 ">
-  <div class="row diagnosis-preview">
-    <!-- diagnosis -->
-    <div class="col-xl-9 col-md-8 col-12 mb-md-0 mb-4 print-content ">
-      <div class="card diagnosis-preview-card">
-        <div class="card-body">
-          <div class="d-flex justify-content-between flex-xl-row flex-md-row flex-sm-row flex-column align-items-center  m-sm-3 m-0">
-            <div class="mb-xl-0 mb-1">
-              <div class="d-flex svg-illustration mb-4 gap-2 align-items-center">
-                <div class="app-brand-logo demo">
-                  <img src="{% static 'img/branding/logo1.png' %}" alt="">
+    <div class="row diagnosis-preview">
+        <!-- diagnosis -->
+        <div class="col-xl-9 col-md-8 col-12 mb-md-0 mb-4 print-content ">
+            <div class="card diagnosis-preview-card">
+                <div class="card-body">
+                    <div
+                        class="d-flex justify-content-between flex-xl-row flex-md-row flex-sm-row flex-column align-items-center  m-sm-3 m-0">
+                        <div class="mb-xl-0 mb-1">
+                            <div class="d-flex svg-illustration mb-4 gap-2 align-items-center">
+                                <div class="app-brand-logo demo">
+                                    <img src="{% static 'img/branding/logo1.png' %}" alt="">
+                                </div>
+                                <span class="app-brand-text fw-bold fs-5"> EyesCare </span>
+                            </div>
+                            <div class="mb-2 pt-1">
+                                <span class="fw-medium">تاريخ التشخيص:</span>
+                                <span id="diagnosis_date"></span>
+                            </div>
+                            <span class="fw-medium">تفاصيل المريض</span>
+                            <div class="pe-1">
+                                <span> اسم المريض:</span>
+                                <a href="" class="text-body text-truncate">
+                                    <span id="patient_name"></span>
+                                </a>
+                            </div>
+                            <div class="pe-2">
+                                <span>البريد الالكتروني:</span>
+                                <small id="patient_email" class="text-muted"></small>
+                            </div>
+                            <div class=" pt-1">
+                                <span class="fw-medium">اسم المرض المشخص:</span>
+                                <span id="diagnosis_result"></span>
+                            </div>
+                            <div class=" pt-1">
+                                <span class="fw-medium">نسبة التشخيص:</span>
+                                <span id="confidence"></span>
+                            </div>
+                        </div>
+                        <div class="mt-5">
+                            <div class="mb-1">
+                                <span class="fw-medium">رقم التشخيص:</span>
+                                <span id="diagnosis-id"></span>
+                            </div>
+                            <div class="mb-1 pt-1">
+                                <span class="fw-medium">الصورة المقدمة للتشخيص</span>
+                            </div>
+                            <img id="diagnosis_image" width="180px"
+                                height="150px" style="border-radius: 10px;" alt="">
+                        </div>
+                    </div>
                 </div>
-                <span class="app-brand-text fw-bold fs-5"> EyesCare </span>
-              </div>
-              <div class="mb-2 pt-1">
-                <span class="fw-medium">تاريخ التشخيص:</span>
-                <span id="diagnosis_date">April 25, 2021</span>
-              </div>
-              <span class="fw-medium">تفاصيل المريض</span>
-              <div class="pe-1">
-                <span> اسم المريض:</span>
-                <a href="" class="text-body text-truncate">
-                  <span id="patient_name">ياسر صالح</span>
-                </a>
-              </div>
-              <div class="pe-2">
-                <span>البريد الالكتروني:</span>
-              <small id="patient_email" class="text-muted">yasser@gmail.com</small>
-              </div>
-              <div class=" pt-1">
-                <span  class="fw-medium">اسم المرض المشخص:</span>
-                <span id="diagnosis_result">مياه زرقاء</span>
-              </div>
-            </div>
-            <div class="mt-5">
-              <div class="mb-1">
-                <span class="fw-medium">رقم التشخيص:</span>
-                <span id="diagnosis-id">#86423</span> 
-              </div>
-              <div class="mb-1 pt-1">
-                <span class="fw-medium">الصورة المقدمة للتشخيص</span>
-              </div>
-              <img id="diagnosis_image" src="{% static 'img/elements/images-9.jpeg' %}" width="180px" height="150px" style="border-radius: 10px;" alt="" >
-            </div>
-          </div>
-        </div>
-        <hr class="my-0" />
-        <div class="card-body">
-          <h6 class="mb-3">وصف المرض</h6>
-          <p id="disease_description" class="mb-1">المياه الزرقاء (الجلوكوما) هو مرض يصيب العين ويؤثر على العصب البصري، مما قد يؤدي إلى فقدان البصر تدريجياً.</p>
-          <div class="row p-sm-3 p-0">
-            <div class="col-xl-6 col-md-12 col-sm-5 col-12 mb-xl-0 mb-md-4 mb-sm-0 mb-4">
-              <h6 class="mb-3">الأسباب:</h6>
-              <ul id="disease_causes">
-                <li class="mb-1">ضغط العين المرتفع: يُعد الضغط داخل العين (Intraocular Pressure) أحد الأسباب الرئيسية للمياه الزرقاء، حيث يؤثر على العصب البصري.</li>
-                <li class="mb-1">العوامل الوراثية: تُعد الوراثة عاملاً رئيسياً في بعض أنواع المياه الزرقاء.</li>
-                <li class="mb-1">العمر: يزداد خطر الإصابة بالمياه الزرقاء مع تقدم العمر.</li>
-                <li class="mb-1">أمراض أخرى: بعض الأمراض مثل السكري وارتفاع ضغط الدم قد تزيد من خطر الإصابة بالمياه الزرقاء.</li>
-                <li class="mb-1">بعض الأدوية: بعض الأدوية مثل الكورتيزون قد تزيد من خطر الإصابة بالمياه الزرقاء.</li>
-              </ul>
-            </div>
-            <div class="col-xl-6 col-md-12 col-sm-7 col-12">
-              <h6  class="mb-4">الأعراض:</h6>
-              <ul id="disease_symptoms">
-                <li class="mb-1">فقدان البصر التدريجي: عادة ما يكون فقدان البصر في المياه الزرقاء تدريجياً ولا يُلاحظ في البداية.</li>
-                <li class="mb-1">فقدان الرؤية المحيطية: يُعد فقدان الرؤية المحيطية (الجانبية) أحد الأعراض المبكرة للمياه الزرقاء.</li>
-                <li class="mb-1">رؤية هالات حول الأضواء: قد تظهر هالات حول الأضواء في بعض الحالات.</li>
-                <li class="mb-1">ألم في العين: قد يشعر بعض المرضى بألم في العين، خاصة في المراحل المتقدمة.</li>
-              </ul>
-            </div>
-          </div>
-          <div class="mt-2 row p-sm-3 p-0">
-            <div class="col-xl-6 col-md-12 col-sm-5 col-12 mb-xl-0 mb-md-4 mb-sm-0 mb-4">
-              <h6 class="mb-3">طرق التشخيص:</h6>
-              <ul id="diagnosis_methods">
-                <li class="mb-1">فحص العين: يشمل فحص العين قياس ضغط العين، وفحص قاع العين، وقياس مجال الرؤية.</li>
-                <li class="mb-1">اختبارات أخرى: قد تتضمن اختبارات أخرى مثل التصوير بالرنين المغناطيسي (MRI) أو التصوير المقطعي المحوسب (CT Scan) في بعض الحالات</li>
-              </ul>
-            </div>
-            <div class="col-xl-6 col-md-12 col-sm-7 col-12">
-              <h6 class="mb-4">طرق العلاج:</h6>
-              <ul id="treatment_options">
-                <li class="mb-1">قطرات العين: تُستخدم قطرات العين لتقليل ضغط العين.</li>
-                <li class="mb-1">العلاج بالليزر: يمكن استخدام الليزر لعلاج بعض أنواع المياه الزرقاء.</li>
-                <li class="mb-1">الجراحة: قد تكون الجراحة ضرورية في بعض الحالات لعلاج المياه الزرقاء.</li>
-              </ul>
-            </div>
-          </div>
-          <h6 class="mb-3">طرق الوقاية:</h6>
-          <ul id="prevention_recommendations">
-            <li class="mb-1">فحص العين المنتظم: يُنصح بإجراء فحص العين بشكل منتظم، خاصة بعد سن الأربعين.</li>
-            <li class="mb-1">التحكم في ضغط الدم: يُنصح بالتحكم في ضغط الدم، خاصة إذا كنت مصاباً بارتفاع ضغط الدم.</li>
-            <li class="mb-1">التحكم في مرض السكري: يُنصح بالتحكم في مرض السكري، خاصة إذا كنت مصاباً بالسكري.</li>
-            <li class="mb-1">التغذية الصحية: يُنصح باتباع نظام غذائي صحي غني بالفواكه والخضروات.</li>
-            <li class="mb-1">التجنب من التدخين: يُنصح بالتوقف عن التدخين.</li>
-          </ul>
-        </div>
-        <div class="card-body mx-3">
-          <div class="row">
-            <div class="col-12">
-              <span class="fw-medium">ملاحظة: </span>
-              <span
-                > لا يُعد هذا التشخيص تشخيصاً نهائياً وبديلا عن زيارة الطبيبب. بل يُنصح بمراجعة طبيب العيون في حال ملاحظة أي من الأعراض السابقة. شكراً جزيلاً !</span
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- /diagnosis -->
+                <hr class="my-0" />
+                <div class="card-body">
+                    <h6 class="mb-3">وصف المرض</h6>
+                    <p id="disease_description" class="mb-1"></p>
+                    <div class="row p-sm-3 p-0">
+                        <div class="col-xl-6 col-md-12 col-sm-5 col-12 mb-xl-0 mb-md-4 mb-sm-0 mb-4">
+                            <h6 class="mb-3">الأسباب:</h6>
+                            <p id="disease_causes_p" class="mb-1"></p>
+                            <ul id="disease_causes">
+                            </ul>
+                        </div>
+                        <div class="col-xl-6 col-md-12 col-sm-7 col-12">
+                            <h6 class="mb-4">الأعراض:</h6>
+                            <p id="disease_symptoms_p" class="mb-1"></p>
+                            <ul id="disease_symptoms">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-2 row p-sm-3 p-0">
+                        <div class="col-xl-6 col-md-12 col-sm-5 col-12 mb-xl-0 mb-md-4 mb-sm-0 mb-4">
+                            <h6 class="mb-3">طرق التشخيص:</h6>
+                            <p id="diagnosis_methods_p" class="mb-1"></p>
+                            <ul id="diagnosis_methods">
+                            </ul>
+                        </div>
+                        <div class="col-xl-6 col-md-12 col-sm-7 col-12">
+                            <h6 class="mb-4">طرق العلاج:</h6>
+                            <p id="treatment_options_p" class="mb-1"></p>
+                            <ul id="treatment_options">
 
-    <!-- diagnosis Actions -->
-    <div class="col-xl-3 col-md-4 col-12 diagnosis-actions hide-print">
-      <div class="card">
-        <div class="card-body">
-          <button
-            class="btn btn-primary d-grid w-100 mb-2"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#senddiagnosisOffcanvas">
-            <span class="d-flex align-items-center justify-content-center text-nowrap"
-              ><i class="ti ti-send ti-xs me-2"></i>إرسال</span
-            >
-          </button>
-          <a
-            class="btn btn-label-secondary d-grid w-100 mb-2"
-            type="button"
-            id="printButton"
-            href="javascript:;">
-            <span
-              class="d-flex align-items-center justify-content-center text-nowrap">
-              <i class="ti ti-printer ti-xs me-2"></i>طباعة
-            </span>            
-          </a>
-          <a href="javascript:;"
-            id="confirm-text"
-            class="btn btn-label-danger d-grid w-100 mb-2">
-            <span
-              class="d-flex align-items-center justify-content-center text-nowrap">
-              <i class="ti ti-trash ti-xs me-2"></i>حذف
-            </span> 
-          </a>
+                            </ul>
+                        </div>
+                    </div>
+                    <h6 class="mb-3">طرق الوقاية:</h6>
+                    <p id="prevention_recommendations_p" class="mb-1"></p>
+                    <ul id="prevention_recommendations">
+                    </ul>
+                </div>
+                <div class="card-body mx-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <span class="fw-medium">ملاحظة: </span>
+                            <span> لا يُعد هذا التشخيص تشخيصاً نهائياً وبديلا عن زيارة الطبيبب. بل يُنصح بمراجعة طبيب
+                                العيون في حال ملاحظة أي من الأعراض السابقة. شكراً جزيلاً !</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /diagnosis -->
 
-        </div>
-      </div>
-    </div>
-    <!-- /diagnosis Actions -->
-  </div>
+        <!-- diagnosis Actions -->
+        <div class="col-xl-3 col-md-4 col-12 diagnosis-actions hide-print">
+            <div class="card">
+                <div class="card-body">
+                    <button class="btn btn-primary d-grid w-100 mb-2" data-bs-toggle="offcanvas"
+                        data-bs-target="#senddiagnosisOffcanvas">
+                        <span class="d-flex align-items-center justify-content-center text-nowrap"><i
+                                class="ti ti-send ti-xs me-2"></i>إرسال</span>
+                    </button>
+                    <a class="btn btn-label-secondary d-grid w-100 mb-2" type="button" id="printButton"
+                        href="javascript:;">
+                        <span class="d-flex align-items-center justify-content-center text-nowrap">
+                            <i class="ti ti-printer ti-xs me-2"></i>طباعة
+                        </span>
+                    </a>
+                    <a href="javascript:;" id="confirm-text" class="btn btn-label-danger d-grid w-100 mb-2">
+                        <span class="d-flex align-items-center justify-content-center text-nowrap">
+                            <i class="ti ti-trash ti-xs me-2"></i>حذف
+                        </span>
+                    </a>
 
-  <!-- Offcanvas -->
-  <!-- Send diagnosis Sidebar -->
-  <div class="offcanvas offcanvas-end" id="senddiagnosisOffcanvas" aria-hidden="true">
-    <div class="offcanvas-header my-1">
-      <h5 class="offcanvas-title">ارسال التقرير</h5>
-      <button
-        type="button"
-        class="btn-close text-reset"
-        data-bs-dismiss="offcanvas"
-        aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        <!-- /diagnosis Actions -->
     </div>
-    <div class="offcanvas-body pt-0 flex-grow-1">
-      <form>
-        <div class="mb-3">
-          <label for="diagnosis-from" class="form-label">من</label>
-          <input
-            type="text"
-            class="form-control"
-            id="diagnosis-from"
-            value=""
-            placeholder="company@email.com" />
+
+    <!-- Offcanvas -->
+    <!-- Send diagnosis Sidebar -->
+    <div class="offcanvas offcanvas-end" id="senddiagnosisOffcanvas" aria-hidden="true">
+        <div class="offcanvas-header my-1">
+            <h5 class="offcanvas-title">ارسال التقرير</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <div class="mb-3">
-          <label for="diagnosis-to" class="form-label">إلى</label>
-          <input
-            type="text"
-            class="form-control"
-            id="diagnosis-to"
-            value=""
-            placeholder="company@email.com" />
+        <div class="offcanvas-body pt-0 flex-grow-1">
+            <form>
+                <div class="mb-3">
+                    <label for="diagnosis-from" class="form-label">من</label>
+                    <input type="text" class="form-control" id="diagnosis-from" value=""
+                        placeholder="company@email.com" />
+                </div>
+                <div class="mb-3">
+                    <label for="diagnosis-to" class="form-label">إلى</label>
+                    <input type="text" class="form-control" id="diagnosis-to" value=""
+                        placeholder="company@email.com" />
+                </div>
+                <div class="mb-3">
+                    <label for="diagnosis-subject" class="form-label">العنوان</label>
+                    <input type="text" class="form-control" id="diagnosis-subject" value=""
+                        placeholder="diagnosis regarding goods" />
+                </div>
+                <div class="mb-3">
+                    <label for="diagnosis-message" class="form-label">الرسالة</label>
+                    <textarea class="form-control" name="diagnosis-message" id="diagnosis-message" cols="3" rows="8"
+                        value="thank you">
+           </textarea>
+                </div>
+                <div class="mb-4">
+                    <span class="badge bg-label-primary">
+                        <i class="ti ti-link ti-xs"></i>
+                        <span class="align-middle">المرفقات </span>
+                    </span>
+                </div>
+                <div class="mb-3 d-flex flex-wrap">
+                    <button type="button" class="btn btn-primary me-3" data-bs-dismiss="offcanvas">إرسال</button>
+                    <button type="button" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">إلغاء</button>
+                </div>
+            </form>
         </div>
-        <div class="mb-3">
-          <label for="diagnosis-subject" class="form-label">العنوان</label>
-          <input
-            type="text"
-            class="form-control"
-            id="diagnosis-subject"
-            value=""
-            placeholder="diagnosis regarding goods" />
-        </div>
-        <div class="mb-3">
-          <label for="diagnosis-message" class="form-label">الرسالة</label>
-          <textarea class="form-control" name="diagnosis-message" id="diagnosis-message" cols="3" rows="8" value="thank you">
-           </textarea
-          >
-        </div>
-        <div class="mb-4">
-          <span class="badge bg-label-primary">
-            <i class="ti ti-link ti-xs"></i>
-            <span class="align-middle">المرفقات </span>
-          </span>
-        </div>
-        <div class="mb-3 d-flex flex-wrap">
-          <button type="button" class="btn btn-primary me-3" data-bs-dismiss="offcanvas">إرسال</button>
-          <button type="button" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">إلغاء</button>
-        </div>
-      </form>
     </div>
-  </div>
-  <!-- /Send diagnosis Sidebar -->
-  <!-- /Offcanvas -->
+    <!-- /Send diagnosis Sidebar -->
+    <!-- /Offcanvas -->
 </div>
 <!-- / Content -->
-{% endblock  %}
+{% endblock %}
 {% block specialJsFiles %}
 <script>
 
@@ -232,10 +198,9 @@
 <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
 
 <script>
-  const diagnosisId = '{{ diagnosis_id }}';
+    const diagnosisId = '{{ diagnosis_id }}';
 </script>
 
 <script type="module" src="{% static 'js/app-diagnosis-details.js' %}"></script>
 
-{% endblock  %}
-
+{% endblock %}

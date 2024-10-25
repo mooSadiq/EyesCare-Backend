@@ -235,7 +235,6 @@ document.getElementById('addNewAdvertidementForm').addEventListener('submit', as
     const advertisement_text = document.getElementById('advertisement-text').value;
     const start_date = document.getElementById('start-date').value;
     const end_date = document.getElementById('end-date').value;
-    console.log(`${imageInput}`)
     const formData = new FormData();
     formData.append('advertiser', advertiser);
     formData.append('ad_link', ad_link);

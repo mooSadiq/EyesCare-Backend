@@ -3,6 +3,7 @@ from apps.diseases.models import Disease
 from apps.patients.models import Patient
 from apps.users.models import CustomUser
 from .models import DiagnosisReport
+from urllib.parse import urljoin
 
 # Reuse the UserSerializer for the user field in Doctor
 class UserSerializer(serializers.ModelSerializer):
@@ -27,10 +28,16 @@ class DiseaseSerializer(serializers.ModelSerializer):
 class DiagnosisSerializerDash(serializers.ModelSerializer):
     patient = UserSerializer()
     disease = DiseaseSerializer()
+    image = serializers.SerializerMethodField()
+
     class Meta:
         model = DiagnosisReport
         fields = "__all__"  #['id', 'patient', 'disease', 'diagnosis_date']  # أضف أو احذف الحقول حسب الحاجة
-
+    def get_image(self, obj):
+        if hasattr(obj, 'image') and obj.image:
+            domain = self.context.get('request').get_host()
+            return urljoin(f'http://{domain}', obj.image.url)
+        return None
 
 
 class DiagnosisSerializer(serializers.ModelSerializer):
