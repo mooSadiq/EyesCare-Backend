@@ -23,7 +23,7 @@ class AdvertisementListView(APIView):
 
 
 
-=
+
 
 #اضافة اعلان
 class AdvertisementImageUploadView(APIView):
@@ -43,7 +43,7 @@ class AdvertisementImageUploadView(APIView):
 def update_advertisement(request, pk):
     try:
         # جلب الإعلان المطلوب من قاعدة البيانات
-        advertisement = Advertisement.objects.get(pk=pk)
+        advertisement = Advertisement.objects.get(id=pk)
     except Advertisement.DoesNotExist:
         return Response({'error': 'الإعلان غير موجود'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -61,7 +61,7 @@ def update_advertisement(request, pk):
 def delete_advertisement(request, pk):
     try:
         # جلب الإعلان المطلوب من قاعدة البيانات
-        advertisement = Advertisement.objects.get(pk=pk)
+        advertisement = Advertisement.objects.get(id=pk)
     except Advertisement.DoesNotExist:
         return Response({'error': 'الإعلان غير موجود'}, status=status.HTTP_404_NOT_FOUND)
 

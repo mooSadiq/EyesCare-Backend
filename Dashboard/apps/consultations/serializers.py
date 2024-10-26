@@ -10,35 +10,23 @@ class UserMinimalSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ['id', 'email', 'first_name', 'last_name', 'profile_picture']
 
-class DoctorSerializer(serializers.ModelSerializer):
-    # استبدل `user` هنا بـ `UserMinimalSerializer` لعرض الحقول المطلوبة
-    class Meta:
-        model = Doctor
-        fields = ['id', 'UserMinimalSerializer', 'address', 'hospital', 'specialization', 'about']
-
-class PatientSerializer(serializers.ModelSerializer):
-    # استبدل `user` هنا بـ `UserMinimalSerializer` لعرض الحقول المطلوبة
-    class Meta:
-        model = Patient
-        fields = ['id', 'UserMinimalSerializer', 'subscription_count', 'subscription_status']
 
 class ConsultationSerializer(serializers.ModelSerializer):
     patient = serializers.SerializerMethodField()
     doctor = serializers.SerializerMethodField()
-    
+
     class Meta:
         model = Consultation
         fields = ['id', 'is_complete', 'consultation_date', 'patient', 'doctor']
 
     def get_patient(self, obj):
         # جلب المستخدم من خلال نموذج Patient
-        user = obj.patient.user
+        user = obj.patient
         return {
-            'id': obj.patient.id,
+            'id': user.id,
             'email': user.email,
             'first_name': user.first_name,
             'last_name': user.last_name,
-            'profile_picture': user.profile_picture.url,
         }
 
     def get_doctor(self, obj):
@@ -49,20 +37,19 @@ class ConsultationSerializer(serializers.ModelSerializer):
             'email': user.email,
             'first_name': user.first_name,
             'last_name': user.last_name,
-            'profile_picture': user.profile_picture.url,
         }
 
 # class UserSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = CustomUser
 #         fields = ['id', 'email', 'first_name', 'last_name', 'profile_picture']
-        
+
 # class DoctorSerializer(serializers.ModelSerializer):
 #     user = UserSerializer()
 #     class Meta:
 #         model = Doctor
 #         fields = "__all__"
-        
+
 # class PatientSerializer(serializers.ModelSerializer):
 #     user = UserSerializer()
 
@@ -77,5 +64,4 @@ class ConsultationSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = Consultation
 #         fields = ['id', 'patient', 'doctor', 'is_complete', 'consultation_date']
-        
-        
+

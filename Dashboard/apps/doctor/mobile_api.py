@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from apps.doctor.models import Doctor
-from apps.users.models import CustomUser  
+from apps.users.models import CustomUser
 from .filters import DoctorFilter
 from .serializers import DoctorListSerializer, DoctorOneSerializer
 from rest_framework.exceptions import ValidationError
@@ -18,11 +18,11 @@ class DoctorView(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
         userId = request.data.get('userId')
-   
-        
+
+
         try:
          user = get_object_or_404(CustomUser, id=userId) #authenticate(request, id = userId)
-            
+
          if user is not None:
             refresh = RefreshToken.for_user(user)
             user_data = {
@@ -42,8 +42,8 @@ class DoctorView(APIView):
                     'doctor_id': doctor_data.id,
                     'address': doctor_data.address,
                     'about': doctor_data.about,
-                    
-                    
+
+
                 })
 
             return Response({
@@ -53,7 +53,7 @@ class DoctorView(APIView):
                 'data': user_data,
             })
         except Exception as e:
-            
+
                 return Response({
             'message': 'لا توجد بيانات',
             'status': False,
@@ -65,9 +65,9 @@ class DoctorListAPIView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
         try:
-            doctors = Doctor.objects.all()
+            doctors = Doctor.objects.filter(verification=True)
             doctors_serializer = DoctorListSerializer(doctors, many=True, context={'request': request})
-            
+
             return Response({
               'status': True,
               'code': status.HTTP_200_OK,
@@ -80,28 +80,28 @@ class DoctorListAPIView(APIView):
                 'code': status.HTTP_500_INTERNAL_SERVER_ERROR,
                 'message': f'حدث خطأ غير متوقع: {str(e)}',
               })
-            
+
 class DoctorFilterListAPIView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
         try:
-            doctors = Doctor.objects.all()        
+            doctors = Doctor.objects.all()
             doctors_filter = DoctorFilter(request.query_params, queryset=doctors)
             if not doctors_filter.is_valid():
                 return Response({
                   'status': False,
                   'code': status.HTTP_400_BAD_REQUEST,
                   'message': f'تم تمرير معلمات غير صحيحة بالشكل التالي: {ValidationError(doctors_filter.errors)}'
-                })                  
+                })
             queryset = doctors_filter.qs
             if not queryset.exists():
                 return Response({
-                  'status': True,
+                  'status': False,
                   'code': status.HTTP_404_NOT_FOUND,
                   'message': 'لم يتم العثور على أي نتائج تطابق الفلترة.'
                 })
             doctors_serializer = DoctorListSerializer(queryset, many=True, context={'request': request})
-  
+
             return Response({
               'status': True,
               'code': status.HTTP_200_OK,
@@ -113,14 +113,14 @@ class DoctorFilterListAPIView(APIView):
                 'status': False,
                 'code': status.HTTP_500_INTERNAL_SERVER_ERROR,
                 'message': f'حدث خطأ غير متوقع: {str(e)}',
-              })            
-  
+              })
+
 class DoctorOneListAPIView(APIView):
     permission_classes = [AllowAny]
     def get(self, request, pk):
         try:
             doctor = Doctor.objects.filter(id=pk).first()
-            print('before',type(doctor.start_time_work)) 
+            print('before',type(doctor.start_time_work))
             if not doctor:
                 return Response({
                     'status': False,
@@ -141,8 +141,8 @@ class DoctorOneListAPIView(APIView):
                 'code': status.HTTP_500_INTERNAL_SERVER_ERROR,
                 'message': f'حدث خطأ غير متوقع: {str(e)}',
               })
-    
-    
+
+
 class DoctorsListView(APIView):
     permission_classes = [AllowAny]
 
@@ -172,4 +172,30 @@ class DoctorsListView(APIView):
                 'message': 'لا توجد بيانات',
                 'status': False,
                 'code': status.HTTP_401_UNAUTHORIZED
+            })
+
+class DoctorCreate(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        try:
+            doctor = request.data
+            Doctor.objects.create(
+                user= request.user,
+                address=doctor.get('address'),
+                hospital=doctor.get('hospital'),
+                specialization=doctor.get('specialization'),
+                about=doctor.get('about'),
+                start_time_work=doctor.get('start_time_work'),
+                end_time_work=doctor.get('end_time_work')
+            )
+            return Response({
+                'status': True,
+                'code': status.HTTP_200_OK,
+                'message': 'تم الإضافة بنجاح',
+            })
+        except Exception as e:
+            return Response({
+                'status': False,
+                'code': status.HTTP_400_BAD_REQUEST,
+                'message': f'حدث خطأ: {str(e)}'
             })

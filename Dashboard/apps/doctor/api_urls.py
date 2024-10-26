@@ -6,4 +6,5 @@ urlpatterns=[
     path('', mobile_api.DoctorListAPIView.as_view(), name="doctors-list"),
     path('<int:pk>/', mobile_api.DoctorOneListAPIView.as_view(), name="doctor-details"),
     path('filter/', mobile_api.DoctorFilterListAPIView.as_view(), name="doctors-filter-list"),
+    path('add/', mobile_api.DoctorCreate.as_view(), name="add-doctors"),
 ]

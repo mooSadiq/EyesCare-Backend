@@ -94,6 +94,7 @@ class DiseaseArabicSerializer(serializers.ModelSerializer):
     diagnosis_methods = serializers.SerializerMethodField()
     treatment_options = serializers.SerializerMethodField()
     prevention_recommendations = serializers.SerializerMethodField()
+    description = serializers.CharField(source='description_ar')
     image = serializers.SerializerMethodField()
     class Meta:
         model = Disease
@@ -101,7 +102,7 @@ class DiseaseArabicSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'name_en',
-            'description_ar',
+            'description',
             'status',
             'image',
             'created_at','causes',

@@ -13,14 +13,20 @@ def index(request):
 logger = logging.getLogger(__name__)
 
 class ConsultationListView(APIView):
+
     def get(self, request):
-        # try:
+         try:
+            # استرجاع جميع الاستشارات من قاعدة البيانات
             consultations = Consultation.objects.all()
+
+            # تحويل الاستشارات إلى JSON باستخدام الاستيراد
             serializer = ConsultationSerializer(consultations, many=True)
+
+            # إرجاع الاستجابة مع البيانات وحالة HTTP 200
             return Response({'consultations': serializer.data}, status=status.HTTP_200_OK)
-        # except Exception as e:
-        #     logger.error(f"Error in ConsultationListView: {e}")
-        #     return Response({'error': 'An error occurred while processing your request.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+         except Exception as e:
+            logger.error(f"Error in ConsultationListView: {e}")
+            return Response({'error': 'An error occurred while processing your request.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class ConsultationDetailView(APIView):
     def delete(self, request, pk):

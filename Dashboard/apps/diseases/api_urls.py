@@ -3,5 +3,6 @@ from . import api_mobile
 
 urlpatterns = [
     path('', api_mobile.DiseaseListView.as_view(), name='diseases-list'),
+    path('<int:pk>/', api_mobile.DiseaseOneView.as_view(), name='diseases-one'),
     path('search/', api_mobile.DiseaseListSearchView.as_view(), name='diseases-search'),
 ]

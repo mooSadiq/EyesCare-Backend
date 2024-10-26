@@ -61,3 +61,19 @@ class DiseaseListSearchView(APIView):
             'message': 'ok',
             'data': serializer.data
         })
+
+class DiseaseOneView(APIView):
+  permission_classes = [AllowAny]
+  def get(self, request,pk,*args,**kwargs):
+      Diseases = Disease.objects.filter(id=pk)
+      accept_language = request.headers.get('Accept-Language', 'ar')
+      if accept_language == 'en':
+          serializer = DiseaseEnglishSerializer(Diseases, many=True, context={'request': request})
+      else:
+        serializer = DiseaseArabicSerializer(Diseases, many=True, context={'request': request})
+      return Response({
+            'status': True,
+            'code': status.HTTP_200_OK,
+            'message': 'ok',
+            'data': serializer.data
+        })
