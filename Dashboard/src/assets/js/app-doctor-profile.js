@@ -22,11 +22,11 @@ async function fetchdoctorData(getId) {
 let userId;
 let doctor_Id;
 
-// دالة لتحديث واجهة بي ببيانات المريض التي تم ارجاعها في الدالة السابقة 
+// دالة لتحديث واجهة بي ببيانات المريض التي تم ارجاعها في الدالة السابقة
 function updatedoctorProfile(data) {
-  
+
   userId = data.user.id;
-  
+
   doctor_Id = data.id;
   const avatarElement = document.getElementById('doctor-avatar');
   // التحقق من وجود صورة للمستخدم أو تعيين الصورة الافتراضيةة
@@ -51,7 +51,7 @@ function updatedoctorProfile(data) {
   }
 
   document.getElementById('doctor-name').innerText = `${data.user.first_name} ${data.user.last_name}`;
-  document.getElementById('doctor-number').innerText = `#${data.id}`;
+  document.getElementById('doctor-number').innerText = data.id;
   document.getElementById('doctor-email').innerText = data.user.email;
   document.getElementById('doctor-phone').innerText = data.user.phone_number;
   document.getElementById('doctor-gender').innerText = data.user.gender;
@@ -60,7 +60,7 @@ function updatedoctorProfile(data) {
   document.getElementById('doctor-status').className = data.user.is_active ? 'badge bg-label-success' : 'badge bg-label-danger';
   document.getElementById('doctor-verification').innerText = data.user.is_blue_verified ? 'موثق' : 'غير موثق';
   document.getElementById('doctor-verification').className = data.user.is_blue_verified ? 'badge bg-label-success' : 'badge bg-label-danger';
- 
+
   document.getElementById('doctor-specialization').innerText = data.specialization;
   document.getElementById('doctor-hospital').innerText = data.hospital;
   document.getElementById('doctor-address').innerText = data.address;
@@ -73,7 +73,7 @@ function updatedoctorProfile(data) {
   } else {
     confirmActiveAlert.textContent = 'تنشيط';
     confirmActiveAlert.classList.add('bg-label-success');
-  }  
+  }
 
   // تحديث البيانات في فورم التعديل
   document.getElementById('modalEditUserFirstName').value = data.user.first_name;
@@ -92,7 +92,7 @@ function updatedoctorProfile(data) {
   verificationCheckbox.checked = data.user.is_blue_verified;
 }
 
-// دالة لارسال البيانات المعدلة وتحديثها  
+// دالة لارسال البيانات المعدلة وتحديثها
 async function updateUserData(event) {
   event.preventDefault();
   try {
@@ -105,12 +105,17 @@ async function updateUserData(event) {
       formData_2.append('specialization', document.getElementById('modalEditUserSpecialization').value);
       formData_2.append('hospital', document.getElementById('modalEditUserHospital').value);
       formData_2.append('address', document.getElementById('modalEditUserAddress').value);
+      // الحصول على حالة خانة الاختيار
+    const statusCheckbox = document.getElementById('verfiy');
+    const statusValue = statusCheckbox.checked;
 
+  // إضافة الحالة إلى FormData كقيمة نصية
+      formData_2.append('verfiy', statusValue ? 'true' : 'false'); // استخدم 'true' أو 'false' كنصوص
       formData.append('gender', document.getElementById('modalEditUsergender').value);
       formData.append('birth_date', document.getElementById('bs-datepicker-autoclose-birthdate').value);
       formData.append('user_type', document.getElementById('modalEditUserRole').value);
 
-      // التحقق هل تم رقع صورة ام لا 
+      // التحقق هل تم رقع صورة ام لا
       const upload = document.getElementById('modalEditUserFile').files[0];
       if (upload) {
           formData.append('profile_picture', upload);
@@ -122,7 +127,7 @@ async function updateUserData(event) {
       const method = 'PUT';
       const url = `/users/api/update/${userId}/`;
       try {
-        const result = await submitRequest(url, method, formData );        
+        const result = await submitRequest(url, method, formData );
         if (result.success) {
           const modalElement = document.getElementById('editUser');
           const modal = bootstrap.Modal.getInstance(modalElement);
@@ -145,7 +150,7 @@ async function updateUserData(event) {
       const method_2 = 'PUT';
       const url_2 = `/doctors/api/profile/update/${doctor_Id}/`;
       try {
-        const result = await submitRequest(url_2, method_2, formData_2 );        
+        const result = await submitRequest(url_2, method_2, formData_2 );
         if (result.success) {
           const modalElement = document.getElementById('editUser');
           const modal = bootstrap.Modal.getInstance(modalElement);
@@ -163,7 +168,7 @@ async function updateUserData(event) {
         console.error('Error updating data:', error);
       }
 
-    
+
   } catch (error) {
       console.error('هناك خطأعند تحيث البيانات:', error);
   }
@@ -171,7 +176,7 @@ async function updateUserData(event) {
 
 // الدالة الرئيسية التي يتم استعداؤها عند فتح الصفحة
 $(function () {
-   
+
   fetchdoctorData(getId);
   document.getElementById('editUserForm').addEventListener('submit', updateUserData);
 
@@ -183,7 +188,7 @@ $(function () {
     diagnosesView = "http://127.0.0.1:8000/diagnosis/details";
 
   // Project datatable
- 
+
 
   // Filter form control to default size
   // ? setTimeout used for multilingual table initialization

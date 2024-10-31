@@ -9,6 +9,7 @@ class DiseasesSerializer(serializers.ModelSerializer):
 
 # class DiseaseArabicSerializer(serializers.ModelSerializer):
 #     name = serializers.CharField(source='name_ar')
+#     name_en = serializers.CharField(source='name_en')
 #     description = serializers.CharField(source='description_ar')
 #     causes = serializers.JSONField(source='causes_ar')
 #     symptoms = serializers.JSONField(source='symptoms_ar')

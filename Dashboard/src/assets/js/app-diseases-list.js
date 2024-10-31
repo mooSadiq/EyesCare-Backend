@@ -239,7 +239,6 @@ document.getElementById('diseaseForm').addEventListener('submit', async function
   formData.append('status', statusValue ? 'true' : 'false'); // استخدم 'true' أو 'false' كنصوص
 
   try {
-    console.log(`Malllllllek`);
     const result = await submitRequest(url, method, formData, {
       // لا حاجة لتحديد Content-Type عند استخدام FormData، يتم تعيينه تلقائيًا
     });

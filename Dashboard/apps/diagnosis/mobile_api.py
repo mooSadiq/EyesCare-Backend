@@ -72,12 +72,6 @@ class ImageInferenceView(APIView):
         elif detected_image != None:
             domain = request.get_host()
             image_path = urljoin(f"http://{domain}", detected_image)
-            diagnosis_data = {
-                "image_path": image_path,
-                "diagnosis_status": label,
-                "confidence": conf,
-                "message": "يرجى ملاحظة أن هذه النتائج ليست تشخيصًا نهائيًا. نوصي بزيارة طبيب عيون مختص للحصول على تقييم دقيق وموثوق والحصول على الرعاية الصحية اللازمة.",
-            }
             if label == "normal":
                 DiagnosisReport.objects.create(
                     diagnosis_result="Normal-(طبيعي)",
@@ -86,8 +80,23 @@ class ImageInferenceView(APIView):
                     compeleted=True,
                     patient=request.user,
                 )
+                Disease_Id=None
+                diagnosis_data = {
+                "image_path": image_path,
+                "diagnosis_status": label,
+                "confidence": conf,
+                "disease":Disease_Id,
+                "message": "يرجى ملاحظة أن هذه النتائج ليست تشخيصًا نهائيًا. نوصي بزيارة طبيب عيون مختص للحصول على تقييم دقيق وموثوق والحصول على الرعاية الصحية اللازمة.",
+                }
             else:
                 Disease_Id = Disease.objects.get(name_en=self.disease_label[label])
+                diagnosis_data = {
+                "image_path": image_path,
+                "diagnosis_status": label,
+                "confidence": conf,
+                "disease":Disease_Id.id,
+                "message": "يرجى ملاحظة أن هذه النتائج ليست تشخيصًا نهائيًا. نوصي بزيارة طبيب عيون مختص للحصول على تقييم دقيق وموثوق والحصول على الرعاية الصحية اللازمة.",
+                }
                 DiagnosisReport.objects.create(
                     diagnosis_result=f"{Disease_Id.name_en}-({Disease_Id.name_ar})",
                     image=saved_image_path_report,
@@ -105,11 +114,6 @@ class ImageInferenceView(APIView):
                 }
             )
         elif detected_image == None and conf != None:
-            diagnosis_data = {
-                "diagnosis_status": self.disease_label[label],
-                "confidence": conf,
-                "message": "يرجى ملاحظة أن هذه النتائج ليست تشخيصًا نهائيًا. نوصي بزيارة طبيب عيون مختص للحصول على تقييم دقيق وموثوق والحصول على الرعاية الصحية اللازمة.",
-            }
             if label == "normal":
                 DiagnosisReport.objects.create(
                     diagnosis_result="Normal-(طبيعي)",
@@ -118,7 +122,15 @@ class ImageInferenceView(APIView):
                     confidence=conf,
                     patient=request.user,
                 )
+                Disease_Id=None
+                diagnosis_data = {
+                "diagnosis_status": self.disease_label[label],
+                "confidence": conf,
+                "disease":Disease_Id,
+                "message": "يرجى ملاحظة أن هذه النتائج ليست تشخيصًا نهائيًا. نوصي بزيارة طبيب عيون مختص للحصول على تقييم دقيق وموثوق والحصول عل على الرعاية الصحية اللازمة.",
+                }
             else:
+
                 Disease_Id = Disease.objects.get(name_en=self.disease_label[label])
                 DiagnosisReport.objects.create(
                     diagnosis_result=f"{Disease_Id.name_en}-({Disease_Id.name_ar})",
@@ -128,6 +140,12 @@ class ImageInferenceView(APIView):
                     patient=request.user,
                     disease=Disease_Id,
                 )
+                diagnosis_data = {
+                "diagnosis_status": self.disease_label[label],
+                "confidence": conf,
+                "disease":Disease_Id.id,
+                "message": "يرجى ملاحظة أن هذه النتائج ليست تشخيصًا نهائيًا. نوصي بزيارة طبيب عيون مختص للحصول على تقييم دقيق وموثوق والحصول على الرعاية الصحية اللازمة.",
+            }
             return JsonResponse(
                 {
                     "status": True,

@@ -68,9 +68,9 @@ class DiseaseOneView(APIView):
       Diseases = Disease.objects.filter(id=pk)
       accept_language = request.headers.get('Accept-Language', 'ar')
       if accept_language == 'en':
-          serializer = DiseaseEnglishSerializer(Diseases, many=True, context={'request': request})
+          serializer = DiseaseEnglishSerializer(Diseases, many=False, context={'request': request})
       else:
-        serializer = DiseaseArabicSerializer(Diseases, many=True, context={'request': request})
+        serializer = DiseaseArabicSerializer(Diseases, many=False, context={'request': request})
       return Response({
             'status': True,
             'code': status.HTTP_200_OK,

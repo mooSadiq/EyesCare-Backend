@@ -38,13 +38,14 @@ class GoogleLoginView(APIView):
                 user.is_verified = True
                 user.save()
 
-          refresh = RefreshToken.for_user(user)              
+          refresh = RefreshToken.for_user(user)
           user_data = {
               'id': user.id,
               'email': user.email,
               'first_name': user.first_name,
               'user_type': user.user_type,
               'profile_picture': profile_picture,
+              'is_blue_verified': user.is_blue_verified,
               'refresh': str(refresh),
               'access_token': str(refresh.access_token),
           }
@@ -55,11 +56,10 @@ class GoogleLoginView(APIView):
               'message': 'تم إنشاء الحساب بنجاح',
               'data': user_data,
           }, status=status.HTTP_200_OK)
-          
+
       except Exception as e:
           return Response({
               'status': False,
               'code': status.HTTP_500_INTERNAL_SERVER_ERROR,
               "message": f"حدث خطأ أثناء  إنشاء الحساب: {str(e)}"
           }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-          
